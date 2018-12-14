@@ -1,1 +1,1 @@
-This project is a flight simulator in c++
+This project is a flight simulator in c++.
