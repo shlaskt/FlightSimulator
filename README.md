@@ -17,7 +17,7 @@ As part of an advanced programming course we were given a task to teach us diffe
 
 ## Our Project:
 In this project we will write an interpreter to a UAV control code (Unmanned aerial vehicle).
-Our plane will fly in cyberspace FlightGear Flight Simulator.This simulator is also a server that you can connect to as a client (and vice versa), so we can easily pull out Information about the various parameters of the flight in real time and even injecting orders for him to drive the plane.
+Our plane will fly in cyberspace FlightGear Flight Simulator. This simulator is also a server that you can connect to as a client (and vice versa), so we can easily pull out Information about the various parameters of the flight in real time and even injecting orders for him to drive the plane.
 
 ## Dependencies:
 * MacOS / Linux
