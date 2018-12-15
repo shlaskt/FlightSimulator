@@ -29,7 +29,14 @@ Our plane will fly in cyberspace FlightGear Flight Simulator. This simulator is 
     ```
     $ git clone https://github.com/eyalcohen308/FlightSimulator.git
     ```
-2. Enter the project's directory:
+2. download flight simulator:
+    ```
+    $ sudo add-apt-repository ppa:saiarcot895/flightgear
+    ```
+    ```
+    $ sudo apt-get update
+    ```
+3. Enter the project's directory:
     ```
     $ cd FlightSimulator
     ```
