@@ -1,8 +1,9 @@
-## FlightGear Simulator Project:  
+# FlightGear Simulator Project:  
 1. [Introduction](#introduction)  
 2. [Our Project:](#our-project)  
 3. [Dependencies:](#dependencies)  
 4. [Installation:](#installation)
+
 
 ## Introduction
 As part of an advanced programming course we were given a task to teach us different elements:
