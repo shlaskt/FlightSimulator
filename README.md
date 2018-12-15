@@ -6,14 +6,14 @@ FlightGear Project:
 
 ## Introduction
 As part of an advanced programming course we were given a task to teach us different elements:
-1. Use of design and architecture templates.
-2. Communications and server-client architecture.
-3. Using data structures and database.
-4. Streaming data (files and communications)
-5. Comparison, selection and assimilation of algorithms within the system we create.
-6. Parallel programming using treads.
-7. Event-oriented programming, a desktop application with a GUI.
-8. Mobile application (Android).
+* Use of design and architecture templates.
+* Communications and server-client architecture.
+* Using data structures and database.
+* Streaming data (files and communications)
+* Comparison, selection and assimilation of algorithms within the system we create.
+* Parallel programming using treads.
+* Event-oriented programming, a desktop application with a GUI.
+* Mobile application (Android).
 
 ## Our Project:
 In this project we will write an interpreter to a UAV control code (Unmanned aerial vehicle).
