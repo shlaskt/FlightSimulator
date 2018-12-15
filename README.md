@@ -1,4 +1,4 @@
-FlightGear Project:  
+# FlightGear Project:  
 1. [Introduction](#introduction)  
 2. [Our Project:](#our-project)  
 3. [Dependencies:](#dependencies)  
