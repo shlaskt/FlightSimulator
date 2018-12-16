@@ -3,4 +3,4 @@ project(FlightSimulator)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(FlightSimulator main.cpp Expression.h BinaryExpression.cpp BinaryExpression.h UnaryExpression.cpp UnaryExpression.h PlusExpression.cpp PlusExpression.h MinusExpression.cpp MinusExpression.h MultiplyExpression.cpp MultiplyExpression.h DivideExpression.cpp DivideExpression.h NegExpression.cpp NegExpression.h Num.cpp Num.h)
+add_executable(FlightSimulator main.cpp ExpressionInterfaces/Expression.h ExpressionInterfaces/BinaryExpression.cpp ExpressionInterfaces/BinaryExpression.h UnaryExpressions/UnaryExpression.cpp UnaryExpressions/UnaryExpression.h BinaryExpressions/PlusExpression.cpp BinaryExpressions/PlusExpression.h BinaryExpressions/MinusExpression.cpp BinaryExpressions/MinusExpression.h BinaryExpressions/MultiplyExpression.cpp BinaryExpressions/MultiplyExpression.h BinaryExpressions/DivideExpression.cpp BinaryExpressions/DivideExpression.h UnaryExpressions/NegExpression.cpp UnaryExpressions/NegExpression.h Num.cpp Num.h)
