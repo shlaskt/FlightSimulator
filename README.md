@@ -24,7 +24,6 @@ Our plane will fly in cyberspace FlightGear Flight Simulator. This simulator is 
 * MacOS / Linux
 * FlightGear 2018.3.1
 * Git
-*etc
 
 ## Installation:
 1. Clone the repository:  
