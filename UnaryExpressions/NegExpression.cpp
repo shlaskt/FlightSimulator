@@ -3,6 +3,7 @@
 //
 
 #include "NegExpression.h"
+#include "../ExpressionInterfaces/Expression.h"
 
 /**
  * calculate the negate of the expresstion.

@@ -5,8 +5,8 @@
 #ifndef FLIGHTSIMULATOR_MINUSEXPRESSION_H
 #define FLIGHTSIMULATOR_MINUSEXPRESSION_H
 
-#include "BinaryExpression.h"
-#include "Expression.h"
+#include "../ExpressionInterfaces/Expression.h"
+#include "../ExpressionInterfaces/BinaryExpression.h"
 #include <iostream>
 
 using namespace std;
