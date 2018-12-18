@@ -40,10 +40,12 @@ ostream &operator<<(ostream &stream, const Num &num) {
     return stream;
 }
 
+
 /**
  * return the num value.
  * @return num value by double.
  */
+
 double Num::calculate() {
     return num;
 }

@@ -16,7 +16,7 @@ BinaryExpression::BinaryExpression(Expression *left, Expression *right) : left(l
  * @return left expression pointer.
  */
 Expression *BinaryExpression::getRight() const {
-    return this->left;
+    return this->right;
 }
 
 /**
@@ -24,6 +24,6 @@ Expression *BinaryExpression::getRight() const {
  * @return right expression pointer.
  */
 Expression *BinaryExpression::getLeft() const {
-    return this->right;
+    return this->left;
 }
 
