@@ -65,8 +65,7 @@ vector<string> splitLine(const string &line, char sign) {
 }
 
 vector<string> lexer(string line) {
-    vector<string> arr = splitLine(addSpaces(line), ' ');
-    return arr;
+    return splitLine(addSpaces(line), ' ');
 }
 
 void Lexertests() {
@@ -94,4 +93,9 @@ void Lexertests() {
     if (sucseed) {
         cout << "all lexer spaces tests passed";
     }
+}
+
+void parser() {
+    string command_name;
+
 }

@@ -12,6 +12,8 @@ using namespace std;
 
 vector<string> lexer(string line);
 
+void parser();
+
 void Lexertests();
 
 #endif //FLIGHTSIMULATOR_INPUTMANAGEMENT_H
