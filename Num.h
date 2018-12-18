@@ -5,7 +5,7 @@
 #ifndef FLIGHTSIMULATOR_NUM_H
 #define FLIGHTSIMULATOR_NUM_H
 
-#include "Expression.h"
+#include "ExpressionInterfaces/Expression.h"
 #include <string>
 
 using namespace std;
@@ -14,7 +14,9 @@ class Num : public Expression {
 private:
     double num;
 public:
-    Num(string num);
+    Num(string number);
+
+    Num(double num);
 
     double getNum() const;
 
