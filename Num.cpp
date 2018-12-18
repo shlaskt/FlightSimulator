@@ -11,6 +11,13 @@
 Num::Num(string string_num) {
     this->num = stod(string_num);
 }
+/**
+ * get double value and create num.
+ * @param num value type double.
+ */
+Num::Num(double number) {
+    this->num = number;
+}
 
 /**
  * get the number value.
@@ -33,9 +40,6 @@ ostream &operator<<(ostream &stream, const Num &num) {
     return stream;
 }
 
-Num::Num(double number) {
-    this->num = number;
-}
 /**
  * return the num value.
  * @return num value by double.
