@@ -20,7 +20,8 @@
 using namespace std;
 
 class DataReaderServer {
-    void operator()(int port, int time_per_sec);
+public:
+    void open(int port, int time_per_sec);
 
 };
 

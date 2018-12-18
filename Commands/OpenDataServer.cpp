@@ -4,16 +4,12 @@
 
 #include "OpenDataServer.h"
 #include "../Sockets/DataReaderServer.h"
-
-/**
- * Ctor
- * @param itor
- */
-OpenDataServer::OpenDataServer(
-        const vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>,
-                std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>,
-                        std::allocator<char>>>>::iterator &itor)
-        : itor(itor) {}
+// struct with the parameters to the socket
+struct params_to_socket{
+    int port;
+    int time;
+    DataReaderServer* data_server;
+};
 
 /**
  * doCommand
@@ -22,16 +18,27 @@ OpenDataServer::OpenDataServer(
  * @return
  */
 void OpenDataServer::doCommand() {
-    int port_server = atoi((*++itor).c_str()); // just for test
-    int time_server = atoi((*++itor).c_str()); // just for test
-    struct params {
-        int port1 = port_server;
-        int time1 = time_server;
-    };
-
-
-    pthread_create()
-    thread data_server(DataReaderServer(), port_server, time_server);
-
-    data_server.detach();
+    struct params_to_socket *params = new params_to_socket; // struct of params to sock
+    // initialize the struct
+    params->port=atoi((*++itor).c_str()); // initialize port
+    params->time=atoi((*++itor).c_str()); // initialize server
+    params->data_server=getServer();
+    // open new thread
+    CreateThread(params);
+    // when finish- delet and return
+    delete(params);
 }
+
+void* CreateSocket (void* pVoid){
+    struct params_to_socket *params1 = (struct params_to_socket*) pVoid;
+    params1->data_server->open(params1->port, params1->time); // open new socket
+
+    // add w`hile with auto?
+    return nullptr;
+}
+
+void OpenDataServer::CreateThread(struct params_to_socket* params){
+    pthread_t trid;
+//    pthread_create(&trid, nullptr, CreateSocket,params); // return it
+}
+

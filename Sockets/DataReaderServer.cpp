@@ -6,7 +6,7 @@
 #include "DataReaderServer.h"
 
 //"openDataServer 5400 10"
-void DataReaderServer::operator()(int port, int time_per_sec) {
+void DataReaderServer::open(int port, int time_per_sec) {
     int sockfd, newsockfd, portno, clilen;
     char buffer[BUF];
     struct sockaddr_in serv_addr, cli_addr;

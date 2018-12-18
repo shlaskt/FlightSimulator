@@ -10,19 +10,14 @@
 #include <string>
 #include "Command.h"
 #include "../Sockets/DataReaderServer.h"
+#include "pthread.h"
 
 using namespace std;
 
 class OpenDataServer : Command {
-    vector<string>::iterator itor;
 public:
-    struct params_to_socket{
-        int port;
-        int time;
-        DataReaderServer server;
-    };
-    OpenDataServer(
-            const vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>>::iterator &itor);
+    void CreateThread(struct params_to_socket* params);
+//    void* CreateSocket (void* pVoid);
 
     virtual void doCommand();
 };
