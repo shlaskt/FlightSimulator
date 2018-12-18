@@ -8,11 +8,16 @@
  * get string and convert it to double.
  * @param num string represent double.
  */
-Num::Num(string number) {
-    this->num = stod(number);
+Num::Num(string string_num) {
+    this->num = stod(string_num);
 }
-
-Num::Num(double num) : num(num) {}
+/**
+ * get double value and create num.
+ * @param num value type double.
+ */
+Num::Num(double number) {
+    this->num = number;
+}
 
 /**
  * get the number value.
@@ -34,6 +39,12 @@ ostream &operator<<(ostream &stream, const Num &num) {
     stream << (to_string(num.getNum()));
     return stream;
 }
+
+
+/**
+ * return the num value.
+ * @return num value by double.
+ */
 
 double Num::calculate() {
     return num;

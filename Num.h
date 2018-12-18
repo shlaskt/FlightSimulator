@@ -14,10 +14,9 @@ class Num : public Expression {
 private:
     double num;
 public:
-    Num(string number);
 
-    Num(double num);
-
+    Num(string string_num);
+    Num(double number);
     double getNum() const;
 
     virtual double calculate();

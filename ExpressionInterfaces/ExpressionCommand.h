@@ -1,0 +1,14 @@
+//
+// Created by eyal on 12/18/18.
+//
+
+#ifndef FLIGHTSIMULATOR_EXPRESSIONCOMMAND_H
+#define FLIGHTSIMULATOR_EXPRESSIONCOMMAND_H
+
+
+class ExpressionCommand {
+private:
+};
+
+
+#endif //FLIGHTSIMULATOR_EXPRESSIONCOMMAND_H
