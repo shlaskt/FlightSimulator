@@ -11,7 +11,7 @@
 #include <string>
 using namespace std;
 
-class Dijkstra : public Expression {
+class Dijkstra {
     int precedence(char op);
 
     Expression* applyOp(double a, double b, char op);

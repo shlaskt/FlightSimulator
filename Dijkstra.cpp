@@ -148,6 +148,6 @@ double Dijkstra::calculate() {
     cout << evaluate("100 * 2 + 12") << "\n";
     cout << evaluate("100 * ( 2 + 12 )") << "\n";
     cout << evaluate("100 * ( 2 + 12 ) / 14");
-    return 1.1;
+    return 0;
 
 }

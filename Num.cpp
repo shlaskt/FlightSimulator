@@ -34,3 +34,7 @@ ostream &operator<<(ostream &stream, const Num &num) {
     stream << (to_string(num.getNum()));
     return stream;
 }
+
+double Num::calculate() {
+    return num;
+}
