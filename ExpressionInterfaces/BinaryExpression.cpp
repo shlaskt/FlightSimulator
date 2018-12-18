@@ -3,6 +3,13 @@
 //
 
 #include "BinaryExpression.h"
+/**
+ * Ctor
+ * @param left
+ * @param right
+ */
+BinaryExpression::BinaryExpression(Expression *left, Expression *right) : left(left), right(right) {}
+
 
 /**
  * get the left expression.

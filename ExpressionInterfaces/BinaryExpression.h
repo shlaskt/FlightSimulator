@@ -22,7 +22,6 @@ public:
 
 };
 
-BinaryExpression::BinaryExpression(Expression *left, Expression *right) : left(left), right(right) {}
 
 
 #endif //FLIGHTSIMULATOR_BINARYEXPRESSION_H

@@ -1,9 +1,16 @@
 #include <iostream>
+#include "Dijkstra.h"
+
 /**
  * for now, do nothing.
  * @return
  */
+using namespace std;
+
+
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+
+    Dijkstra *dij = new Dijkstra();
+    dij->calculate();
     return 0;
 }
