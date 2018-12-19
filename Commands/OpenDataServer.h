@@ -19,7 +19,7 @@ public:
     void CreateThread(struct params_to_socket* params);
 //    void* CreateSocket (void* pVoid);
 
-    virtual void doCommand();
+    virtual void doCommand(vector<string>::iterator &itor, DataReaderServer* server);
 };
 
 

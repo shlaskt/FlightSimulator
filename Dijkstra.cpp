@@ -12,58 +12,74 @@
 // Function to find precedence of
 // operators.
 int Dijkstra::precedence(char op) {
-    if(op == '+'||op == '-')
+    if (op == '+' || op == '-')
         return 1;
-    if(op == '*'||op == '/')
+    if (op == '*' || op == '/')
         return 2;
     return 0;
 }
 
 // Function to perform arithmetic operations.
-Expression* Dijkstra::applyOp(double a, double b, char op){
-    switch(op){
-        case '+': return new PlusExpression(new Num(a),new Num(b));
-        case '-': return new MinusExpression(new Num(a),new Num(b));
-        case '*': return new MultiplyExpression(new Num(a),new Num(b));
-        case '/': return new DivideExpression(new Num(a),new Num(b));
+Expression *Dijkstra::applyOp(double a, double b, char op) {
+    switch (op) {
+        case '+':
+            return new PlusExpression(new Num(a), new Num(b));
+        case '-':
+            return new MinusExpression(new Num(a), new Num(b));
+        case '*':
+            return new MultiplyExpression(new Num(a), new Num(b));
+        case '/':
+            return new DivideExpression(new Num(a), new Num(b));
     }
 }
 
 // Function that returns value of
 // expression after evaluation.
-double Dijkstra::evaluate(string tokens){
+double Dijkstra::evaluate(string tokens) {
+    bool first_op= false;
     int i;
-
     // stack to store integer values.
-    stack <double> values;
+    stack<double> values;
 
     // stack to store operators.
-    stack <char> ops;
+    stack<char> ops;
 
-    for(i = 0; i < tokens.length(); i++){
+    // negative number can be in 2 ways-> a. in the begining. b. after operator
 
+
+    for (i = 0; i < tokens.length(); i++) {
+        bool afterPoint = false;
+        double float_num = 10;
         // Current token is a whitespace,
         // skip it.
-        if(tokens[i] == ' ')
+        if (tokens[i] == ' ')
             continue;
 
             // Current token is an opening
             // brace, push it to 'ops'
-        else if(tokens[i] == '('){
+        else if (tokens[i] == '(') {
             ops.push(tokens[i]);
         }
 
             // Current token is a number, push
             // it to stack for numbers.
-        else if(isdigit(tokens[i])){
+        else if (isdigit(tokens[i])) {
             double val = 0;
 
             // There may be more than one
             // digits in number.
-            while(i < tokens.length() &&
-                  isdigit(tokens[i]))
-            {
-                val = (val*10) + (tokens[i]-'0');
+            while (i < tokens.length() && isdigit(tokens[i])
+                   || tokens[i] == '.') {
+                if (tokens[i] == '.') {
+                    afterPoint = true;
+                } else {
+                    if (!afterPoint)
+                        val = (val * 10) + (tokens[i] - '0');
+                    else {
+                        val += (tokens[i] - '0') / float_num;
+                        float_num *= 10;
+                    }
+                }
                 i++;
             }
 
@@ -72,16 +88,22 @@ double Dijkstra::evaluate(string tokens){
 
             // Closing brace encountered, solve
             // entire brace.
-        else if(tokens[i] == ')')
-        {
-            while(!ops.empty() && ops.top() != '(')
-            {
+        else if (tokens[i] == ')') {
+            while (!ops.empty() && ops.top() != '(') {
                 double val2 = values.top();
                 values.pop();
 
-                double val1 = values.top();
-                values.pop();
+//                double val1 = values.top();
+//                values.pop();
 
+                double val1;
+                // check for neg number
+                if (values.empty()) {
+                    val1 = 0; // 0 - num = -num
+                } else {
+                    val1 = values.top();
+                    values.pop();
+                }
                 char op = ops.top();
                 ops.pop();
 
@@ -93,19 +115,25 @@ double Dijkstra::evaluate(string tokens){
         }
 
             // Current token is an operator.
-        else
-        {
+        else {
             // While top of 'ops' has same or greater
             // precedence to current token, which
             // is an operator. Apply operator on top
             // of 'ops' to top two elements in values stack.
-            while(!ops.empty() && precedence(ops.top())
-                                  >= precedence(tokens[i])){
+            first_op = true;
+            while (!ops.empty() && precedence(ops.top())
+                                   >= precedence(tokens[i])) {
                 double val2 = values.top();
                 values.pop();
 
-                double val1 = values.top();
-                values.pop();
+                double val1;
+                // check for neg number
+                if (values.empty()) {
+                    val1 = 0; // 0 - num = -num
+                } else {
+                    val1 = values.top();
+                    values.pop();
+                }
 
                 char op = ops.top();
                 ops.pop();
@@ -121,12 +149,21 @@ double Dijkstra::evaluate(string tokens){
     // Entire expression has been parsed at this
     // point, apply remaining ops to remaining
     // values.
-    while(!ops.empty()){
+    while (!ops.empty()) {
         double val2 = values.top();
         values.pop();
 
-        double val1 = values.top();
-        values.pop();
+//        double val1 = values.top();
+//        values.pop();
+
+        double val1;
+        // check for neg number
+        if (values.empty()) {
+            val1 = 0; // 0 - num = -num
+        } else {
+            val1 = values.top();
+            values.pop();
+        }
 
         char op = ops.top();
         ops.pop();
@@ -139,9 +176,8 @@ double Dijkstra::evaluate(string tokens){
 }
 
 
-
-double Dijkstra::operator()(char* str) {
-    string string1 = (string)str;
+double Dijkstra::operator()(char *str) {
+    string string1 = (string) str;
     double result = evaluate(string1);
     return result;
 }

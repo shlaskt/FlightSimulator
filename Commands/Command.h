@@ -12,25 +12,25 @@
 using namespace std;
 
 class Command {
-    DataReaderServer* server;
-protected:
-    vector<string>::iterator itor;
+//    DataReaderServer* server;
+//protected:
+//    vector<string>::iterator itor;
 public:
     // Ctor for server and iterator - same for all commands
-    Command(DataReaderServer *server,
-            const vector<std::__cxx11::basic_string<char, std::char_traits<char>,
-                    std::allocator<char>>, std::allocator<std::__cxx11::basic_string<char,
-                    std::char_traits<char>, std::allocator<char>>>>::iterator &itor)
-            : server(server), itor(itor) {}
+//    Command(DataReaderServer *server,
+//            const vector<std::__cxx11::basic_string<char, std::char_traits<char>,
+//                    std::allocator<char>>, std::allocator<std::__cxx11::basic_string<char,
+//                    std::char_traits<char>, std::allocator<char>>>>::iterator &itor)
+//            : server(server), itor(itor) {}
      /**
       * doCommand
       */
-    virtual void doCommand()= 0;
+    virtual void doCommand(vector<string>::iterator &itor, DataReaderServer* server)= 0;
 /**
  * get server
  * @return
  */
-    DataReaderServer* getServer() {return server;}
+//    DataReaderServer* getServer() {return server;}
 
 //    /**
 //     * get iterator

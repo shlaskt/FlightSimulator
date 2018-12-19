@@ -17,28 +17,32 @@ struct params_to_socket{
  * @param args
  * @return
  */
-void OpenDataServer::doCommand() {
+void OpenDataServer::doCommand(vector<string>::iterator &itor, DataReaderServer* server) {
     struct params_to_socket *params = new params_to_socket; // struct of params to sock
     // initialize the struct
     params->port=atoi((*++itor).c_str()); // initialize port
     params->time=atoi((*++itor).c_str()); // initialize server
-    params->data_server=getServer();
+    params->data_server=server;
     // open new thread
     CreateThread(params);
-    // when finish- delet and return
+    // when finish- delete and return
     delete(params);
 }
 
 void* CreateSocket (void* pVoid){
     struct params_to_socket *params1 = (struct params_to_socket*) pVoid;
-    params1->data_server->open(params1->port, params1->time); // open new socket
+    int newsockfd = params1->data_server->open(params1->port, params1->time); // open new socket
 
-    // add w`hile with auto?
+    while (true) {
+        auto x = params1->data_server->read(newsockfd);
+        if(x == "exit") break;
+    }
     return nullptr;
 }
 
 void OpenDataServer::CreateThread(struct params_to_socket* params){
     pthread_t trid;
-//    pthread_create(&trid, nullptr, CreateSocket,params); // return it
+    pthread_create(&trid, nullptr, CreateSocket,params);
+
 }
 

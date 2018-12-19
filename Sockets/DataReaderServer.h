@@ -10,6 +10,7 @@
 #include <netinet/in.h>
 
 #include <string.h>
+#include <vector>
 
 #include <sys/socket.h>
 #include <iostream>
@@ -21,7 +22,11 @@ using namespace std;
 
 class DataReaderServer {
 public:
-    void open(int port, int time_per_sec);
+    int open(int port, int time_per_sec);
+    string read(int newsockfd);
+
+    vector<double> split(string buff);
+    void updateMap(vector<double> splited);
 
 };
 
