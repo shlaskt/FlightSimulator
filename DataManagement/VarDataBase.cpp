@@ -35,7 +35,7 @@ void VarDataBase::initPathMap() {
  * @param var name.
  * @return var value.
  */
-double VarDataBase::getVarValue(string var) {
+double VarDataBase::getVarValue(string var) const{
     return symbol_table.at(var);
 }
 
@@ -62,7 +62,7 @@ void VarDataBase::assignVarValue(string var, double val) {
  * @param path string name.
  * @return its value.
  */
-double VarDataBase::getPathValue(string path) {
+double VarDataBase::getPathValue(string path) const {
     // if found the path key, return its value.
     if (paths_map.count(path) != 0) {
         return paths_map[path];
