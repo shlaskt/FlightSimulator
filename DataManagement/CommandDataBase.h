@@ -1,0 +1,14 @@
+//
+// Created by eyal on 12/19/18.
+//
+
+#ifndef FLIGHTSIMULATOR_COMMANDDATABASE_H
+#define FLIGHTSIMULATOR_COMMANDDATABASE_H
+
+
+class CommandDataBase {
+
+};
+
+
+#endif //FLIGHTSIMULATOR_COMMANDDATABASE_H

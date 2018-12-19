@@ -7,26 +7,38 @@
 
 #include <map>
 #include <vector>
+#include <list>
 #include "../Sockets/DataReaderServer.h"
 #include "../ExpressionInterfaces/Expression.h"
 #include "../ExpressionInterfaces/ExpressionCommand.h"
 
 using namespace std;
 
-class DataBase {
+class VarDataBase {
 private:
     map<string, Command *> commands_map;
     map<string, double> paths_map;
     map<string, double> symbol_table;
     map<string, string> var_bind;
+    vector<ExpressionCommand *> to_delete;
+
     void initMaps();
 
 public:
-    DataBase();
+    VarDataBase();
+
+    ExpressionCommand *getCommand(vector<string>::iterator &it, DataReaderServer &reader);
+
+    void createAndBindVarToPath(string var, string path);
 
     double getVarValue(string var);
-    ExpressionCommand * getCommand(const vector<string>::iterator &it, DataReaderServer rd);
+
+    void assignVarValue(string var, double val);
+
+    double getPathValue(string path);
+
+    void assignPathValue(string path, double val);
 };
 
 
-#endif //FLIGHTSIMULATOR_DATABASE_H
+#endif //FLIGHTSIMULATOR_VarDataBase_H

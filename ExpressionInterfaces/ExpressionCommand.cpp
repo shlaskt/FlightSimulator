@@ -9,15 +9,16 @@
  * @return 0 if succeeded
  */
 double ExpressionCommand::calculate() {
-    command->doCommand();
+    command->doCommand(iterator, reader);
     return 0;
 }
+
 /**
  * get command object adapter, iterator to work with, and reader to connet to server.
  * @param command to do.
  * @param iterator to itrerate.
  * @param reader to connect with.
  */
-ExpressionCommand::ExpressionCommand(Command *command,vector<string>::iterator &iterator,
-                                     const DataReaderServer &reader) : command(command), iterator(iterator),
-                                                                       reader(reader) {}
+ExpressionCommand::ExpressionCommand(Command *command, vector<string>::iterator &iterator,
+                                     DataReaderServer &reader) : command(command), iterator(iterator),
+                                                                 reader(reader) {}
