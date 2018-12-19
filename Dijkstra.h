@@ -17,10 +17,17 @@
 using namespace std;
 
 class Dijkstra {
+    map<string,double> var_to_val;
     int precedence(char op);
 
-    Expression* applyOp(double a, double b, char op);
+public:
+    Dijkstra(const map<string, double> &var_to_val);
 
+private:
+    Expression* applyOp(double a, double b, char op);
+    vector<string> splitLine(const string &str, char sign);
+
+    double calculate(string tokens);
     double evaluate(string tokens);
 
 public:

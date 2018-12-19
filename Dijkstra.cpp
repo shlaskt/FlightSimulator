@@ -9,6 +9,13 @@
 // separated by space.
 #include "Dijkstra.h"
 
+/**
+ * Ctor - get map values
+ * @param var_to_val
+ */
+Dijkstra::Dijkstra(const map<string, double> &var_to_val) : var_to_val(var_to_val) {}
+
+
 // Function to find precedence of
 // operators.
 int Dijkstra::precedence(char op) {
@@ -36,7 +43,7 @@ Expression *Dijkstra::applyOp(double a, double b, char op) {
 // Function that returns value of
 // expression after evaluation.
 double Dijkstra::evaluate(string tokens) {
-    bool first_op= false;
+    bool first_op = false;
     int i;
     // stack to store integer values.
     stack<double> values;
@@ -175,14 +182,54 @@ double Dijkstra::evaluate(string tokens) {
     return values.top();
 }
 
+/**
+ * split line to vector by separate sign
+ * e.x - splitLine("hey-you-o", v, '-')
+ *          --> v = {"hey", "you", "o"}
+ * @param line to split
+ * @param sign to separte
+ */
+vector<string> Dijkstra::splitLine(const string &str, char sign) {
+    stringstream stream(str);
+    string split;
+    vector<string> spaces_split;
+    while (getline(stream, split, sign)) {
+        spaces_split.push_back(split);
+    }
+    return spaces_split;
+}
+
 
 double Dijkstra::operator()(char *str) {
-    string string1 = (string) str;
-    double result = evaluate(string1);
-    return result;
+    string string_before_evaluate_vars = (string) str;
+    return calculate(string_before_evaluate_vars);
+
 }
 
 double Dijkstra::operator()(string str) {
-    double result = evaluate(str);
+    return calculate(str);
+}
+
+double Dijkstra::calculate(string string_before_evaluate_vars) {
+    string string_after_evaluate_vars; // = ""
+    // split the string to vector by whitespace
+    vector<string> splited = splitLine(string_before_evaluate_vars, ' ');
+    for (vector<string>::iterator it = splited.begin(); it != splited.end(); it++) {
+        string somthing = (*it); // operator or number or var
+        // if start with digit- it is number, place it back to the string
+        // if it operator -place it back to the string
+        if (isdigit(somthing[0]
+                    || somthing == "+" || somthing == "-" || somthing == "*" || somthing == "-")) {
+            string_after_evaluate_vars += somthing;
+        } else {
+            // it is a variable, evalute it
+            double val = var_to_val.at(somthing); // throw exception if no var
+            // place it back to the string
+            string_after_evaluate_vars += to_string(val);
+        }
+    }
+
+    double result = evaluate(string_after_evaluate_vars);
     return result;
 }
+

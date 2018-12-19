@@ -1,20 +1,18 @@
 //
 // Created by tomer on 12/18/18.
 //
-#define BUF 256
+#define BUF 1000
 
 #include <strings.h>
 #include <cstring>
 #include "Client.h"
 // "example- connect 127.0.0.1 5402"
 
-void Client::operator()(string ip, int port) {
+int Client::open(string ip, int port) {
     const char *argv = ip.c_str(); // convert to char*
-    int sockfd, portno, n;
+    int sockfd, portno;
     struct sockaddr_in serv_addr;
     struct hostent *server;
-
-    char buffer[BUF];
 
     portno = port;
 
@@ -43,17 +41,25 @@ void Client::operator()(string ip, int port) {
         perror("ERROR connecting");
         exit(1);
     }
+    return sockfd;
+}
 
-    /* Now ask for a message from the user, this message
-       * will be read by server
-    */
+/* Now ask for a message from the user, this message
+   * will be read by server
+*/
+string Client::set(int sockfd, string path) {
+    int n;
+    char buffer[BUF];
 
-    printf("Please enter the message: ");
+    //printf("Please enter the message: ");
     bzero(buffer, BUF);
-    fgets(buffer, BUF, stdin);
+    //fgets(buffer, BUF, stdin);
+
+    size_t path_len=path.size();
 
     /* Send message to the server */
-    n = write(sockfd, buffer, strlen(buffer));
+//    n = write(sockfd, buffer, strlen(buffer));
+    n = write(sockfd, &path, path_len);
 
     if (n < 0) {
         perror("ERROR writing to socket");
@@ -61,13 +67,13 @@ void Client::operator()(string ip, int port) {
     }
 
     /* Now read server response */
-    bzero(buffer, BUF);
-    n = read(sockfd, buffer, BUF - 1);
-
-    if (n < 0) {
-        perror("ERROR reading from socket");
-        exit(1);
-    }
-    cout << buffer << endl;
+//    bzero(buffer, BUF);
+//    n = read(sockfd, buffer, BUF - 1);
+//
+//    if (n < 0) {
+//        perror("ERROR reading from socket");
+//        exit(1);
+//    }
+//    cout << buffer << endl;
 }
 

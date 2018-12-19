@@ -19,7 +19,8 @@ using namespace std;
 
 class Client {
 public:
-    void operator()(string ip, int port);
+    int open(string ip, int port);
+    string set(int, string);
 
 };
 
