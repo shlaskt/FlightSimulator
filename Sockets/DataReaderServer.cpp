@@ -1,16 +1,27 @@
 //
 // Created by tomer on 12/18/18.
 //
-#define BUF 256
+#define BUF 1000
 
 #include "DataReaderServer.h"
 
+
+vector<double> DataReaderServer::split(string buff) {
+    vector<double> info;
+    size_t pos = 0;
+    string delimiter = " ";
+    while ((pos = buff.find(delimiter)) != string::npos) {
+        info.push_back(stod(buff.substr(0, pos)));
+        buff.erase(0, pos + delimiter.length());
+    }
+    info.push_back(stod(buff.substr(0, pos)));
+    return info;
+}
+
 //"openDataServer 5400 10"
-void DataReaderServer::operator()(int port, int time_per_sec) {
+int DataReaderServer::open(int port, int time_per_sec) {
     int sockfd, newsockfd, portno, clilen;
-    char buffer[BUF];
     struct sockaddr_in serv_addr, cli_addr;
-    int n;
 
     /* First call to socket() function */
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -39,6 +50,7 @@ void DataReaderServer::operator()(int port, int time_per_sec) {
     */
 
     listen(sockfd, 1);
+    cout << "waiting for connection..." << endl;
     clilen = sizeof(cli_addr);
 
     /* Accept actual connection from the client */
@@ -48,19 +60,61 @@ void DataReaderServer::operator()(int port, int time_per_sec) {
         perror("ERROR on accept");
         exit(1);
     }
+    cout << "connected!" << endl;
 
-    while (true) { // check if is the wright way to read 1/tume
-        /* If connection is established then start communicating */
-        bzero(buffer, BUF);
-        n = read(newsockfd, buffer, BUF);
+    return newsockfd; //return the new sockfd
 
-        if (n < 0) {
-            perror("ERROR reading from socket");
-            exit(1);
-        }
-        sleep(1 / time_per_sec); // sleep for the given time
+}
+// check if is the wright way to read 1/tume
+/* If connection is established then start communicating */
+string DataReaderServer::read(int newsockfd) {
+    char buffer[BUF];
+    bzero(buffer, BUF);
+    int n = ::read(newsockfd, buffer, BUF - 1);
+
+    if (n < 0) {
+        perror("ERROR reading from socket");
+        exit(1);
+    } else if (n == 0) {
+        // ?
+    } else {
+        buffer[n] = NULL;
+        //sleep(1 / time_per_sec); // sleep for the given time
         cout << buffer << endl; // for check
     }
+    vector<double> split_buff = split(buffer);
+    this->updateMap(split_buff); // update the map
+    return ""; //until it will return "exit"
+
+}
+
+void DataReaderServer::updateMap(vector<double> splited) {
+
+    this->pathRead.at("/instrumentation/airspeed-indicator/indicated-speed-kt") = splited[0];
+    this->pathRead.at("/instrumentation/altimeter/indicated-altitude-ft") = splited[1];
+    this->pathRead.at("/instrumentation/altimeter/pressure-alt-ft") = splited[2];
+    this->pathRead.at("/instrumentation/attitude-indicator/indicated-pitch-deg") = splited[3];
+    this->pathRead.at("/instrumentation/attitude-indicator/indicated-roll-deg") = splited[4];
+    this->pathRead.at("/instrumentation/attitude-indicator/internal-pitch-deg") = splited[5];
+    this->pathRead.at("/instrumentation/attitude-indicator/internal-roll-deg") = splited[6];
+    this->pathRead.at("/instrumentation/encoder/indicated-altitude-ft") = splited[7];
+    this->pathRead.at("/instrumentation/encoder/pressure-alt-ft") = splited[8];
+    this->pathRead.at("/instrumentation/gps/indicated-altitude-ft") = splited[9];
+    this->pathRead.at("/instrumentation/gps/indicated-ground-speed-kt") = splited[10];
+    this->pathRead.at("/instrumentation/gps/indicated-vertical-speed") = splited[11];
+    this->pathRead.at("/instrumentation/heading-indicator/indicated-heading-deg") = splited[12];
+    this->pathRead.at("/instrumentation/magnetic-compass/indicated-heading-deg") = splited[13];
+    this->pathRead.at("/instrumentation/slip-skid-ball/indicated-slip-skid") = splited[14];
+    this->pathRead.at("/instrumentation/turn-indicator/indicated-turn-rate") = splited[15];
+    this->pathRead.at("/instrumentation/vertical-speed-indicator/indicated-speed-fpm") = splited[16];
+    this->pathRead.at("/controls/flight/aileron") = splited[17];
+    this->pathRead.at("/controls/flight/elevator") = splited[18];
+    this->pathRead.at("/controls/flight/rudder") = splited[19];
+    this->pathRead.at("/controls/flight/flaps") = splited[20];
+    this->pathRead.at("/controls/engines/engine/throttle") = splited[21];
+    this->pathRead.at("/engines/engine/rpm") = splited[22];
 
 
 }
+
+
