@@ -10,9 +10,10 @@ using namespace std;
 
 
 int main() {
-
-    Dijkstra shunting_yard;
-    cout << shunting_yard("  2 * ( - 6 ) ") << "\n";
+    map<string,double> map;
+    map["key"]=5;
+    Dijkstra shunting_yard(map);
+    cout << shunting_yard("  key * (  6 ) ") << "\n";
 //    cout << shunting_yard("( 2.3 * -6 . 4 )") << "\n";
 //    cout << shunting_yard("100 * 2 + 12") << "\n";
 //    cout << shunting_yard("100 * (2 + 12 )") << "\n";

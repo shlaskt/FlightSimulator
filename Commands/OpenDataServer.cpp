@@ -20,7 +20,7 @@ struct params_to_socket{
 void OpenDataServer::doCommand(vector<string>::iterator &itor, DataReaderServer* server) {
     struct params_to_socket *params = new params_to_socket; // struct of params to sock
     // initialize the struct
-    params->port=atoi((*++itor).c_str()); // initialize port
+    params->port=atoi((*itor).c_str()); // initialize port
     params->time=atoi((*++itor).c_str()); // initialize server
     params->data_server=server;
     // open new thread
@@ -43,6 +43,5 @@ void* CreateSocket (void* pVoid){
 void OpenDataServer::CreateThread(struct params_to_socket* params){
     pthread_t trid;
     pthread_create(&trid, nullptr, CreateSocket,params);
-
 }
 
