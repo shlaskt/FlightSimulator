@@ -18,7 +18,7 @@ private:
     DataReaderServer reader;
 
 public:
-    ExpressionCommand(Command *command,vector<string>::iterator &iterator, const DataReaderServer &reader);
+    ExpressionCommand(Command *command,vector<string>::iterator &iterator, DataReaderServer &reader);
 
     double calculate();
 

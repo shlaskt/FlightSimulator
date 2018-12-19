@@ -13,20 +13,27 @@
 
 using namespace std;
 
-class DataBase {
+class VarDataBase {
 private:
-    map<string, Command *> commands_map;
     map<string, double> paths_map;
     map<string, double> symbol_table;
     map<string, string> var_bind;
-    void initMaps();
+
+    void initPathMap();
 
 public:
-    DataBase();
+    VarDataBase();
+    const map<string,double> &getSymbolTable() const;
+    void createAndBindVarToPath(string var, string path);
 
-    double getVarValue(string var);
-    ExpressionCommand * getCommand(const vector<string>::iterator &it, DataReaderServer rd);
+    double getVarValue(string var) const;
+
+    void assignVarValue(string var, double val);
+
+    double getPathValue(string path) const;
+
+    void assignPathValue(string path, double val);
 };
 
 
-#endif //FLIGHTSIMULATOR_DATABASE_H
+#endif //FLIGHTSIMULATOR_VarDataBase_H
