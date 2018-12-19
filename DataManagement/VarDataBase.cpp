@@ -65,7 +65,7 @@ void VarDataBase::assignVarValue(string var, double val) {
 double VarDataBase::getPathValue(string path) const {
     // if found the path key, return its value.
     if (paths_map.count(path) != 0) {
-        return paths_map[path];
+        return paths_map.at(path);
     }
     throw runtime_error("there is no such path directory");
 }

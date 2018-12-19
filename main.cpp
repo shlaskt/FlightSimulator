@@ -11,9 +11,10 @@ using namespace std;
 
 int main() {
     map<string,double> map;
-    map["key"]=5;
+    map["key1"]=5.2;
+    map["key2"]=4;
     Dijkstra shunting_yard(map);
-    cout << shunting_yard("  key * (  6 ) ") << "\n";
+    cout << shunting_yard(" - 6 * 5 + ( 2 * ( 3 + 2 ) ) ") << "\n";
 //    cout << shunting_yard("( 2.3 * -6 . 4 )") << "\n";
 //    cout << shunting_yard("100 * 2 + 12") << "\n";
 //    cout << shunting_yard("100 * (2 + 12 )") << "\n";

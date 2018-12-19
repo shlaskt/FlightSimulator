@@ -42,6 +42,6 @@ void* CreateSocket (void* pVoid){
 
 void OpenDataServer::CreateThread(struct params_to_socket* params){
     pthread_t trid;
-    pthread_create(&trid, nullptr, CreateSocket,params);
+//    pthread_create(&trid, nullptr, CreateSocket,params);
 }
 

@@ -78,16 +78,16 @@ string DataReaderServer::read(int newsockfd) {
     } else if (n == 0) {
         // ?
     } else {
-        buffer[n] = NULL;
+//        buffer[n] = NULL; // warning
         //sleep(1 / time_per_sec); // sleep for the given time
         cout << buffer << endl; // for check
     }
     vector<double> split_buff = split(buffer);
-    this->updateMap(split_buff); // update the map
+//    this->updateMap(split_buff); // update the map
     return ""; //until it will return "exit"
 
 }
-
+/*
 void DataReaderServer::updateMap(vector<double> splited) {
 
     this->pathRead.at("/instrumentation/airspeed-indicator/indicated-speed-kt") = splited[0];
@@ -116,5 +116,5 @@ void DataReaderServer::updateMap(vector<double> splited) {
 
 
 }
-
+*/
 
