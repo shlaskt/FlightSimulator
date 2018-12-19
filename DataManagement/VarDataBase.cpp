@@ -2,9 +2,9 @@
 // Created by eyal on 12/18/18.
 //
 
-#include "DataBase.h"
+#include "VarDataBase.h"
 
-void DataBase::initMaps() {
+void VarDataBase::initPathMap() {
     this->paths_map.insert(pair<string, double>("/instrumentation/airspeed-indicator/indicated-speed-kt", 0));
     this->paths_map.insert(pair<string, double>("/instrumentation/altimeter/indicated-altitude-ft", 0));
     this->paths_map.insert(pair<string, double>("/instrumentation/altimeter/pressure-alt-ft", 0));
@@ -35,24 +35,74 @@ void DataBase::initMaps() {
  * @param var name.
  * @return var value.
  */
-double DataBase::getVarValue(string var) {
+double VarDataBase::getVarValue(string var) {
     return symbol_table.at(var);
 }
 
+VarDataBase::VarDataBase() {
+    initPathMap();
+}
+
 /**
- * get var value by var name.
+ * this function update var value by its name, if it is bind, update also its path value.
  * @param var name.
- * @return var value.
+ * @param val double value.
  */
-ExpressionCommand *DataBase::getCommand(const vector<string>::iterator &it, DataReaderServer rd) {
-    // first parameter, the command name.
-    string command_name = (*it);
-    if (commands_map.find(command_name) != commands_map.end()) {
-        Command *c = commands_map[command_name];
-        ExpressionCommand *ex_c = new ExpressionCommand(c, it + 1);
+void VarDataBase::assignVarValue(string var, double val) {
+    // update var value in symbol table.
+    symbol_table[var] = val;
+    // if its bind var, find the path that need to be update and change its value.
+    if (var_bind.find(var) != var_bind.end()) {
+        paths_map[var_bind[var]] = val;
     }
 }
 
-DataBase::DataBase() {
+/**
+ * check if the path exsits and if it does return its value.
+ * @param path string name.
+ * @return its value.
+ */
+double VarDataBase::getPathValue(string path) {
+    // if found the path key, return its value.
+    if (paths_map.count(path) != 0) {
+        return paths_map[path];
+    }
+    throw runtime_error("there is no such path directory");
+}
 
+/**
+ * update path value to val by path name.
+ * @param path name.
+ * @param val value double.
+ */
+void VarDataBase::assignPathValue(string path, double val) {
+    // if found the path key, return its value.
+    if (paths_map.count(path) != 0) {
+        paths_map[path] = val;
+    }
+    throw runtime_error("there is no such path directory");
+}
+
+/**
+ * bind var to path, and update its value.
+ * @param var to connect with path.
+ * @param path the path to connect to.
+ */
+void VarDataBase::createAndBindVarToPath(string var, string path) {
+    // if found the path key, bind var to it, and update var value.
+    if (paths_map.count(path) != 0) {
+        //add var to symbol table and update its value.
+        symbol_table[var] = paths_map[path];
+        //bind between var and path.
+        var_bind[var] = path;
+    }
+    throw runtime_error("there is no such path directory");
+
+}
+/**
+ * return the symbol table map const, that way it wont change.
+ * @return map of symbol table.
+ */
+const map<string, double> &VarDataBase::getSymbolTable() const {
+    return this->symbol_table;
 }
