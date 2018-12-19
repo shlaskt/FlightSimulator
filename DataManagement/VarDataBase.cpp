@@ -4,7 +4,7 @@
 
 #include "VarDataBase.h"
 
-void VarDataBase::initMaps() {
+void VarDataBase::initPathMap() {
     this->paths_map.insert(pair<string, double>("/instrumentation/airspeed-indicator/indicated-speed-kt", 0));
     this->paths_map.insert(pair<string, double>("/instrumentation/altimeter/indicated-altitude-ft", 0));
     this->paths_map.insert(pair<string, double>("/instrumentation/altimeter/pressure-alt-ft", 0));
@@ -39,26 +39,8 @@ double VarDataBase::getVarValue(string var) {
     return symbol_table.at(var);
 }
 
-/**
- * get var value by var name.
- * @param var name.
- * @return var value.
- */
-ExpressionCommand *VarDataBase::getCommand(vector<string>::iterator &it, DataReaderServer &rd) {
-    // first parameter, the command name.
-    string command_name = (*it);
-    if (commands_map.find(command_name) != commands_map.end()) {
-        Command *c = commands_map[command_name];
-        ExpressionCommand *ex_command = new ExpressionCommand(c, ++it, rd);
-        to_delete.push_back(ex_command);
-        return ex_command;
-    }
-    // if no matching key.
-    throw runtime_error("there is no such var");
-}
-
 VarDataBase::VarDataBase() {
-
+    initPathMap();
 }
 
 /**
@@ -116,4 +98,11 @@ void VarDataBase::createAndBindVarToPath(string var, string path) {
     }
     throw runtime_error("there is no such path directory");
 
+}
+/**
+ * return the symbol table map const, that way it wont change.
+ * @return map of symbol table.
+ */
+const map<string, double> &VarDataBase::getSymbolTable() const {
+    return this->symbol_table;
 }
