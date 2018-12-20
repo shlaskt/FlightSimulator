@@ -5,7 +5,6 @@
 #ifndef FLIGHTSIMULATOR_NEGEXPRESSION_H
 #define FLIGHTSIMULATOR_NEGEXPRESSION_H
 
-
 #include "UnaryExpression.h"
 #include "../ExpressionInterfaces/Expression.h"
 #include <iostream>

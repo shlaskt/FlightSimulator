@@ -1,6 +1,10 @@
 //
 // Created by tomer on 12/18/18.
 //
+
+
+#ifndef FLIGHTSIMULATOR_CLIENT_H
+#define FLIGHTSIMULATOR_CLIENT_H
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -11,10 +15,8 @@
 #include <iostream>
 
 #include <string>
-
-#ifndef FLIGHTSIMULATOR_CLIENT_H
-#define FLIGHTSIMULATOR_CLIENT_H
-
+#include <strings.h>
+#include <cstring>
 using namespace std;
 
 class Client {

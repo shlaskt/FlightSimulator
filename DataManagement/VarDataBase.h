@@ -7,9 +7,7 @@
 
 #include <map>
 #include <vector>
-#include "../Sockets/DataReaderServer.h"
 #include "../ExpressionInterfaces/Expression.h"
-#include "../ExpressionInterfaces/ExpressionCommand.h"
 
 using namespace std;
 
@@ -33,6 +31,7 @@ public:
     double getPathValue(string path) const;
 
     void assignPathValue(string path, double val);
+
 };
 
 

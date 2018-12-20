@@ -16,8 +16,12 @@
 Dijkstra::Dijkstra(const map<string, double> &var_to_val) : var_to_val(var_to_val) {}
 
 
-// Function to find precedence of
-// operators.
+/**
+ * find precedence of operators
+ * * and / before + and -
+ * @param op
+ * @return precedence
+ */
 int Dijkstra::precedence(char op) {
     if (op == '+' || op == '-')
         return 1;
@@ -26,7 +30,14 @@ int Dijkstra::precedence(char op) {
     return 0;
 }
 
-// Function to perform arithmetic operations.
+/**
+ * calculate Expression
+ *
+ * @param a arg1
+ * @param b arg2
+ * @param op operator
+ * @return arg1 operator arg2
+ */
 Expression *Dijkstra::applyOp(double a, double b, char op) {
     switch (op) {
         case '+':
@@ -40,23 +51,22 @@ Expression *Dijkstra::applyOp(double a, double b, char op) {
     }
 }
 
-// Function that returns value of
-// expression after evaluation.
+
+/**
+ * returns value of  expression after evaluation.
+ * @param tokens string with numbers and operators only
+ * @return double
+ */
 double Dijkstra::evaluate(string tokens) {
-    bool first_op = false;
     int i;
+    bool is_op = false; // check for "-" that came after operator
     // stack to store integer values.
     stack<double> values;
-
     // stack to store operators.
     stack<char> ops;
-
-    // negative number can be in 2 ways-> a. in the begining. b. after operator
-
-
+    double is_neg = 1; // to double it in 1 /-1 if needed
     for (i = 0; i < tokens.length(); i++) {
-        bool afterPoint = false;
-        double float_num = 10;
+
         // Current token is a whitespace,
         // skip it.
         if (tokens[i] == ' ')
@@ -67,20 +77,25 @@ double Dijkstra::evaluate(string tokens) {
         else if (tokens[i] == '(') {
             ops.push(tokens[i]);
         }
-
-            // Current token is a number, push
-            // it to stack for numbers.
-        else if (isdigit(tokens[i])) {
+        // Current token is a number, push
+        // it to stack for numbers.
+        else if (isdigit(tokens[i]) || !is_op) {
             double val = 0;
-
+            double float_num = 10;
+            bool point = false;
+            // check if neg
+            if (tokens[i] == '-') {
+                is_neg = -1;
+                continue;
+            }
             // There may be more than one
             // digits in number.
-            while (i < tokens.length() && isdigit(tokens[i])
-                   || tokens[i] == '.') {
+            while (i < tokens.length() &&
+                   (isdigit(tokens[i]) || tokens[i] == '.')) {
                 if (tokens[i] == '.') {
-                    afterPoint = true;
+                    point = true;
                 } else {
-                    if (!afterPoint)
+                    if (!point)
                         val = (val * 10) + (tokens[i] - '0');
                     else {
                         val += (tokens[i] - '0') / float_num;
@@ -89,99 +104,71 @@ double Dijkstra::evaluate(string tokens) {
                 }
                 i++;
             }
-
+            is_op = true;
+            val *= is_neg; // -1 if shuold be neg, 1 o.w
             values.push(val);
+            is_neg = 1;
         }
-
-            // Closing brace encountered, solve
-            // entire brace.
+            // Closing brace encountered, solve entire brace.
         else if (tokens[i] == ')') {
             while (!ops.empty() && ops.top() != '(') {
+                // get 2 args
                 double val2 = values.top();
                 values.pop();
-
-//                double val1 = values.top();
-//                values.pop();
-
-                double val1;
-                // check for neg number
-                if (values.empty()) {
-                    val1 = 0; // 0 - num = -num
-                } else {
-                    val1 = values.top();
-                    values.pop();
-                }
+                double val1 = values.top();
+                values.pop();
+                // get op
                 char op = ops.top();
                 ops.pop();
-
+                // calculate arg1 op arg2
                 values.push(applyOp(val1, val2, op)->calculate());
             }
-
-            // pop opening brace.
-            ops.pop();
+            ops.pop(); // pop opening brace.
         }
-
-            // Current token is an operator.
+        // Current token is an operator.
         else {
-            // While top of 'ops' has same or greater
-            // precedence to current token, which
-            // is an operator. Apply operator on top
-            // of 'ops' to top two elements in values stack.
-            first_op = true;
-            while (!ops.empty() && precedence(ops.top())
-                                   >= precedence(tokens[i])) {
+            is_op = false;
+            /*
+             * While top of 'ops' has same or greater precedence to current token,
+             * which is an operator. Apply operator on top of
+             * 'ops' to top two elements in values stack.
+             */
+            while (!ops.empty() && precedence(ops.top()) >= precedence(tokens[i])) {
+                // get 2 args
                 double val2 = values.top();
                 values.pop();
-
-                double val1;
-                // check for neg number
-                if (values.empty()) {
-                    val1 = 0; // 0 - num = -num
-                } else {
-                    val1 = values.top();
-                    values.pop();
-                }
-
+                double val1 = values.top();
+                values.pop();
+                // get op
                 char op = ops.top();
                 ops.pop();
-
+                // calculate arg1 op arg2
                 values.push(applyOp(val1, val2, op)->calculate());
             }
-
             // Push current token to 'ops'.
             ops.push(tokens[i]);
         }
     }
 
-    // Entire expression has been parsed at this
-    // point, apply remaining ops to remaining
-    // values.
+    /*
+     * Entire expression has been parsed at this
+     * point, apply remaining ops to remaining values.
+     */
     while (!ops.empty()) {
+        // get 2 args
         double val2 = values.top();
         values.pop();
-
-//        double val1 = values.top();
-//        values.pop();
-
-        double val1;
-        // check for neg number
-        if (values.empty()) {
-            val1 = 0; // 0 - num = -num
-        } else {
-            val1 = values.top();
-            values.pop();
-        }
-
+        double val1 = values.top();
+        values.pop();
+        // get op
         char op = ops.top();
         ops.pop();
-
+        // calculate arg1 op arg2
         values.push(applyOp(val1, val2, op)->calculate());
     }
-
     // Top of 'values' contains result, return it.
     return values.top();
 }
-
 /**
  * split line to vector by separate sign
  * e.x - splitLine("hey-you-o", v, '-')
@@ -199,35 +186,57 @@ vector<string> Dijkstra::splitLine(const string &str, char sign) {
     return spaces_split;
 }
 
-
+/**
+ * get string and evaluate it with shunting yard algorithm
+ * for char*
+ * @param str string
+ * @return double - the value after evaluate
+ */
 double Dijkstra::operator()(char *str) {
     string string_before_evaluate_vars = (string) str;
     return calculate(string_before_evaluate_vars);
 
 }
 
+/**
+ * get string and evaluate it with shunting yard algorithm
+ * for string
+ * @param str string
+ * @return double - the value after evaluate
+ */
 double Dijkstra::operator()(string str) {
     return calculate(str);
 }
 
+/**
+ * get the string and evalute vars if have
+ * send to evaluate in shunting yard algoritm
+ * return the value- double
+ * @param string_before_evaluate_vars
+ * @return val
+ */
 double Dijkstra::calculate(string string_before_evaluate_vars) {
     string string_after_evaluate_vars; // = ""
     // split the string to vector by whitespace
     vector<string> splited = splitLine(string_before_evaluate_vars, ' ');
+    char space = ' ';
     for (vector<string>::iterator it = splited.begin(); it != splited.end(); it++) {
-        string somthing = (*it); // operator or number or var
+        string argument = (*it); // operator or number or var
         // if start with digit- it is number, place it back to the string
         // if it operator -place it back to the string
-        if (isdigit(somthing[0]
-                    || somthing == "+" || somthing == "-" || somthing == "*" || somthing == "-")) {
-            string_after_evaluate_vars += somthing;
+        // add whitespace between every argument
+        if (isdigit(argument[0])
+                    || argument == "+" || argument == "-" || argument == "*" || argument == "-"
+                    || argument == "(" || argument == ")" || argument == "") {
+            string_after_evaluate_vars += (space + argument);
         } else {
             // it is a variable, evalute it
-            double val = var_to_val.at(somthing); // throw exception if no var
+            double val = var_to_val.at(argument); // throw exception if no var
             // place it back to the string
-            string_after_evaluate_vars += to_string(val);
+            string_after_evaluate_vars +=(space + to_string(val));
         }
     }
+    string_after_evaluate_vars+=space; // add one more whitespace
 
     double result = evaluate(string_after_evaluate_vars);
     return result;

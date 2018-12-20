@@ -3,8 +3,7 @@
 //
 #define BUF 1000
 
-#include <strings.h>
-#include <cstring>
+
 #include "Client.h"
 // "example- connect 127.0.0.1 5402"
 

@@ -2,6 +2,11 @@
 // Created by tomer on 12/18/18.
 //
 
+
+
+
+#ifndef FLIGHTSIMULATOR_SERVER_H
+#define FLIGHTSIMULATOR_SERVER_H
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -15,20 +20,22 @@
 #include <sys/socket.h>
 #include <iostream>
 #include <string>
-#ifndef FLIGHTSIMULATOR_SERVER_H
-#define FLIGHTSIMULATOR_SERVER_H
-
+#include "../DataManagement/VarDataBase.h"
 using namespace std;
 
 class DataReaderServer {
+private:
+    VarDataBase varDataBase;
 public:
+    DataReaderServer(VarDataBase &varDataBase);
+
     int open(int port, int time_per_sec);
-    string read(int newsockfd);
+    string readSocket(int newsockfd);
 
     vector<double> split(string buff);
-    void updateMap(vector<double> splited);
+    void updatePathMap(vector<double> splited);
+    void updateSymbolTable();
 
 };
-
 
 #endif //FLIGHTSIMULATOR_SERVER_H

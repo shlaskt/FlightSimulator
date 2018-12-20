@@ -43,6 +43,7 @@ VarDataBase::VarDataBase() {
     initPathMap();
 }
 
+
 /**
  * this function update var value by its name, if it is bind, update also its path value.
  * @param var name.
@@ -54,6 +55,8 @@ void VarDataBase::assignVarValue(string var, double val) {
     // if its bind var, find the path that need to be update and change its value.
     if (var_bind.find(var) != var_bind.end()) {
         paths_map[var_bind[var]] = val;
+    }else{
+        throw runtime_error("there is no such var");
     }
 }
 
@@ -65,9 +68,10 @@ void VarDataBase::assignVarValue(string var, double val) {
 double VarDataBase::getPathValue(string path) const {
     // if found the path key, return its value.
     if (paths_map.count(path) != 0) {
-        return paths_map[path];
+        return paths_map.at(path);
+    }else{
+        throw runtime_error("there is no such path directory");
     }
-    throw runtime_error("there is no such path directory");
 }
 
 /**
@@ -80,7 +84,9 @@ void VarDataBase::assignPathValue(string path, double val) {
     if (paths_map.count(path) != 0) {
         paths_map[path] = val;
     }
-    throw runtime_error("there is no such path directory");
+    else{
+        throw runtime_error("there is no such path directory");
+    }
 }
 
 /**
@@ -96,8 +102,9 @@ void VarDataBase::createAndBindVarToPath(string var, string path) {
         //bind between var and path.
         var_bind[var] = path;
     }
-    throw runtime_error("there is no such path directory");
-
+    else{
+        throw runtime_error("there is no such path directory");
+    }
 }
 /**
  * return the symbol table map const, that way it wont change.
@@ -106,3 +113,4 @@ void VarDataBase::createAndBindVarToPath(string var, string path) {
 const map<string, double> &VarDataBase::getSymbolTable() const {
     return this->symbol_table;
 }
+

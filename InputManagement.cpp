@@ -2,8 +2,6 @@
 // Created by eyal on 12/18/18.
 //
 
-#include <iostream>
-#include <sstream>
 #include "InputManagement.h"
 
 /**

@@ -8,6 +8,9 @@
 #include <string>
 #include <vector>
 
+#include <iostream>
+#include <sstream>
+
 using namespace std;
 
 vector<string> lexer(string line);
