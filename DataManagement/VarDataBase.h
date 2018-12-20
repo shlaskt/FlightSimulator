@@ -21,7 +21,9 @@ private:
 
 public:
     VarDataBase();
-    const map<string,double> &getSymbolTable() const;
+
+    const map<string, double> &getSymbolTable() const;
+
     void createAndBindVarToPath(string var, string path);
 
     double getVarValue(string var) const;
@@ -35,6 +37,8 @@ public:
     string getPath(string var) const;
 
     void assignPathValue(string path, double val);
+
+    void updateSymbolTable();
 
 };
 

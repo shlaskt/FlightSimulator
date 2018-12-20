@@ -125,6 +125,14 @@ void VarDataBase::createAndBindVarToPath(string var, string path) {
 const map<string, double> &VarDataBase::getSymbolTable() const {
     return this->symbol_table;
 }
+/**
+ * update all bind var in the symbol table by the var_bind map.
+ */
+void VarDataBase::updateSymbolTable() {
+    for (map<string, string>::iterator it = var_bind.begin(); it != var_bind.end(); ++it) {
+        symbol_table.at(it->first) = paths_map.at(it->second);
+    }
+}
 
 /**
  * return path of given var
