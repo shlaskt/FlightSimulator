@@ -5,7 +5,17 @@
 
 #include "DataReaderServer.h"
 
+/**
+ * Ctor
+ * @param varDataBase
+ */
+DataReaderServer::DataReaderServer(VarDataBase &varDataBase) : varDataBase(varDataBase) {}
 
+/**
+ * split to vector
+ * @param buff
+ * @return
+ */
 vector<double> DataReaderServer::split(string buff) {
     vector<double> info;
     size_t pos = 0;
@@ -50,11 +60,13 @@ int DataReaderServer::open(int port, int time_per_sec) {
     */
 
     listen(sockfd, 1);
+
     cout << "waiting for connection..." << endl;
-    clilen = sizeof(cli_addr);
+
+    //clilen = sizeof(cli_addr);
 
     /* Accept actual connection from the client */
-    newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
+    newsockfd = ::accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
 
     if (newsockfd < 0) {
         perror("ERROR on accept");
@@ -67,54 +79,65 @@ int DataReaderServer::open(int port, int time_per_sec) {
 }
 // check if is the wright way to read 1/tume
 /* If connection is established then start communicating */
-string DataReaderServer::read(int newsockfd) {
-    char buffer[BUF];
-    bzero(buffer, BUF);
-    int n = ::read(newsockfd, buffer, BUF - 1);
+string DataReaderServer::readSocket(int newsockfd) {
+    while(true){
+        char buffer[BUF];
+        bzero(buffer, BUF);
+        ssize_t n = read(newsockfd, buffer, BUF - 1);
 
-    if (n < 0) {
-        perror("ERROR reading from socket");
-        exit(1);
-    } else if (n == 0) {
-        // ?
-    } else {
-//        buffer[n] = NULL; // warning
-        //sleep(1 / time_per_sec); // sleep for the given time
-        cout << buffer << endl; // for check
+        if (n < 0) {
+            perror("ERROR reading from socket");
+            exit(1);
+        } else if (n == 0) {
+            // ?
+            int y = 0;
+        } else {
+            buffer[n] = NULL; // warning
+            //sleep(1 / time_per_sec); // sleep for the given time
+            cout << buffer << endl; // for check
+        }
+        vector<double> split_buff = split(buffer);
+        this->updatePathMap(split_buff); // update the map
+        updateSymbolTable();
     }
-    vector<double> split_buff = split(buffer);
-//    this->updateMap(split_buff); // update the map
     return ""; //until it will return "exit"
 
 }
-/*
-void DataReaderServer::updateMap(vector<double> splited) {
 
-    this->pathRead.at("/instrumentation/airspeed-indicator/indicated-speed-kt") = splited[0];
-    this->pathRead.at("/instrumentation/altimeter/indicated-altitude-ft") = splited[1];
-    this->pathRead.at("/instrumentation/altimeter/pressure-alt-ft") = splited[2];
-    this->pathRead.at("/instrumentation/attitude-indicator/indicated-pitch-deg") = splited[3];
-    this->pathRead.at("/instrumentation/attitude-indicator/indicated-roll-deg") = splited[4];
-    this->pathRead.at("/instrumentation/attitude-indicator/internal-pitch-deg") = splited[5];
-    this->pathRead.at("/instrumentation/attitude-indicator/internal-roll-deg") = splited[6];
-    this->pathRead.at("/instrumentation/encoder/indicated-altitude-ft") = splited[7];
-    this->pathRead.at("/instrumentation/encoder/pressure-alt-ft") = splited[8];
-    this->pathRead.at("/instrumentation/gps/indicated-altitude-ft") = splited[9];
-    this->pathRead.at("/instrumentation/gps/indicated-ground-speed-kt") = splited[10];
-    this->pathRead.at("/instrumentation/gps/indicated-vertical-speed") = splited[11];
-    this->pathRead.at("/instrumentation/heading-indicator/indicated-heading-deg") = splited[12];
-    this->pathRead.at("/instrumentation/magnetic-compass/indicated-heading-deg") = splited[13];
-    this->pathRead.at("/instrumentation/slip-skid-ball/indicated-slip-skid") = splited[14];
-    this->pathRead.at("/instrumentation/turn-indicator/indicated-turn-rate") = splited[15];
-    this->pathRead.at("/instrumentation/vertical-speed-indicator/indicated-speed-fpm") = splited[16];
-    this->pathRead.at("/controls/flight/aileron") = splited[17];
-    this->pathRead.at("/controls/flight/elevator") = splited[18];
-    this->pathRead.at("/controls/flight/rudder") = splited[19];
-    this->pathRead.at("/controls/flight/flaps") = splited[20];
-    this->pathRead.at("/controls/engines/engine/throttle") = splited[21];
-    this->pathRead.at("/engines/engine/rpm") = splited[22];
+/**
+ * update the map of vars
+ * every path to the spesific place in the vector
+ * @param splited vector
+ */
+void DataReaderServer::updatePathMap(vector<double> splited) {
+    this->varDataBase.assignPathValue("/instrumentation/airspeed-indicator/indicated-speed-kt", splited[0]);
+    this->varDataBase.assignPathValue("/instrumentation/altimeter/indicated-altitude-ft", splited[1]);
+    this->varDataBase.assignPathValue("/instrumentation/altimeter/pressure-alt-ft", splited[2]);
+    this->varDataBase.assignPathValue("/instrumentation/attitude-indicator/indicated-pitch-deg", splited[3]);
+    this->varDataBase.assignPathValue("/instrumentation/attitude-indicator/indicated-roll-deg", splited[4]);
+    this->varDataBase.assignPathValue("/instrumentation/attitude-indicator/internal-pitch-deg", splited[5]);
+    this->varDataBase.assignPathValue("/instrumentation/attitude-indicator/internal-roll-deg", splited[6]);
+    this->varDataBase.assignPathValue("/instrumentation/encoder/indicated-altitude-ft", splited[7]);
+    this->varDataBase.assignPathValue("/instrumentation/encoder/pressure-alt-ft", splited[8]);
+    this->varDataBase.assignPathValue("/instrumentation/gps/indicated-altitude-ft", splited[9]);
+    this->varDataBase.assignPathValue("/instrumentation/gps/indicated-ground-speed-kt", splited[10]);
+    this->varDataBase.assignPathValue("/instrumentation/gps/indicated-vertical-speed", splited[11]);
+    this->varDataBase.assignPathValue("/instrumentation/heading-indicator/indicated-heading-deg", splited[12]);
+    this->varDataBase.assignPathValue("/instrumentation/magnetic-compass/indicated-heading-deg", splited[13]);
+    this->varDataBase.assignPathValue("/instrumentation/slip-skid-ball/indicated-slip-skid", splited[14]);
+    this->varDataBase.assignPathValue("/instrumentation/turn-indicator/indicated-turn-rate", splited[15]);
+    this->varDataBase.assignPathValue("/instrumentation/vertical-speed-indicator/indicated-speed-fpm", splited[16]);
+    this->varDataBase.assignPathValue("/controls/flight/aileron", splited[17]);
+    this->varDataBase.assignPathValue("/controls/flight/elevator", splited[18]);
+    this->varDataBase.assignPathValue("/controls/flight/rudder", splited[19]);
+    this->varDataBase.assignPathValue("/controls/flight/flaps", splited[20]);
+    this->varDataBase.assignPathValue("/controls/engines/engine/throttle", splited[21]);
+    this->varDataBase.assignPathValue("/engines/engine/rpm", splited[22]);
+}
 
+void DataReaderServer::updateSymbolTable() {
 
 }
-*/
+
+
 

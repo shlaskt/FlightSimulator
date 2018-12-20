@@ -11,14 +11,13 @@
 #include "Command.h"
 #include "../Sockets/DataReaderServer.h"
 #include "pthread.h"
+#include <pthread.h>
 
 using namespace std;
 
 class OpenDataServer : Command {
 public:
     void CreateThread(struct params_to_socket* params);
-//    void* CreateSocket (void* pVoid);
-
     virtual void doCommand(vector<string>::iterator &itor, DataReaderServer* server);
 };
 
