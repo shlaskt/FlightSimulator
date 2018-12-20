@@ -11,9 +11,19 @@
  */
 string addSpaces(string line) {
     string output;
+    bool in_quotation_marks = false;
     if (line == "") return line;
     for (char ch : line) {
         switch (ch) {
+            case ' ': {
+                if (output.back() != ' ' && !output.empty()) output += ' ';
+                break;
+            }
+            case '\"': {
+                output += ch;
+                in_quotation_marks = !in_quotation_marks;
+                break;
+            }
             case '+':
             case '-':
             case '*':
@@ -22,26 +32,26 @@ string addSpaces(string line) {
             case ',':
             case ')':
             case '(': {
-                //first letter of the line, no space.
-                if (output.empty() || output.back() == ' ') {
-                    output += ch;
-                    output += ' ';
-                } else {
-                    output += ' ';
-                    output += ch;
-                    output += ' ';
+                if (!in_quotation_marks) {
+                    //first letter of the line, no space.
+                    if (output.empty() || output.back() == ' ') {
+                        output += ch;
+                        output += ' ';
+                    } else {
+                        output += ' ';
+                        output += ch;
+                        output += ' ';
+                    }
+                    break;
                 }
-                break;
-            }
-            case ' ': {
-                if (output.back() != ' ' && !output.empty()) output += ' ';
-                break;
             }
             default: {
                 output += ch;
             }
         }
     }
+    //if the last char is space, delete it.
+    if (output.back() == ' ') output.pop_back();
     return output;
 }
 
@@ -66,7 +76,7 @@ vector<string> lexer(string line) {
     return splitLine(addSpaces(line), ' ');
 }
 
-void Lexertests() {
+void lexerTests() {
     bool sucseed = true;
     if (addSpaces("(h1+h2)/2") != "( h1 + h2 ) / 2") {
         cout << "\"(h1+h2)/2\" test failed" << endl;
@@ -93,6 +103,183 @@ void Lexertests() {
     }
 }
 
-void parser() {
-    string command_name;
+/**
+ * get iterator to start and to end, and make it one string of exprresion.
+ * @param it start.
+ * @param end iteartor end.
+ * @return string exprresion.
+ */
+string makeExpression(vector<string>::iterator &it, vector<string>::iterator &end) {
+    string expression;
+    bool is_this_operator;
+    bool is_next_operator;
+    bool is_this_right_parenthesis = false;
+    string current = *it;
+    do {
+        // adding value to expression.
+
+        expression += current;
+        if (current == "+" || current == "-" || current == "*" || current == "/"
+            || current == "(" || current == ")") {
+            is_this_operator = true;
+            if (current == ")") is_this_right_parenthesis = true;
+        } else { is_this_operator = false; }
+        //forword the iterator.
+        ++it;
+        //update current.
+        current = *it;
+        // check if operator.
+        if (current == "+" || current == "-" || current == "*" || current == "/"
+            || current == "(" || current == ")") {
+            is_next_operator = true;
+        } else {
+            // if there is right paranthesis and after it a number.
+            if (is_this_right_parenthesis && it != end) {
+                break;
+            }
+            is_next_operator = false;
+        }
+        is_this_right_parenthesis = false;
+    } while ((is_this_operator || is_next_operator) && it != end && current != ",");
+    // if reached to the end, return it -- * twice because end loop do ++ becuase need to read the current value.
+    it--;
+    //added spaces to make it valid.
+    return addSpaces(expression);
+}
+
+/**
+ * get line as a parameter and return vector in each index store expression.
+ * @param line to parse.
+ * @return vector after paresed.
+ */
+vector<string> parser(string line) {
+    vector<string> lexered_line = lexer(line);
+    if (lexered_line.size() == 0) {
+        throw runtime_error("error in lexering line");
+    }
+    // get first value and forword the iterator.
+    vector<string>::iterator it = (lexered_line.begin())++;
+    vector<string> parserd_line;
+    // save expression in one place together.
+    bool is_neg = true;
+    for (int i = 0; it != lexered_line.end() && i < lexered_line.size(); ++it, i++) {
+        string expression = "";
+        string current = *it;
+
+        /**
+         * need to check if it is a minus repressent neg and not minus operator:
+         * 3 option that the minus is neg:
+         * 1) '-' after operator =, meant it is neg.
+         * 2) '-' after first argument in the line. first argument is always command, so again its neg.
+         * 3) '-' in third argument or after. in this case there has to be ',' before the neg sign.
+         */
+
+        if (current == "-") {
+            if ((*prev(it, 1) == "=") || i == 1 || (i > 1 && (*prev(it, 1) == ","))) {
+                // send the end of the iterator to know when to stop.
+                vector<string>::iterator it_end = lexered_line.end();
+                // call the makeExpression with the vector the string from "-" include.
+                expression += makeExpression(it, it_end);
+                parserd_line.push_back(expression);
+                continue;
+            }
+        }
+
+        if (current == "+" || current == "-" || current == "*" || current == "/" || current == "(") {
+            // send the end of the iterator to know when to stop.
+            vector<string>::iterator it_end = lexered_line.end();
+            //send to function that make expression.
+            if (current == "(") {
+                // call the makeExpression with the vector the string from '(' include.
+                expression += makeExpression(it, it_end);
+            } else {
+                // its an operator, sent the vector from before the operator.
+                vector<string>::iterator prev_it = prev(it, 1);
+                expression += makeExpression(prev_it, it_end);
+                // update the iterator to its place
+                it = prev_it;
+                // need to remove the previous argument added that need to be begin of expression.
+                parserd_line.pop_back();
+            }
+            // add the exprresion to the parserd vector:
+            parserd_line.push_back(expression);
+        } else {
+            // relate to "," ass a value only if it's not a separator before neg expression.
+            if (current == "," && *next(it, 1) == "-") continue;
+            //incase no need to make expression, add the value of the vector as is.
+            parserd_line.push_back(*it);
+        }
+    }
+    return parserd_line;
+}
+
+void parserTests() {
+    int test = 1;
+    string test_string = "test";
+    vector<string> parserd_line = parser("var tomer = -15+(10   *3)");
+    if (parserd_line[0] == "var" && parserd_line[1] == "tomer" && parserd_line[2] == "=" &&
+        parserd_line[3] == "- 15 + ( 10 * 3 )")
+        cout << test_string << test << ": passed" << endl;
+    else cout << test_string << test << ": failed" << endl;
+    test++;
+    parserd_line = parser("OpenDataServer = 1000 100");
+    if (parserd_line[0] == "OpenDataServer" && parserd_line[1] == "=" && parserd_line[2] == "1000" &&
+        parserd_line[3] == "100")
+        cout << test_string << test << ": passed" << endl;
+    else cout << test_string << test << ": failed" << endl;
+    test++;
+    parserd_line = parser("var breaks = bind \"/controls/flight/speedbrake\"");
+    if (parserd_line[0] == "var" && parserd_line[1] == "breaks" && parserd_line[2] == "="
+        && parserd_line[3] == "bind" && parserd_line[4] == "\"/controls/flight/speedbrake\"")
+        cout << test_string << test << ": passed" << endl;
+    else {
+        cout << test_string << test << ": failed" << endl;
+        cout << parserd_line[4] << endl;
+    }
+    test++;
+    parserd_line = parser("while  a<5 {");
+    if (parserd_line[0] == "while" && parserd_line[1] == "a<5" && parserd_line[2] == "{")
+        cout << test_string << test << ": passed" << endl;
+    else cout << test_string << test << ": failed" << endl;
+    test++;
+    parserd_line = parser("connect 127.0.0.1 5402");
+    if (parserd_line[0] == "connect" && parserd_line[1] == "127.0.0.1" && parserd_line[2] == "5402")
+        cout << test_string << test << ": passed" << endl;
+    else cout << test_string << test << ": failed" << endl;
+    test++;
+    parserd_line = parser("var alt = bind \"/instrumentation/altimeter/indicated-altitude-ft\"");
+    if (parserd_line[0] == "var" && parserd_line[1] == "alt" && parserd_line[2] == "="
+        && parserd_line[3] == "bind" && parserd_line[4] == "\"/instrumentation/altimeter/indicated-altitude-ft\"")
+        cout << test_string << test << ": passed" << endl;
+    else cout << test_string << test << ": failed" << endl;
+    test++;
+    parserd_line = parser("rudder = (h0-heading)/20");
+    if (parserd_line[0] == "rudder" && parserd_line[1] == "=" && parserd_line[2] == "( h0 - heading ) / 20")
+        cout << test_string << test << ": passed" << endl;
+    else cout << test_string << test << ": failed" << endl;
+    test++;
+    parserd_line = parser("aileron = - roll /70");
+    if (parserd_line[0] == "aileron" && parserd_line[1] == "=" && parserd_line[2] == "- roll / 70")
+        cout << test_string << test << ": passed" << endl;
+    else cout << test_string << test << ": failed" << endl;
+    test++;
+    parserd_line = parser("print \"done\"");
+    if (parserd_line[0] == "print" && parserd_line[1] == "\"done\"")
+        cout << test_string << test << ": passed" << endl;
+    else cout << test_string << test << ": failed" << endl;
+    test++;
+}
+/**
+ * work on lines. make every line to command and return the command list.
+ * @param lines to convert to commands.
+ * @param commandDataBase to get the commands from.
+ * @param dr read and write to server.
+ * @return commands list to execute.
+ */
+vector<Expression *> conditionPareser(vector<string> lines, CommandDataBase commandDataBase, DataReaderServer dr) {
+    vector<Expression *> commands_list;
+    for (vector<string>::iterator it = lines.begin(); it < lines.end() && *it != "}"; ++it) {
+        commands_list.push_back(commandDataBase.getCommand(it, dr));
+    }
+    return commands_list;
 }

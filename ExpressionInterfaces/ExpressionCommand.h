@@ -11,7 +11,7 @@
 #include "../Sockets/DataReaderServer.h"
 #include <vector>
 
-class ExpressionCommand : Expression {
+class ExpressionCommand : public Expression {
 private:
     Command *command;
     vector<string>::iterator iterator;
