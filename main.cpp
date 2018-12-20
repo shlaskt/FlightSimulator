@@ -11,11 +11,10 @@ using namespace std;
 
 
 int main() {
-    parserTests();
-//    VarDataBase varDataBase;
-//    DataReaderServer dataReaderServer(varDataBase);
-//    int sockfd = dataReaderServer.open(5400, 10);
-//    dataReaderServer.readSocket(sockfd);
+    VarDataBase varDataBase;
+    DataReaderServer dataReaderServer(varDataBase);
+    int sockfd = dataReaderServer.open(5400, 10);
+    dataReaderServer.readSocket(sockfd);
 //    map<string,double> map;
 //    map["key1"]=5.2;
 //    map["key2"]=4;

@@ -28,9 +28,13 @@ public:
 
     double getVarValue(string var) const;
 
+    bool isVarExists(string var);
+
     void assignVarValue(string var, double val);
 
     double getPathValue(string path) const;
+
+    string getPath(string var) const;
 
     void assignPathValue(string path, double val);
 

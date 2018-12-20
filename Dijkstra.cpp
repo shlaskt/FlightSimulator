@@ -3,10 +3,11 @@
 //
 
 
-
-// CPP program to evaluate a given
-// expression where tokens are
-// separated by space.
+/**
+ * evaluate a given expression where tokens are separated by space.
+ * include vars (getting a map <var,num> in the Ctor.
+ * include negative ( 5 * - 3 , 5 - - 3, ect.)
+ */
 #include "Dijkstra.h"
 
 /**
