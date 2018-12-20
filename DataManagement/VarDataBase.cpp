@@ -35,7 +35,7 @@ void VarDataBase::initPathMap() {
  * @param var name.
  * @return var value.
  */
-double VarDataBase::getVarValue(string var) const{
+double VarDataBase::getVarValue(string var) const {
     return symbol_table.at(var);
 }
 
@@ -55,7 +55,7 @@ void VarDataBase::assignVarValue(string var, double val) {
     // if its bind var, find the path that need to be update and change its value.
     if (var_bind.find(var) != var_bind.end()) {
         paths_map[var_bind[var]] = val;
-    }else{
+    } else {
         throw runtime_error("there is no such var");
     }
 }
@@ -69,7 +69,7 @@ double VarDataBase::getPathValue(string path) const {
     // if found the path key, return its value.
     if (paths_map.count(path) != 0) {
         return paths_map.at(path);
-    }else{
+    } else {
         throw runtime_error("there is no such path directory");
     }
 }
@@ -83,8 +83,7 @@ void VarDataBase::assignPathValue(string path, double val) {
     // if found the path key, return its value.
     if (paths_map.count(path) != 0) {
         paths_map[path] = val;
-    }
-    else{
+    } else {
         throw runtime_error("there is no such path directory");
     }
 }
@@ -101,16 +100,24 @@ void VarDataBase::createAndBindVarToPath(string var, string path) {
         symbol_table[var] = paths_map[path];
         //bind between var and path.
         var_bind[var] = path;
-    }
-    else{
+    } else {
         throw runtime_error("there is no such path directory");
     }
 }
+
 /**
  * return the symbol table map const, that way it wont change.
  * @return map of symbol table.
  */
 const map<string, double> &VarDataBase::getSymbolTable() const {
     return this->symbol_table;
+}
+/**
+ * update all bind var in the symbol table by the var_bind map.
+ */
+void VarDataBase::updateSymbolTable() {
+    for (map<string, string>::iterator it = var_bind.begin(); it != var_bind.end(); ++it) {
+        symbol_table.at(it->first) = paths_map.at(it->second);
+    }
 }
 
