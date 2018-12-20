@@ -39,6 +39,21 @@ double VarDataBase::getVarValue(string var) const {
     return symbol_table.at(var);
 }
 
+/**
+ * check if var exists in map
+ * @param var string
+ * @return true if exists, false o.w
+ */
+bool VarDataBase::isVarExists(string var) {
+    if (symbol_table.find(var) == symbol_table.end()) {
+        return false;
+    }
+    return true;
+}
+
+/**
+ * Ctor
+ */
 VarDataBase::VarDataBase() {
     initPathMap();
 }
@@ -50,13 +65,11 @@ VarDataBase::VarDataBase() {
  * @param val double value.
  */
 void VarDataBase::assignVarValue(string var, double val) {
-    // update var value in symbol table.
+    // update or insert var value in symbol table.
     symbol_table[var] = val;
     // if its bind var, find the path that need to be update and change its value.
     if (var_bind.find(var) != var_bind.end()) {
         paths_map[var_bind[var]] = val;
-    } else {
-        throw runtime_error("there is no such var");
     }
 }
 
@@ -118,6 +131,21 @@ const map<string, double> &VarDataBase::getSymbolTable() const {
 void VarDataBase::updateSymbolTable() {
     for (map<string, string>::iterator it = var_bind.begin(); it != var_bind.end(); ++it) {
         symbol_table.at(it->first) = paths_map.at(it->second);
+    }
+}
+
+/**
+ * return path of given var
+ * exception if not have path
+ * @param var
+ * @return
+ */
+string VarDataBase::getPath(string var) const {
+    // if found the path key, return its value.
+    if (var_bind.count(var) != 0) {
+        return var_bind.at(var);
+    } else {
+        throw runtime_error("there is no path for this var");
     }
 }
 
