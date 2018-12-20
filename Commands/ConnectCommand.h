@@ -11,6 +11,7 @@
 class ConnectCommand : Command{
     void CreateThread(struct params_to_socket* params);
 
+public:
     virtual void doCommand(vector<string>::iterator &itor, DataReaderServer* server);
 };
 
