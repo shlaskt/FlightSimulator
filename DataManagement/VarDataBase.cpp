@@ -35,7 +35,7 @@ void VarDataBase::initPathMap() {
  * @param var name.
  * @return var value.
  */
-double VarDataBase::getVarValue(string var) const{
+double VarDataBase::getVarValue(string var) const {
     return symbol_table.at(var);
 }
 
@@ -65,7 +65,7 @@ void VarDataBase::assignVarValue(string var, double val) {
 double VarDataBase::getPathValue(string path) const {
     // if found the path key, return its value.
     if (paths_map.count(path) != 0) {
-        return paths_map[path];
+        return paths_map.at(path);
     }
     throw runtime_error("there is no such path directory");
 }
@@ -99,6 +99,7 @@ void VarDataBase::createAndBindVarToPath(string var, string path) {
     throw runtime_error("there is no such path directory");
 
 }
+
 /**
  * return the symbol table map const, that way it wont change.
  * @return map of symbol table.
