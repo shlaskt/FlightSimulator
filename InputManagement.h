@@ -10,13 +10,16 @@
 
 #include <iostream>
 #include <sstream>
+#include "ExpressionInterfaces/Expression.h"
+#include "DataManagement/CommandDataBase.h"
 
 using namespace std;
 
 vector<string> lexer(string line);
 
-void parser();
-
-void Lexertests();
+vector<string> parser(string line);
+void parserTests();
+vector<Expression*> loopPareser(vector<string> lines);
+void lexerTests();
 
 #endif //FLIGHTSIMULATOR_INPUTMANAGEMENT_H

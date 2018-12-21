@@ -10,7 +10,12 @@
 using namespace std;
 
 
-int main() {
+int main(int argc, char* argv[]) {
+//    parserTests();
+//    VarDataBase varDataBase;
+//    DataReaderServer dataReaderServer(varDataBase);
+//    int sockfd = dataReaderServer.open(5400, 10);
+//    dataReaderServer.readSocket(sockfd);
     VarDataBase varDataBase;
     DataReaderServer dataReaderServer(varDataBase);
     int sockfd = dataReaderServer.open(5400, 10);
@@ -27,6 +32,5 @@ int main() {
 
 //    vector<string> temp = lexer("OpenDataServer 5,-3  ");
 //    cout << "Hii" << endl;
-      return 0;
-
+    return 0;
 }
