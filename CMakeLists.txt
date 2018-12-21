@@ -26,5 +26,7 @@ add_executable(FlightSimulator main.cpp ExpressionInterfaces/Expression.h Expres
         Commands/EqualCommand.h Commands/PrintCommand.cpp Commands/PrintCommand.h
         Commands/SleepCommand.cpp Commands/SleepCommand.h Commands/IfCommand.cpp
         Commands/IfCommand.h ExpressionInterfaces/ExpressionConitionalCommand.cpp
-        ExpressionInterfaces/ExpressionConitionalCommand.h)
+        ExpressionInterfaces/ExpressionConitionalCommand.h Commands/WhileCommand.cpp Commands/WhileCommand.h
+        Commands/ConditionCommand.cpp Commands/ConditionCommand.h )
+
 

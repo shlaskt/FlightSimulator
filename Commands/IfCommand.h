@@ -7,11 +7,10 @@
 
 #include "../Dijkstra.h"
 
-#include "Command.h"
+#include "ConditionCommand.h"
 
-class IfCommand : Command{
+class IfCommand : ConditionCommand{
     VarDataBase varDataBase;
-    bool checkCondition(double, string, double);
 public:
     virtual void doCommand(vector<string>::iterator &itor, DataReaderServer* server);
 
