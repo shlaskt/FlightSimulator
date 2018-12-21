@@ -34,7 +34,6 @@ public:
 
     vector<double> split(string buff);
     void updatePathMap(vector<double> splited);
-    void updateSymbolTable();
 
 };
 

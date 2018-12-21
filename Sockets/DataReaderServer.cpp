@@ -135,9 +135,6 @@ void DataReaderServer::updatePathMap(vector<double> splited) {
     this->varDataBase.assignPathValue("/engines/engine/rpm", splited[22]);
 }
 
-void DataReaderServer::updateSymbolTable() {
-
-}
 
 
 
