@@ -17,4 +17,4 @@ add_executable(FlightSimulator main.cpp ExpressionInterfaces/Expression.h Expres
         ExpressionInterfaces/ExpressionCommand.h Sockets/Client.cpp Sockets/Client.h Sockets/DataReaderServer.cpp
         Sockets/DataReaderServer.h Commands/Command.h Commands/OpenDataServer.cpp Commands/OpenDataServer.h
         DataManagement/CommandDataBase.cpp DataManagement/CommandDataBase.h
-        Commands/ConnectCommand.cpp Commands/ConnectCommand.h)
+        Commands/ConnectCommand.cpp Commands/ConnectCommand.h InputReaders/InputReader.h InputReaders/StdinReader.cpp InputReaders/StdinReader.h InputReaders/FileReader.cpp InputReaders/FileReader.h Controller.cpp Controller.h)

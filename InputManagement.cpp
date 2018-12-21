@@ -29,6 +29,9 @@ string addSpaces(string line) {
             case '*':
             case '/':
             case '=':
+            case '>':
+            case '<':
+            case '!':
             case ',':
             case ')':
             case '(': {
@@ -216,6 +219,7 @@ vector<string> parser(string line) {
 void parserTests() {
     int test = 1;
     string test_string = "test";
+
     vector<string> parserd_line = parser("var tomer = -15+(10   *3)");
     if (parserd_line[0] == "var" && parserd_line[1] == "tomer" && parserd_line[2] == "=" &&
         parserd_line[3] == "- 15 + ( 10 * 3 )")
@@ -238,7 +242,14 @@ void parserTests() {
     }
     test++;
     parserd_line = parser("while  a<5 {");
-    if (parserd_line[0] == "while" && parserd_line[1] == "a<5" && parserd_line[2] == "{")
+    if (parserd_line[0] == "while" && parserd_line[1] == "a" && parserd_line[2] == "<"
+        && parserd_line[3] == "5" && parserd_line[4] == "{")
+        cout << test_string << test << ": passed" << endl;
+    else cout << test_string << test << ": failed" << endl;
+    test++;
+    parserd_line = parser("while  a!=5 {");
+    if (parserd_line[0] == "while" && parserd_line[1] == "a" && parserd_line[2] == "!"
+        && parserd_line[3] == "=" && parserd_line[4] == "5" && parserd_line[5] == "{")
         cout << test_string << test << ": passed" << endl;
     else cout << test_string << test << ": failed" << endl;
     test++;
@@ -269,6 +280,7 @@ void parserTests() {
     else cout << test_string << test << ": failed" << endl;
     test++;
 }
+
 /**
  * work on lines. make every line to command and return the command list.
  * @param lines to convert to commands.
