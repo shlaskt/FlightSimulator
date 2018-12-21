@@ -18,14 +18,12 @@ struct params_to_socket {
  * @param args x,y-> port, time
  */
 void OpenDataServer::doCommand(vector<string>::iterator &itor, DataReaderServer *server) {
-    int i_port, i_time; // change to double?
-
-    //  replace    atoi     with     dijkstra  !
-
+    Dijkstra shunting_yard(varDataBase.getSymbolTable());
+    double i_port, i_time; // change to double?
     // check valid - should be 2 non-negative numbers
     try {
-        i_port = atoi((*itor).c_str()); // initialize port
-        i_time = atoi((*++itor).c_str()); // initialize server
+        i_port = shunting_yard(*itor); // initialize port
+        i_time = shunting_yard(*++itor); // initialize server
     } catch (const out_of_range &no_such_var) {
         // if there is no var in this name- dijkstra throw error
         __throw_runtime_error("invalid params to OpenDataServer Command");
@@ -44,8 +42,8 @@ void OpenDataServer::doCommand(vector<string>::iterator &itor, DataReaderServer 
 struct params_to_socket * OpenDataServer::initParams(double i_port, double i_time, DataReaderServer* server){
     struct params_to_socket *params = new params_to_socket; // struct of params to sock
     // initialize the struct
-    params->port = i_port; // initialize port
-    params->time = i_time; // initialize server
+    params->port = i_port; // initialize port - casting to int
+    params->time = i_time; // initialize server - casting to int
     params->data_server = server;
     return params;
 }

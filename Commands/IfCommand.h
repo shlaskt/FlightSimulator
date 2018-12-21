@@ -2,17 +2,20 @@
 // Created by tomer on 12/20/18.
 //
 
-#ifndef FLIGHTSIMULATOR_EQUALCOMMAND_H
-#define FLIGHTSIMULATOR_EQUALCOMMAND_H
+#ifndef FLIGHTSIMULATOR_IFCOMMAND_H
+#define FLIGHTSIMULATOR_IFCOMMAND_H
 
 #include "../Dijkstra.h"
+
 #include "Command.h"
 
-class EqualCommand : Command{
+class IfCommand : Command{
     VarDataBase varDataBase;
+    bool checkCondition(double, string, double);
 public:
     virtual void doCommand(vector<string>::iterator &itor, DataReaderServer* server);
+
 };
 
 
-#endif //FLIGHTSIMULATOR_EQUALCOMMAND_H
+#endif //FLIGHTSIMULATOR_IFCOMMAND_H

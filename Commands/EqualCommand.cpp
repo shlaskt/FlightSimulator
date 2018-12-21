@@ -12,6 +12,7 @@
  * @param server
  */
 void EqualCommand::doCommand(vector<string>::iterator &itor, DataReaderServer *server) {
+    Dijkstra shunting_yard(varDataBase.getSymbolTable());
     string var = *itor;
     double val;
     if(!varDataBase.isVarExists(var)){ // var isn't exists
@@ -20,10 +21,10 @@ void EqualCommand::doCommand(vector<string>::iterator &itor, DataReaderServer *s
     // else - var exists
     ++itor; // to skip the "="
     try {
-        val = dijkstra(*++itor); // get the number / var value to assign the exists var
+        val = shunting_yard(*++itor); // get the number / var value to assign the exists var
     } catch (const out_of_range& no_such_var){
         // if there is no var in this name- dijkstra throw error
-        __throw_runtime_error("invalid params to var");
+        __throw_runtime_error("Error in Equal - invalid params to var");
     }
     // update var
     varDataBase.assignVarValue(var, val); // without binding

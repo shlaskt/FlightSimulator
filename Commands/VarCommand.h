@@ -5,6 +5,7 @@
 #ifndef FLIGHTSIMULATOR_VARCOMMAND_H
 #define FLIGHTSIMULATOR_VARCOMMAND_H
 
+#include "../Dijkstra.h"
 
 #include "Command.h"
 

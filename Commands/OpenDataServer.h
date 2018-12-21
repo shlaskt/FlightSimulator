@@ -11,12 +11,14 @@
 #include <string>
 #include "Command.h"
 #include "../Sockets/DataReaderServer.h"
+#include "../Dijkstra.h"
 #include "pthread.h"
 #include <pthread.h>
 
 using namespace std;
 
 class OpenDataServer : Command {
+    VarDataBase varDataBase;
     void CreateThread(struct params_to_socket *params);
 
     struct params_to_socket * initParams(double i_port, double i_time, DataReaderServer *server);

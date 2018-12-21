@@ -5,6 +5,7 @@
 #ifndef FLIGHTSIMULATOR_PRINTCOMMAND_H
 #define FLIGHTSIMULATOR_PRINTCOMMAND_H
 
+#include "../Dijkstra.h"
 
 #include "Command.h"
 

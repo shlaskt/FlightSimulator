@@ -13,6 +13,7 @@
  * @param server
  */
 void PrintCommand::doCommand(vector<string>::iterator &itor, DataReaderServer *server) {
+    Dijkstra shunting_yard(varDataBase.getSymbolTable());
     string print_me = *itor; // take value to print
     if (print_me[0] == '"') { // string
         cout << print_me << endl;
@@ -20,7 +21,7 @@ void PrintCommand::doCommand(vector<string>::iterator &itor, DataReaderServer *s
         cout << varDataBase.getVarValue(print_me) << endl;
     } else { // expression
         try {
-            cout << dijkstra(print_me) << endl; // get the number / var value to assign the new var
+            cout << shunting_yard(print_me) << endl; // get the number / var value to assign the new var
         } catch (const out_of_range &no_such_var) {
             // if there is no var in this name- dijkstra throw error
             __throw_runtime_error("Error in PrintCommend : invalid params to print");
