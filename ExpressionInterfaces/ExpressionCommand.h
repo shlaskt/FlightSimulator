@@ -15,10 +15,10 @@ class ExpressionCommand : public Expression {
 private:
     Command *command;
     vector<string>::iterator iterator;
-    DataReaderServer &reader;
+    DataReaderServer *reader;
 
 public:
-    ExpressionCommand(Command *command,vector<string>::iterator &iterator, DataReaderServer &reader);
+    ExpressionCommand(Command *command,vector<string>::iterator &iterator, DataReaderServer *reader);
 
     double calculate();
 

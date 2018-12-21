@@ -7,6 +7,7 @@
 
 #ifndef FLIGHTSIMULATOR_SERVER_H
 #define FLIGHTSIMULATOR_SERVER_H
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -21,18 +22,21 @@
 #include <iostream>
 #include <string>
 #include "../DataManagement/VarDataBase.h"
+
 using namespace std;
 
 class DataReaderServer {
 private:
-    VarDataBase varDataBase;
+    VarDataBase *varDataBase;
 public:
-    DataReaderServer(VarDataBase &varDataBase);
+    DataReaderServer(VarDataBase *varDataBase);
 
     int open(int port, int time_per_sec);
+
     string readSocket(int newsockfd);
 
     vector<double> split(string buff);
+
     void updatePathMap(vector<double> splited);
 
 };

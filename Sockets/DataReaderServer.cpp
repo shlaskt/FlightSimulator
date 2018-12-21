@@ -9,7 +9,7 @@
  * Ctor
  * @param varDataBase
  */
-DataReaderServer::DataReaderServer(VarDataBase &varDataBase) : varDataBase(varDataBase) {}
+DataReaderServer::DataReaderServer(VarDataBase *varDataBase) : varDataBase(varDataBase) {}
 
 /**
  * split to vector
@@ -80,7 +80,7 @@ int DataReaderServer::open(int port, int time_per_sec) {
 // check if is the wright way to read 1/tume
 /* If connection is established then start communicating */
 string DataReaderServer::readSocket(int newsockfd) {
-    while(true){
+    while (true) {
         char buffer[BUF];
         bzero(buffer, BUF);
         ssize_t n = read(newsockfd, buffer, BUF - 1);
@@ -98,7 +98,7 @@ string DataReaderServer::readSocket(int newsockfd) {
         }
         vector<double> split_buff = split(buffer);
         this->updatePathMap(split_buff); // update the map
-        updateSymbolTable();
+        //updateSymbolTable();
     }
     return ""; //until it will return "exit"
 
@@ -110,31 +110,30 @@ string DataReaderServer::readSocket(int newsockfd) {
  * @param splited vector
  */
 void DataReaderServer::updatePathMap(vector<double> splited) {
-    this->varDataBase.assignPathValue("/instrumentation/airspeed-indicator/indicated-speed-kt", splited[0]);
-    this->varDataBase.assignPathValue("/instrumentation/altimeter/indicated-altitude-ft", splited[1]);
-    this->varDataBase.assignPathValue("/instrumentation/altimeter/pressure-alt-ft", splited[2]);
-    this->varDataBase.assignPathValue("/instrumentation/attitude-indicator/indicated-pitch-deg", splited[3]);
-    this->varDataBase.assignPathValue("/instrumentation/attitude-indicator/indicated-roll-deg", splited[4]);
-    this->varDataBase.assignPathValue("/instrumentation/attitude-indicator/internal-pitch-deg", splited[5]);
-    this->varDataBase.assignPathValue("/instrumentation/attitude-indicator/internal-roll-deg", splited[6]);
-    this->varDataBase.assignPathValue("/instrumentation/encoder/indicated-altitude-ft", splited[7]);
-    this->varDataBase.assignPathValue("/instrumentation/encoder/pressure-alt-ft", splited[8]);
-    this->varDataBase.assignPathValue("/instrumentation/gps/indicated-altitude-ft", splited[9]);
-    this->varDataBase.assignPathValue("/instrumentation/gps/indicated-ground-speed-kt", splited[10]);
-    this->varDataBase.assignPathValue("/instrumentation/gps/indicated-vertical-speed", splited[11]);
-    this->varDataBase.assignPathValue("/instrumentation/heading-indicator/indicated-heading-deg", splited[12]);
-    this->varDataBase.assignPathValue("/instrumentation/magnetic-compass/indicated-heading-deg", splited[13]);
-    this->varDataBase.assignPathValue("/instrumentation/slip-skid-ball/indicated-slip-skid", splited[14]);
-    this->varDataBase.assignPathValue("/instrumentation/turn-indicator/indicated-turn-rate", splited[15]);
-    this->varDataBase.assignPathValue("/instrumentation/vertical-speed-indicator/indicated-speed-fpm", splited[16]);
-    this->varDataBase.assignPathValue("/controls/flight/aileron", splited[17]);
-    this->varDataBase.assignPathValue("/controls/flight/elevator", splited[18]);
-    this->varDataBase.assignPathValue("/controls/flight/rudder", splited[19]);
-    this->varDataBase.assignPathValue("/controls/flight/flaps", splited[20]);
-    this->varDataBase.assignPathValue("/controls/engines/engine/throttle", splited[21]);
-    this->varDataBase.assignPathValue("/engines/engine/rpm", splited[22]);
+    this->varDataBase->assignPathValue("/instrumentation/airspeed-indicator/indicated-speed-kt", splited[0]);
+    this->varDataBase->assignPathValue("/instrumentation/altimeter/indicated-altitude-ft", splited[1]);
+    this->varDataBase->assignPathValue("/instrumentation/altimeter/pressure-alt-ft", splited[2]);
+    this->varDataBase->assignPathValue("/instrumentation/attitude-indicator/indicated-pitch-deg", splited[3]);
+    this->varDataBase->assignPathValue("/instrumentation/attitude-indicator/indicated-roll-deg", splited[4]);
+    this->varDataBase->assignPathValue("/instrumentation/attitude-indicator/internal-pitch-deg", splited[5]);
+    this->varDataBase->assignPathValue("/instrumentation/attitude-indicator/internal-roll-deg", splited[6]);
+    this->varDataBase->assignPathValue("/instrumentation/encoder/indicated-altitude-ft", splited[7]);
+    this->varDataBase->assignPathValue("/instrumentation/encoder/pressure-alt-ft", splited[8]);
+    this->varDataBase->assignPathValue("/instrumentation/gps/indicated-altitude-ft", splited[9]);
+    this->varDataBase->assignPathValue("/instrumentation/gps/indicated-ground-speed-kt", splited[10]);
+    this->varDataBase->assignPathValue("/instrumentation/gps/indicated-vertical-speed", splited[11]);
+    this->varDataBase->assignPathValue("/instrumentation/heading-indicator/indicated-heading-deg", splited[12]);
+    this->varDataBase->assignPathValue("/instrumentation/magnetic-compass/indicated-heading-deg", splited[13]);
+    this->varDataBase->assignPathValue("/instrumentation/slip-skid-ball/indicated-slip-skid", splited[14]);
+    this->varDataBase->assignPathValue("/instrumentation/turn-indicator/indicated-turn-rate", splited[15]);
+    this->varDataBase->assignPathValue("/instrumentation/vertical-speed-indicator/indicated-speed-fpm", splited[16]);
+    this->varDataBase->assignPathValue("/controls/flight/aileron", splited[17]);
+    this->varDataBase->assignPathValue("/controls/flight/elevator", splited[18]);
+    this->varDataBase->assignPathValue("/controls/flight/rudder", splited[19]);
+    this->varDataBase->assignPathValue("/controls/flight/flaps", splited[20]);
+    this->varDataBase->assignPathValue("/controls/engines/engine/throttle", splited[21]);
+    this->varDataBase->assignPathValue("/engines/engine/rpm", splited[22]);
 }
-
 
 
 

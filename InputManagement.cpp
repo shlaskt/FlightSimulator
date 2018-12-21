@@ -280,18 +280,3 @@ void parserTests() {
     else cout << test_string << test << ": failed" << endl;
     test++;
 }
-
-/**
- * work on lines. make every line to command and return the command list.
- * @param lines to convert to commands.
- * @param commandDataBase to get the commands from.
- * @param dr read and write to server.
- * @return commands list to execute.
- */
-vector<Expression *> conditionPareser(vector<string> lines, CommandDataBase commandDataBase, DataReaderServer dr) {
-    vector<Expression *> commands_list;
-    for (vector<string>::iterator it = lines.begin(); it < lines.end() && *it != "}"; ++it) {
-        commands_list.push_back(commandDataBase.getCommand(it, dr));
-    }
-    return commands_list;
-}

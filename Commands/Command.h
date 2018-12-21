@@ -25,7 +25,7 @@ public:
      /**
       * doCommand
       */
-    virtual void doCommand(vector<string>::iterator &itor, DataReaderServer &server)= 0;
+    virtual void doCommand(vector<string>::iterator &itor, DataReaderServer *server)= 0;
 /**
  * get server
  * @return

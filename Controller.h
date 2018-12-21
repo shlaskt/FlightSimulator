@@ -11,17 +11,25 @@
 #include "InputReaders/StdinReader.h"
 #include "InputReaders/FileReader.h"
 #include "InputReaders/InputReader.h"
+
 class Controller {
 private:
     CommandDataBase *command_data_base;
-    VarDataBase var_data_base;
+    VarDataBase *var_data_base;
     DataReaderServer *data_reader_server;
     InputReader *inputReader;
+    vector<Expression *> to_delete;
+
+    ExpressionCommand *getCommandFromLine(string line);
+
 public:
     Controller(int argc, char *argv[]);
 
-    void runProgram();
+    ~Controller();
 
+    vector<Expression *> conditionPareser();
+
+    void runProgram();
 };
 
 

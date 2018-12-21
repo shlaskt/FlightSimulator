@@ -5,11 +5,13 @@
 #include "CommandDataBase.h"
 
 /**
- * get var value by var name.
- * @param var name.
- * @return var value.
+ * the function get iterator as an input and make a command by the name of iterator by command map.
+ * the first iterator value is the name of the command.
+ * @param it to run over the line(interpreter).
+ * @param rd data server to connect with the command.
+ * @return expression command.
  */
-ExpressionCommand *CommandDataBase::getCommand(vector<string>::iterator &it, DataReaderServer &rd) {
+ExpressionCommand *CommandDataBase::getCommand(vector<string>::iterator &it, DataReaderServer *rd) {
     // first parameter, the command name.
     string command_name = (*it);
     if (commands_map.find(command_name) != commands_map.end()) {
