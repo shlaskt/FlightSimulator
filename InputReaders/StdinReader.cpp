@@ -12,7 +12,7 @@ string StdinReader::readLine() {
     string line;
     getline(cin, line);
     if (!cin) {
-        return nullptr;
+        return "";
     }
     return line;
 }

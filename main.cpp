@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
 //    DataReaderServer dataReaderServer(varDataBase);
 //    int sockfd = dataReaderServer.open(5400, 10);
 //    dataReaderServer.readSocket(sockfd);
-    VarDataBase varDataBase;
+    VarDataBase *varDataBase=new VarDataBase();
     DataReaderServer dataReaderServer(varDataBase);
     int sockfd = dataReaderServer.open(5400, 10);
     dataReaderServer.readSocket(sockfd);

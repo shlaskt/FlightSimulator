@@ -19,7 +19,7 @@ string FileReader::readLine() {
     string line;
     getline(input, line);
     if (!input) {
-        return nullptr;
+        return "";
     }
     return line;
 }

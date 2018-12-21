@@ -20,7 +20,8 @@ private:
 public:
     CommandDataBase();
 
-    ExpressionCommand *getCommand(vector<string>::iterator &it, DataReaderServer &reader);
+    ExpressionCommand *getCommand(vector<string>::iterator &it, DataReaderServer *reader);
+
 
     ~CommandDataBase();
 };
