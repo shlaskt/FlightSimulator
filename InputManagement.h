@@ -19,7 +19,6 @@ vector<string> lexer(string line);
 
 vector<string> parser(string line);
 void parserTests();
-vector<Expression*> loopPareser(vector<string> lines);
 void lexerTests();
 
 #endif //FLIGHTSIMULATOR_INPUTMANAGEMENT_H

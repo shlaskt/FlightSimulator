@@ -4,7 +4,7 @@
 
 #include "ConditionCommand.h"
 
-vector<string> ConditionCommand:: getConditionStatement(vector<string>::iterator &itor){
+vector<string> ConditionCommand::getConditionStatement(vector<string>::iterator &itor) {
     string expression_1 = *itor++; // first arg
     string condition = *itor++; // <, >, !, =
     if (*itor == "=") { // condition with 2 chars- like >=, <=, !=, ==...
@@ -18,7 +18,7 @@ vector<string> ConditionCommand:: getConditionStatement(vector<string>::iterator
 
 
 bool ConditionCommand::checkCondition(string expression_1, string condition, string expression_2,
-        Dijkstra shunting_yard) {
+                                      Dijkstra shunting_yard) {
     double ex1, ex2;     // calculate and check valid expressions
     // can change inside the loop
     try {
@@ -37,5 +37,13 @@ bool ConditionCommand::checkCondition(string expression_1, string condition, str
     if (condition == "!=") return (ex1 != ex2);
     // else ( !, = ,#, $...)
     __throw_runtime_error("Error in IfCommand - invalid condition");
+}
+
+/**
+ * set the list of the commands.
+ * @param command_list to save.
+ */
+void ConditionCommand::setListOfCommands(list<Expression *> command_list) {
+    this->list_of_commands = command_list;
 }
 

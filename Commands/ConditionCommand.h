@@ -8,17 +8,22 @@
 
 #include "../Dijkstra.h"
 #include "Command.h"
+#include "../ExpressionInterfaces/ExpressionCommand.h"
 
 using namespace std;
 
-class ConditionCommand : Command {
+class ConditionCommand : public Command {
 protected: // for if and while commands only
-    list<Command> list_of_commands;
+    list<Expression *> list_of_commands;
+
     vector<string> getConditionStatement(vector<string>::iterator &itor);
+
     bool checkCondition(string expression_1, string condition, string expression_2, Dijkstra shunting_yard);
 
 public:
     // pure virtual - cant create condition command without if / while
+    void setListOfCommands(list<Expression *> command_list);
+
     virtual void doCommand(vector<string>::iterator &itor, DataReaderServer *server) = 0;
 };
 

@@ -9,19 +9,24 @@
 #include <vector>
 #include "../Commands/Command.h"
 #include "../ExpressionInterfaces/ExpressionCommand.h"
+#include "../Commands/ConditionCommand.h"
+#include "../ExpressionInterfaces/ExpressionConditionalsCommand.h"
 
 using namespace std;
 
 class CommandDataBase {
 private:
     map<string, Command *> commands_map;
-    vector<ExpressionCommand *> to_delete;
+    map<string, ConditionCommand *> condition_commands_map;
+    vector<Expression *> to_delete;
 
 public:
     CommandDataBase();
 
     ExpressionCommand *getCommand(vector<string>::iterator &it, DataReaderServer *reader);
 
+    ExpressionConditionalsCommand *getConditionCommand(vector<string>::iterator &it,
+            DataReaderServer *reader,list<Expression *> command_list);
 
     ~CommandDataBase();
 };

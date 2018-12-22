@@ -8,10 +8,12 @@
 #include "../Dijkstra.h"
 #include "Command.h"
 
-class EqualCommand : Command{
+class EqualCommand : public Command {
     VarDataBase varDataBase;
 public:
-    virtual void doCommand(vector<string>::iterator &itor, DataReaderServer* server);
+    EqualCommand() {};
+
+    virtual void doCommand(vector<string>::iterator &itor, DataReaderServer *server);
 };
 
 

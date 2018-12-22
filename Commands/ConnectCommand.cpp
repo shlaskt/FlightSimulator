@@ -4,10 +4,13 @@
 
 #include "ConnectCommand.h"
 
-void ConnectCommand::CreateThread(struct params_to_socket *params) {
-
+ConnectCommand::ConnectCommand() {
 }
 
-void doCommand(vector<string>::iterator &itor, DataReaderServer* server){
+void ConnectCommand::CreateThread(struct params_to_socket *params) {
+    return;
+}
 
+void ConnectCommand::doCommand(vector<string>::iterator &itor, DataReaderServer *server) {
+    return;
 }

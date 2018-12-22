@@ -17,13 +17,16 @@
 
 using namespace std;
 
-class OpenDataServer : Command {
+class OpenDataServer : public Command {
     VarDataBase varDataBase;
+
     void CreateThread(struct params_to_socket *params);
 
-    struct params_to_socket * initParams(double i_port, double i_time, DataReaderServer *server);
+    struct params_to_socket *initParams(double i_port, double i_time, DataReaderServer *server);
 
 public:
+    OpenDataServer(){};
+
     virtual void doCommand(vector<string>::iterator &itor, DataReaderServer *server);
 };
 

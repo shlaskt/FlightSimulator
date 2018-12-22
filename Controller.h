@@ -7,10 +7,9 @@
 
 
 #include "DataManagement/CommandDataBase.h"
-#include "InputManagement.h"
 #include "InputReaders/StdinReader.h"
 #include "InputReaders/FileReader.h"
-#include "InputReaders/InputReader.h"
+#include "InputManagement.h"
 
 class Controller {
 private:
@@ -19,15 +18,19 @@ private:
     DataReaderServer *data_reader_server;
     InputReader *inputReader;
     vector<Expression *> to_delete;
+    vector<vector<string>> lines_vector;
+    vector<vector<string>::iterator> lines_iterators;
 
-    ExpressionCommand *getCommandFromLine(string line);
+    bool CheckValidityOfConditionCommand(vector<string> &vec);
+
+    Expression *getCommandFromLine(vector<string> parsered_line, vector<string>::iterator *it_p);
+
+    list<Expression *> conditionParser(bool find_parenthesis);
 
 public:
     Controller(int argc, char *argv[]);
 
     ~Controller();
-
-    vector<Expression *> conditionPareser();
 
     void runProgram();
 };

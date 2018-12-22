@@ -9,7 +9,7 @@
 
 #include "ConditionCommand.h"
 
-class IfCommand : ConditionCommand{
+class IfCommand :public ConditionCommand{
     VarDataBase varDataBase;
 public:
     virtual void doCommand(vector<string>::iterator &itor, DataReaderServer* server);

@@ -14,7 +14,7 @@
  */
 void PrintCommand::doCommand(vector<string>::iterator &itor, DataReaderServer *server) {
     Dijkstra shunting_yard(varDataBase.getSymbolTable());
-    string print_me = *itor; // take value to print
+    string print_me = (*itor); // take value to print
     if (print_me[0] == '"') { // string
         cout << print_me << endl;
     } else if (varDataBase.isVarExists(print_me)) { // var
