@@ -23,7 +23,7 @@ private:
 
     bool CheckValidityOfConditionCommand(vector<string> &vec);
 
-    Expression *getCommandFromLine(vector<string> parsered_line, vector<string>::iterator &it);
+    Expression *getCommandFromLine(vector<string> parsered_line, vector<string>::iterator *it_p);
 
     list<Expression *> conditionParser(bool find_parenthesis);
 

@@ -34,9 +34,11 @@ list<Expression *> Controller::conditionParser(bool find_parenthesis) {
     // read the next line.
     string line = inputReader->readLine();
     lines_vector.push_back(parser(line));
-    // parserd vector and its iterator. and save them.
-    lines_iterators.push_back(lines_vector.back().begin());
-
+    /**
+     * i want the parsered vector and also the iterator still be alive after
+     * function end, so i save them inside member.
+     */
+    lines_iterators.push_back(lines_vector[lines_vector.size() - 1].begin());
     if (!find_parenthesis && line != "{") {
         // check if didn't find "{" open to read command.
         throw runtime_error("syntax error, didn't find \"{\"");
@@ -44,8 +46,13 @@ list<Expression *> Controller::conditionParser(bool find_parenthesis) {
     // read and create commands until '}' or eof.
     while (!line.empty() && line != "}") {
         //parserd vector of string line input.
-        commands_list.push_back(getCommandFromLine(lines_vector.back(), (lines_iterators.back())));
+        commands_list.push_back(getCommandFromLine(lines_vector[lines_vector.size() - 1],
+                                                   &lines_iterators[lines_iterators.size() - 1]));
         line = inputReader->readLine();
+        if (line != "}") {
+            lines_vector.push_back(parser(line));
+            lines_iterators.push_back(lines_vector[lines_vector.size() - 1].begin());
+        }
     }
     return commands_list;
 }
@@ -57,12 +64,10 @@ void Controller::runProgram() {
     while (!line.empty()) {
         // save all the lines and the iterators on each line.
         vector<string> parsered_line = parser(line);
-        lines_vector.push_back(parsered_line);
-        // parserd vector and its iterator.
-        lines_iterators.push_back((lines_vector.back()).begin());
+        vector<string>::iterator it = parsered_line.begin();
         //parse vector in to expression.
         //send the last iterator made from the vector.
-        Expression *expression = getCommandFromLine(parsered_line, lines_iterators.back());
+        Expression *expression = getCommandFromLine(parsered_line, &it);
         expression->calculate();
         line = inputReader->readLine();
     }
@@ -74,22 +79,22 @@ void Controller::runProgram() {
  * @param data_reader to connet with the commands.
  * @return command interpeted in specific line.
  */
-Expression *Controller::getCommandFromLine(vector<string> parsered_line, vector<string>::iterator &it) {
+Expression *Controller::getCommandFromLine(vector<string> parsered_line, vector<string>::iterator *it_p) {
     Expression *expression_command;
+    vector<string>::iterator it = parsered_line.begin();
     //split to cases, if its condition command create and return condition
     if ((*it) == "while" || (*it) == "if") {
-        vector<string>::iterator iterate_inside_scope = it;
         //check if saw "{" in the same line as the command if or while.
         bool saw_parenthesis = CheckValidityOfConditionCommand(parsered_line);
         // add all commands to command list in the scope between {};
         list<Expression *> command_lists = conditionParser(saw_parenthesis);
         // create conditional command.
         expression_command =
-                (command_data_base->getConditionCommand(iterate_inside_scope, data_reader_server, command_lists));
+                (command_data_base->getConditionCommand(*it_p, data_reader_server, command_lists));
 
     } else {
         // expression command create.
-        expression_command = (command_data_base->getCommand(it, data_reader_server));
+        expression_command = (command_data_base->getCommand(*it_p, data_reader_server));
     }
     to_delete.push_back(expression_command);
     return expression_command;

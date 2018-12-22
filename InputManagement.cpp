@@ -114,7 +114,7 @@ void lexerTests() {
  * @param end iteartor end.
  * @return string exprresion.
  */
-string makeExpression(vector<string>::iterator &it, vector<string>::iterator &end) {
+string makeExpression(vector<string>::iterator &it, vector<string> vec) {
     string expression;
     bool is_this_operator;
     bool is_next_operator;
@@ -124,9 +124,12 @@ string makeExpression(vector<string>::iterator &it, vector<string>::iterator &en
     // case is a quote add all the quote to one expression.
     if (current[0] == '\"') {
         expression += *it;
+        if (current.back() == '\"') return expression;
         do {
+            ++it;
+            // if only one expression end function.
             //forword iterator.
-            current = *(++it);
+            current = *(it);
             expression = expression + " " + current;
         } while (current.back() != '\"');
         return expression;
@@ -149,13 +152,13 @@ string makeExpression(vector<string>::iterator &it, vector<string>::iterator &en
             is_next_operator = true;
         } else {
             // if there is right paranthesis and after it a number.
-            if (is_this_right_parenthesis && it != end) {
+            if (is_this_right_parenthesis && it != vec.end()) {
                 break;
             }
             is_next_operator = false;
         }
         is_this_right_parenthesis = false;
-    } while ((is_this_operator || is_next_operator) && it != end && current != ",");
+    } while ((is_this_operator || is_next_operator) && it != vec.end() && current != ",");
     // if reached to the end, return it -- * twice because end loop do ++ becuase need to read the current value.
     it--;
     //added spaces to make it valid.
@@ -173,7 +176,7 @@ vector<string> parser(string line) {
         throw runtime_error("error in lexering line");
     }
     // get first value and forword the iterator.
-    vector<string>::iterator it = (lexered_line.begin())++;
+    vector<string>::iterator it = (lexered_line.begin());
     vector<string> parserd_line;
     // save expression in one place together.
     bool is_neg = true;
@@ -192,30 +195,28 @@ vector<string> parser(string line) {
         if (current == "-") {
             if ((*prev(it, 1) == "=") || i == 1 || (i > 1 && (*prev(it, 1) == ","))) {
                 // send the end of the iterator to know when to stop.
-                vector<string>::iterator it_end = lexered_line.end();
+//                vector<string>::iterator it_end = lexered_line.end();
                 // call the makeExpression with the vector the string from "-" include.
-                expression += makeExpression(it, it_end);
+                expression += makeExpression(it, lexered_line);
                 parserd_line.push_back(expression);
                 continue;
             }
-        }
-        else if(current[0] == '\"'){
-            vector<string>::iterator it_end = lexered_line.end();
-            expression += makeExpression(it, it_end);
+        } else if (current[0] == '\"') {
+//            vector<string>::iterator it_end = lexered_line.end();
+            expression += makeExpression(it, lexered_line);
             parserd_line.push_back(expression);
-        }
-        else if (current == "+" || current == "-" || current == "*" ||
-                         current == "/" || current == "(") {
+        } else if (current == "+" || current == "-" || current == "*" ||
+                   current == "/" || current == "(") {
             // send the end of the iterator to know when to stop.
-            vector<string>::iterator it_end = lexered_line.end();
+//            vector<string>::iterator it_end = lexered_line.end();
             //send to function that make expression.
             if (current == "(") {
                 // call the makeExpression with the vector the string from '(' include.
-                expression += makeExpression(it, it_end);
+                expression += makeExpression(it, lexered_line);
             } else {
                 // its an operator, sent the vector from before the operator.
                 vector<string>::iterator prev_it = prev(it, 1);
-                expression += makeExpression(prev_it, it_end);
+                expression += makeExpression(prev_it, lexered_line);
                 // update the iterator to its place
                 it = prev_it;
                 // need to remove the previous argument added that need to be begin of expression.
