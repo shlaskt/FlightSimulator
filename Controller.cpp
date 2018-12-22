@@ -46,8 +46,9 @@ list<Expression *> Controller::conditionParser(bool find_parenthesis) {
     // read and create commands until '}' or eof.
     while (!line.empty() && line != "}") {
         //parserd vector of string line input.
-        commands_list.push_back(getCommandFromLine(lines_vector[lines_vector.size() - 1],
-                                                   &lines_iterators[lines_iterators.size() - 1]));
+        Expression *ex = getCommandFromLine(lines_vector[lines_vector.size() - 1],
+                                            lines_iterators[lines_iterators.size() - 1]);
+        commands_list.push_back(ex);
         line = inputReader->readLine();
         if (line != "}") {
             lines_vector.push_back(parser(line));
@@ -67,7 +68,7 @@ void Controller::runProgram() {
         vector<string>::iterator it = parsered_line.begin();
         //parse vector in to expression.
         //send the last iterator made from the vector.
-        Expression *expression = getCommandFromLine(parsered_line, &it);
+        Expression *expression = getCommandFromLine(parsered_line, it);
         expression->calculate();
         line = inputReader->readLine();
     }
@@ -79,7 +80,7 @@ void Controller::runProgram() {
  * @param data_reader to connet with the commands.
  * @return command interpeted in specific line.
  */
-Expression *Controller::getCommandFromLine(vector<string> parsered_line, vector<string>::iterator *it_p) {
+Expression *Controller::getCommandFromLine(vector<string> &parsered_line, vector<string>::iterator &it_p) {
     Expression *expression_command;
     vector<string>::iterator it = parsered_line.begin();
     //split to cases, if its condition command create and return condition
@@ -90,11 +91,11 @@ Expression *Controller::getCommandFromLine(vector<string> parsered_line, vector<
         list<Expression *> command_lists = conditionParser(saw_parenthesis);
         // create conditional command.
         expression_command =
-                (command_data_base->getConditionCommand(*it_p, data_reader_server, command_lists));
+                (command_data_base->getConditionCommand(it_p, data_reader_server, command_lists));
 
     } else {
         // expression command create.
-        expression_command = (command_data_base->getCommand(*it_p, data_reader_server));
+        expression_command = (command_data_base->getCommand(it_p, data_reader_server));
     }
     to_delete.push_back(expression_command);
     return expression_command;
