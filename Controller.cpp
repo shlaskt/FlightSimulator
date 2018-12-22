@@ -44,7 +44,7 @@ list<Expression *> Controller::conditionParser(bool find_parenthesis) {
     // read and create commands until '}' or eof.
     while (!line.empty() && line != "}") {
         //parserd vector of string line input.
-        commands_list.push_back(getCommandFromLine(parsered_line,(lines_iterators.back())));
+        commands_list.push_back(getCommandFromLine(lines_vector.back(), (lines_iterators.back())));
         line = inputReader->readLine();
     }
     return commands_list;
@@ -53,6 +53,7 @@ list<Expression *> Controller::conditionParser(bool find_parenthesis) {
 void Controller::runProgram() {
     //reading line(stdin or file)
     string line = inputReader->readLine();
+    int index = 0;
     while (!line.empty()) {
         // save all the lines and the iterators on each line.
         vector<string> parsered_line = parser(line);
@@ -61,7 +62,7 @@ void Controller::runProgram() {
         lines_iterators.push_back((lines_vector.back()).begin());
         //parse vector in to expression.
         //send the last iterator made from the vector.
-        Expression *expression = getCommandFromLine(parsered_line,lines_iterators.back());
+        Expression *expression = getCommandFromLine(parsered_line, lines_iterators.back());
         expression->calculate();
         line = inputReader->readLine();
     }
@@ -77,13 +78,14 @@ Expression *Controller::getCommandFromLine(vector<string> parsered_line, vector<
     Expression *expression_command;
     //split to cases, if its condition command create and return condition
     if ((*it) == "while" || (*it) == "if") {
+        vector<string>::iterator iterate_inside_scope = it;
         //check if saw "{" in the same line as the command if or while.
         bool saw_parenthesis = CheckValidityOfConditionCommand(parsered_line);
         // add all commands to command list in the scope between {};
         list<Expression *> command_lists = conditionParser(saw_parenthesis);
         // create conditional command.
         expression_command =
-                (command_data_base->getConditionCommand(it, data_reader_server, command_lists));
+                (command_data_base->getConditionCommand(iterate_inside_scope, data_reader_server, command_lists));
 
     } else {
         // expression command create.
