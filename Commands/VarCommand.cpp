@@ -14,7 +14,7 @@
  */
 void VarCommand::doCommand(vector<string>::iterator &itor, DataReaderServer *server) {
     Dijkstra shunting_yard(varDataBase.getSymbolTable());
-    string var_name = *itor;
+    string var_name = (*itor);
     // check valid input
     if (isdigit(var_name[0]) || var_name == "var"){ // var cant start with digit or called var
         __throw_runtime_error("invalid name of var");

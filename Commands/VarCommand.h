@@ -9,7 +9,7 @@
 
 #include "Command.h"
 
-class VarCommand : Command{
+class VarCommand : public Command{
     VarDataBase varDataBase;
 public:
     virtual void doCommand(vector<string>::iterator &itor, DataReaderServer* server);

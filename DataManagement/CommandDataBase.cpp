@@ -3,6 +3,33 @@
 //
 
 #include "CommandDataBase.h"
+#include "../Commands/ConnectCommand.h"
+#include "../Commands/OpenDataServer.h"
+#include "../Commands/EqualCommand.h"
+#include "../Commands/IfCommand.h"
+#include "../Commands/WhileCommand.h"
+#include "../Commands/PrintCommand.h"
+#include "../Commands/SleepCommand.h"
+#include "../Commands/VarCommand.h"
+
+
+CommandDataBase::CommandDataBase() {
+    /**
+     * Regular commands
+     */
+    commands_map["connect"] = new ConnectCommand();
+    commands_map["equal"] = new EqualCommand();
+    commands_map["OpenDataServer"] = new OpenDataServer();
+    commands_map["print"] = new PrintCommand();
+    commands_map["sleep"] = new SleepCommand();
+    commands_map["var"] = new VarCommand();
+
+    /**
+    * Conditional commands
+    */
+    condition_commands_map["if"] = new IfCommand();
+    condition_commands_map["while"] = new WhileCommand();
+}
 
 /**
  * the function get iterator as an input and make a command by the name of iterator by command map.
@@ -16,23 +43,46 @@ ExpressionCommand *CommandDataBase::getCommand(vector<string>::iterator &it, Dat
     string command_name = (*it);
     if (commands_map.find(command_name) != commands_map.end()) {
         Command *c = commands_map[command_name];
-        ExpressionCommand *ex_command = new ExpressionCommand(c, ++it, rd);
+        ++it;
+        ExpressionCommand *ex_command = new ExpressionCommand(c, it, rd);
         to_delete.push_back(ex_command);
         return ex_command;
     }
     // if no matching key.
-    throw runtime_error("there is no such var");
+    throw runtime_error("there is no such command");
 }
+
+
+ExpressionConditionalsCommand *
+CommandDataBase::getConditionCommand(vector<string>::iterator &it, DataReaderServer *reader,
+                                     list<Expression *> command_list) {
+    // first parameter, the command name.
+    string command_name = (*it);
+    if (condition_commands_map.find(command_name) != condition_commands_map.end()) {
+        ConditionCommand *c = condition_commands_map[command_name];
+        ExpressionConditionalsCommand *ex_command = new ExpressionConditionalsCommand(c, ++it, reader, command_list);
+        to_delete.push_back(ex_command);
+        return ex_command;
+    }
+    // if no matching key.
+    throw runtime_error("there is no such command");
+}
+
+
 /**
  * delete all the ExpressionCommand and .
  */
 CommandDataBase::~CommandDataBase() {
     //delete all the ExpressionCommand and Command.
-    for (vector<ExpressionCommand *>::iterator it = to_delete.begin(); it != to_delete.end(); ++it) {
+    for (vector<Expression *>::iterator it = to_delete.begin(); it != to_delete.end(); ++it) {
         delete (*it);
     }
-    for (map<string,Command *>::iterator it_command = commands_map.begin();
-    it_command != commands_map.end(); ++it_command) {
+    for (map<string, Command *>::iterator it_command = commands_map.begin();
+         it_command != commands_map.end(); ++it_command) {
+        delete ((*it_command).second);
+    }
+    for (map<string, ConditionCommand *>::iterator it_command = condition_commands_map.begin();
+         it_command != condition_commands_map.end(); ++it_command) {
         delete ((*it_command).second);
     }
 }

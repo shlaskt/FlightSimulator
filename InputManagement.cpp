@@ -33,6 +33,8 @@ string addSpaces(string line) {
             case '<':
             case '!':
             case ',':
+            case '{':
+            case '}':
             case ')':
             case '(': {
                 if (!in_quotation_marks) {
@@ -117,10 +119,20 @@ string makeExpression(vector<string>::iterator &it, vector<string>::iterator &en
     bool is_this_operator;
     bool is_next_operator;
     bool is_this_right_parenthesis = false;
+    bool is_quote;
     string current = *it;
+    // case is a quote add all the quote to one expression.
+    if (current[0] == '\"') {
+        expression += *it;
+        do {
+            //forword iterator.
+            current = *(++it);
+            expression = expression + " " + current;
+        } while (current.back() != '\"');
+        return expression;
+    }
     do {
         // adding value to expression.
-
         expression += current;
         if (current == "+" || current == "-" || current == "*" || current == "/"
             || current == "(" || current == ")") {
@@ -187,8 +199,13 @@ vector<string> parser(string line) {
                 continue;
             }
         }
-
-        if (current == "+" || current == "-" || current == "*" || current == "/" || current == "(") {
+        else if(current[0] == '\"'){
+            vector<string>::iterator it_end = lexered_line.end();
+            expression += makeExpression(it, it_end);
+            parserd_line.push_back(expression);
+        }
+        else if (current == "+" || current == "-" || current == "*" ||
+                         current == "/" || current == "(") {
             // send the end of the iterator to know when to stop.
             vector<string>::iterator it_end = lexered_line.end();
             //send to function that make expression.

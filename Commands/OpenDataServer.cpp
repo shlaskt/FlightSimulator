@@ -22,8 +22,8 @@ void OpenDataServer::doCommand(vector<string>::iterator &itor, DataReaderServer 
     double i_port, i_time; // change to double?
     // check valid - should be 2 non-negative numbers
     try {
-        i_port = shunting_yard(*itor); // initialize port
-        i_time = shunting_yard(*++itor); // initialize server
+        i_port = shunting_yard (*itor); // initialize port
+        i_time = shunting_yard (*++itor); // initialize server
     } catch (const out_of_range &no_such_var) {
         // if there is no var in this name- dijkstra throw error
         __throw_runtime_error("invalid params to OpenDataServer Command");

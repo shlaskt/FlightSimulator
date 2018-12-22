@@ -2,6 +2,7 @@
 #include "InputManagement.h"
 #include "Dijkstra.h"
 #include "Sockets/DataReaderServer.h"
+#include "Controller.h"
 #include <string>
 /**
  * for now, do nothing.
@@ -10,16 +11,18 @@
 using namespace std;
 
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
+    Controller *controller = new Controller(argc, argv);
+    controller->runProgram();
 //    parserTests();
 //    VarDataBase varDataBase;
 //    DataReaderServer dataReaderServer(varDataBase);
 //    int sockfd = dataReaderServer.open(5400, 10);
 //    dataReaderServer.readSocket(sockfd);
-    VarDataBase *varDataBase=new VarDataBase();
-    DataReaderServer dataReaderServer(varDataBase);
-    int sockfd = dataReaderServer.open(5400, 10);
-    dataReaderServer.readSocket(sockfd);
+//    VarDataBase *varDataBase=new VarDataBase();
+//    DataReaderServer dataReaderServer(varDataBase);
+//    int sockfd = dataReaderServer.open(5400, 10);
+//    dataReaderServer.readSocket(sockfd);
 //    map<string,double> map;
 //    map["key1"]=5.2;
 //    map["key2"]=4;

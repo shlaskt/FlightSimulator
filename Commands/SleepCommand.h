@@ -11,7 +11,7 @@
 
 #define MILI_SEC 1000
 
-class SleepCommand : Command{
+class SleepCommand : public Command{
     VarDataBase varDataBase;
 public:
     virtual void doCommand(vector<string>::iterator &itor, DataReaderServer* server);

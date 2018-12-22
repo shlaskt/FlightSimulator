@@ -23,20 +23,29 @@ Controller::Controller(int argc, char **argv) {
 
 /**
  * work on lines. make every line to command and return the command list.
- * @param lines to convert to commands.
- * @param commandDataBase to get the commands from.
- * @param dr read and write to server.
- * @return commands list to execute.
+ * use the member commandDataBase to get the commands from.
+ * use the member DataReaderServer to read and write to server.
+ * @param find_parenthesis check if need to find "{" before making commands.
+ * @return commands list to execute. "syntax error, didn't find "{""
  */
-vector<Expression *> Controller::conditionPareser() {
+list<Expression *> Controller::conditionParser(bool find_parenthesis) {
     //list of commands to execute.
-    vector<Expression *> commands_list;
+    list<Expression *> commands_list;
     // read the next line.
     string line = inputReader->readLine();
+    lines_vector.push_back(parser(line));
+    // parserd vector and its iterator. and save them.
+    lines_iterators.push_back(lines_vector.back().begin());
+
+    if (!find_parenthesis && line != "{") {
+        // check if didn't find "{" open to read command.
+        throw runtime_error("syntax error, didn't find \"{\"");
+    }
     // read and create commands until '}' or eof.
     while (!line.empty() && line != "}") {
         //parserd vector of string line input.
-        commands_list.push_back(getCommandFromLine(line));
+        commands_list.push_back(getCommandFromLine(parsered_line,(lines_iterators.back())));
+        line = inputReader->readLine();
     }
     return commands_list;
 }
@@ -45,9 +54,16 @@ void Controller::runProgram() {
     //reading line(stdin or file)
     string line = inputReader->readLine();
     while (!line.empty()) {
+        // save all the lines and the iterators on each line.
+        vector<string> parsered_line = parser(line);
+        lines_vector.push_back(parsered_line);
+        // parserd vector and its iterator.
+        lines_iterators.push_back((lines_vector.back()).begin());
         //parse vector in to expression.
-        Expression *expression = getCommandFromLine(line);
+        //send the last iterator made from the vector.
+        Expression *expression = getCommandFromLine(parsered_line,lines_iterators.back());
         expression->calculate();
+        line = inputReader->readLine();
     }
 }
 
@@ -57,26 +73,38 @@ void Controller::runProgram() {
  * @param data_reader to connet with the commands.
  * @return command interpeted in specific line.
  */
-ExpressionCommand *Controller::getCommandFromLine(string line) {
-    vector<string> parsered_line = parser(line);
-    vector<string>::iterator it = parsered_line.begin();
+Expression *Controller::getCommandFromLine(vector<string> parsered_line, vector<string>::iterator &it) {
+    Expression *expression_command;
     //split to cases, if its condition command create and return condition
-    if (*it == "while" || *it =="if"){
-/**
- *
- * add to command data server conditional command data_base and make one and return.
- *
- *
- *
- *
- *
- *
- */
+    if ((*it) == "while" || (*it) == "if") {
+        //check if saw "{" in the same line as the command if or while.
+        bool saw_parenthesis = CheckValidityOfConditionCommand(parsered_line);
+        // add all commands to command list in the scope between {};
+        list<Expression *> command_lists = conditionParser(saw_parenthesis);
+        // create conditional command.
+        expression_command =
+                (command_data_base->getConditionCommand(it, data_reader_server, command_lists));
 
+    } else {
+        // expression command create.
+        expression_command = (command_data_base->getCommand(it, data_reader_server));
     }
-    ExpressionCommand *expressionCommand = (command_data_base->getCommand(it, data_reader_server));
-    to_delete.push_back(expressionCommand);
-    return expressionCommand;
+    to_delete.push_back(expression_command);
+    return expression_command;
+}
+
+/**
+ * get iterator to a line of condition and check if it has "{".
+ * throw exception if not.
+ * @param it to iterate the line and find "{".
+ */
+bool Controller::CheckValidityOfConditionCommand(vector<string> &vec) {
+    for (vector<string>::iterator it = vec.begin(); it != vec.end(); ++it) {
+        if (*it == "{") {
+            return true;
+        }
+    }
+    return false;
 }
 
 Controller::~Controller() {

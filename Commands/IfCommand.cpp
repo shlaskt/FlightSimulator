@@ -19,8 +19,8 @@ void IfCommand::doCommand(vector<string>::iterator &itor, DataReaderServer *serv
 
     if (checkCondition(expression_1, condition, expression_2, shunting_yard)) {
         // do all the commands in the if untill the "}"
-        for (list<Command>::iterator it= list_of_commands.begin();++it){
-            (*it).doCommand(itor, *server);
+        for (list<Expression *>::iterator it = list_of_commands.begin(); it != list_of_commands.end(); ++it) {
+            (*it)->calculate();
         }
     }
     ++itor; // increase iterator

@@ -8,7 +8,7 @@
 
 #include "ConditionCommand.h"
 
-class WhileCommand : ConditionCommand{
+class WhileCommand : public ConditionCommand{
     VarDataBase varDataBase;
 public:
     virtual void doCommand(vector<string>::iterator &itor, DataReaderServer* server);

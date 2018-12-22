@@ -8,11 +8,14 @@
 
 #include "Command.h"
 
-class ConnectCommand : Command{
-    void CreateThread(struct params_to_socket* params);
+class ConnectCommand : public Command {
+private:
+    void CreateThread(struct params_to_socket *params);
 
 public:
-    virtual void doCommand(vector<string>::iterator &itor, DataReaderServer* server);
+    ConnectCommand();
+
+    virtual void doCommand(vector<string>::iterator &itor, DataReaderServer *server);
 };
 
 

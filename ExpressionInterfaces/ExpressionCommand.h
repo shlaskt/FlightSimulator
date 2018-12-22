@@ -14,7 +14,7 @@
 class ExpressionCommand : public Expression {
 private:
     Command *command;
-    vector<string>::iterator iterator;
+    vector<string>::iterator &iterator;
     DataReaderServer *reader;
 
 public:

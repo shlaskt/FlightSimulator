@@ -10,7 +10,11 @@
  */
 FileReader::FileReader(string file_name) {
     input = ifstream(file_name);
+    if (!input) {
+        cout << "Cannot open " << file_name << " file." << endl;
+    }
 }
+
 /**
  * read lines from the file and return nullptr equal false if end of file or other problem.
  * @return string line or false.
