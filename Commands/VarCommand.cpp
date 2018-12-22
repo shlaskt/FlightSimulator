@@ -35,7 +35,7 @@ void VarCommand::doCommand(vector<string>::iterator &itor, DataReaderServer *ser
     } else { // no bind-> assign to expression
         double val;
         try {
-            val = shunting_yard(*++itor); // get the number / var value to assign the new var
+            val = shunting_yard(*itor); // get the number / var value to assign the new var
         } catch (const out_of_range &no_such_var) {
             // if there is no var in this name- dijkstra throw error
             __throw_runtime_error("invalid params to var");

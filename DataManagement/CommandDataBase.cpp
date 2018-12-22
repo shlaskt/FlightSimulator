@@ -19,7 +19,7 @@ CommandDataBase::CommandDataBase() {
      */
     commands_map["connect"] = new ConnectCommand();
     commands_map["equal"] = new EqualCommand();
-    commands_map["OpenDataServer"] = new OpenDataServer();
+    commands_map["openDataServer"] = new OpenDataServer();
     commands_map["print"] = new PrintCommand();
     commands_map["sleep"] = new SleepCommand();
     commands_map["var"] = new VarCommand();
