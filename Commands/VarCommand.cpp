@@ -12,8 +12,8 @@
  * @param itor iterator on the string
  * @param server
  */
-int VarCommand::doCommand(vector<string> line, int i, DataReaderServer *server) {
-    Dijkstra shunting_yard(varDataBase.getSymbolTable());
+int VarCommand::doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base) {
+    Dijkstra shunting_yard(var_data_base->getSymbolTable());
     string var_name = line.at(i++);
     // check valid input
     if (isdigit(var_name[0]) || var_name == "var"){ // var cant start with digit or called var
@@ -26,11 +26,11 @@ int VarCommand::doCommand(vector<string> line, int i, DataReaderServer *server) 
     if (line.at(i) == "bind") { // assign to path
         // can be bind to path, or bind to path of other var
         string arg_to_bind = line.at(++i);
-        if (varDataBase.isVarExists(arg_to_bind)) { // var, bind to the var's path
-            string path = varDataBase.getPath(arg_to_bind);
-            varDataBase.createAndBindVarToPath(var_name, path);
+        if (var_data_base->isVarExists(arg_to_bind)) { // var, bind to the var's path
+            string path = var_data_base->getPath(arg_to_bind);
+            var_data_base->createAndBindVarToPath(var_name, path);
         } else { // this is a path, bind directed to it
-            varDataBase.createAndBindVarToPath(var_name, arg_to_bind);
+            var_data_base->createAndBindVarToPath(var_name, arg_to_bind);
         }
     } else { // no bind-> assign to expression
         double val;
@@ -41,7 +41,7 @@ int VarCommand::doCommand(vector<string> line, int i, DataReaderServer *server) 
             // if there is no var in this name- dijkstra throw error
             __throw_runtime_error("invalid params to var");
         }
-        varDataBase.assignVarValue(var_name, val);
+        var_data_base->assignVarValue(var_name, val);
     }
     return ++i; // increase index
 }

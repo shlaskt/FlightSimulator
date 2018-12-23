@@ -5,7 +5,7 @@
 #include "ConnectCommand.h"
 
 
-int ConnectCommand::doCommand(vector<string> line, int i, DataReaderServer *server) {
+int ConnectCommand::doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base) {
     Dijkstra shunting_yard(varDataBase.getSymbolTable());
     string ip = line.at(i++); // get ip
     string port_s = line.at(i++);
