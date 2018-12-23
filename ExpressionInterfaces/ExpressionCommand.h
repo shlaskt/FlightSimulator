@@ -17,9 +17,10 @@ private:
     vector<string> line;
     int index;
     DataReaderServer *reader;
+    VarDataBase *varDataBase;
 
 public:
-    ExpressionCommand(Command *command,vector<string>vec, int index, DataReaderServer *reader);
+    ExpressionCommand(Command *command,vector<string>vec, int index, DataReaderServer *reader,VarDataBase *vardb);
 
     double calculate();
 

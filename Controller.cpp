@@ -92,11 +92,12 @@ Expression *Controller::getCommandFromLine(vector<string> &parsered_line, int &i
         list<Expression *> command_lists = conditionParser(saw_parenthesis);
         // create conditional command.
         expression_command =
-                (command_data_base->getConditionCommand(parsered_line,index, data_reader_server, command_lists));
+                (command_data_base->getConditionCommand(parsered_line, index, data_reader_server, command_lists,
+                                                        var_data_base));
 
     } else {
         // expression command create.
-        expression_command = (command_data_base->getCommand(parsered_line,index, data_reader_server));
+        expression_command = (command_data_base->getCommand(parsered_line, index, data_reader_server, var_data_base));
     }
     to_delete.push_back(expression_command);
     return expression_command;

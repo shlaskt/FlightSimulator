@@ -20,6 +20,7 @@ double ExpressionCommand::calculate() {
  * @param reader to connect with.
  */
 ExpressionCommand::ExpressionCommand(Command *command, vector<string> vec,int index,
-                                     DataReaderServer *reader) : command(command), line(vec),
+                                     DataReaderServer *reader,VarDataBase *vardb) : command(command), line(vec),
                                      index(index),
-                                     reader(reader) {}
+                                     reader(reader),
+                                     varDataBase(vardb){}
