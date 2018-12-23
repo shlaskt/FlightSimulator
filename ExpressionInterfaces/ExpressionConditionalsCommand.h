@@ -19,8 +19,8 @@ private:
     DataReaderServer *reader;
     list<Expression *> command_lists;
 public:
-    ExpressionConditionalsCommand(ConditionCommand *command, vector<string> vec,int index,
-                                  DataReaderServer *reader, list<Expression *> list_c);
+    ExpressionConditionalsCommand(ConditionCommand *command, vector<string> vec, int index,
+                                  DataReaderServer *reader, list<Expression *> command_lists);
 
     double calculate();
 };

@@ -6,6 +6,7 @@
 
 InputManager::InputManager(InputReader *inputReader) : inputReader(inputReader) {}
 
+
 vector<string> &InputManager::readParseredLine() {
     string line = inputReader->readLine();
     vector<string> vec;

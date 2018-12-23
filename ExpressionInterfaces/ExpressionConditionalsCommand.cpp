@@ -11,11 +11,11 @@
  */
 double ExpressionConditionalsCommand::calculate() {
     command->setListOfCommands(command_lists);
-    command->doCommand(vec,index, reader);
+    command->doCommand(vec, index, reader);
     return 0;
 }
 
-ExpressionConditionalsCommand::ExpressionConditionalsCommand(ConditionCommand *command, vector<string> vec, int index,
-                                                             DataReaderServer *reader, list<Expression *> list_c) {
-
-}
+ExpressionConditionalsCommand::ExpressionConditionalsCommand(ConditionCommand *command, vector<string> vec,
+                                                             int index, DataReaderServer *reader,
+                                                             list<Expression *> command_lists) : command(
+        command), vec(vec), index(index), reader(reader), command_lists(command_lists) {}
