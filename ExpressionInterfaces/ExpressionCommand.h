@@ -9,6 +9,7 @@
 #include "../Commands/Command.h"
 #include "Expression.h"
 #include "../Sockets/DataReaderServer.h"
+#include "../Sockets/Client.h"
 #include <vector>
 
 class ExpressionCommand : public Expression {
@@ -17,10 +18,12 @@ private:
     vector<string> line;
     int index;
     DataReaderServer *reader;
+    Client *client;
     VarDataBase *varDataBase;
 
 public:
-    ExpressionCommand(Command *command,vector<string>vec, int index, DataReaderServer *reader,VarDataBase *vardb);
+    ExpressionCommand(Command *command, const vector<string> &line, int index, DataReaderServer *reader, Client *client,
+                      VarDataBase *varDataBase);
 
     double calculate();
 

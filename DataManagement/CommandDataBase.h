@@ -11,7 +11,15 @@
 #include "../ExpressionInterfaces/ExpressionCommand.h"
 #include "../Commands/ConditionCommand.h"
 #include "../ExpressionInterfaces/ExpressionConditionalsCommand.h"
-
+#include "../Commands/ConnectCommand.h"
+#include "../Commands/OpenDataServer.h"
+#include "../Commands/EqualCommand.h"
+#include "../Commands/IfCommand.h"
+#include "../Commands/WhileCommand.h"
+#include "../Commands/PrintCommand.h"
+#include "../Commands/SleepCommand.h"
+#include "../Commands/VarCommand.h"
+#include "../Sockets/Client.h"
 using namespace std;
 
 class CommandDataBase {
@@ -23,10 +31,11 @@ private:
 public:
     CommandDataBase();
 
-    ExpressionCommand *getCommand(vector<string> vec,int index, DataReaderServer *reader,VarDataBase *varDataBase);
+    ExpressionCommand *getCommand(vector<string> vec,int index, DataReaderServer *reader,VarDataBase *varDataBase,
+    Client *client);
 
     ExpressionConditionalsCommand *getConditionCommand(vector<string> vec,int index,
-            DataReaderServer *reader,vector<Expression *> command_list,VarDataBase *varDataBase);
+            DataReaderServer *reader,Client *client,vector<Expression *> command_list,VarDataBase *varDataBase);
 
     ~CommandDataBase();
 };
