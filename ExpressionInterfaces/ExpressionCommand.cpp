@@ -9,7 +9,7 @@
  * @return 0 if succeeded
  */
 double ExpressionCommand::calculate() {
-    command->doCommand(line,index, reader);
+    command->doCommand(line,index, reader, varDataBase);
     return 0;
 }
 

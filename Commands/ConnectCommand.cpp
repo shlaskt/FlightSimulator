@@ -6,7 +6,7 @@
 
 
 int ConnectCommand::doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base) {
-    Dijkstra shunting_yard(varDataBase.getSymbolTable());
+    Dijkstra shunting_yard(var_data_base->getSymbolTable());
     string ip = line.at(i++); // get ip
     string port_s = line.at(i++);
     // check valid and return port (to involve double calculate)

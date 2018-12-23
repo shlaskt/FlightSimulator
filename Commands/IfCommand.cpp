@@ -11,7 +11,7 @@
  * @param server
  */
 int IfCommand::doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base) {
-    Dijkstra shunting_yard(var_data_base.getSymbolTable());
+    Dijkstra shunting_yard(var_data_base->getSymbolTable());
     vector<string> condition_statement = getConditionStatement(line, i);
     string expression_1 = condition_statement.at(0);
     string condition = condition_statement.at(1);
