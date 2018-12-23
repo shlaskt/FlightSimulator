@@ -13,7 +13,8 @@ class EqualCommand : public Command {
 public:
     EqualCommand() {};
 
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base);
+    virtual int doCommand(vector<string> line, int i, DataReaderServer *server,Client *client,
+            VarDataBase* var_data_base);
 };
 
 

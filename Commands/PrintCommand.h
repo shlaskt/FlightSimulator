@@ -12,7 +12,8 @@
 class PrintCommand : public Command {
     // VarDataBase varDataBase;
 public:
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base);
+    virtual int doCommand(vector<string> line, int i, DataReaderServer *server,
+            Client *client, VarDataBase* var_data_base);
 };
 
 

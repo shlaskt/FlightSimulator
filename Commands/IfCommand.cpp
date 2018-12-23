@@ -10,7 +10,8 @@
  * @param itor
  * @param server
  */
-int IfCommand::doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase *var_data_base) {
+int IfCommand::doCommand(vector<string> line, int i, DataReaderServer *server,
+        Client *client, VarDataBase *var_data_base) {
     vector<Expression*> current_commands = this->list_of_commands;
     Dijkstra shunting_yard(var_data_base->getSymbolTable());
     vector<string> condition_statement = getConditionStatement(line, i);

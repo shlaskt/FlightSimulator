@@ -12,11 +12,12 @@
  * @param itor iterator on the string
  * @param server
  */
-int VarCommand::doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base) {
+int VarCommand::doCommand(vector<string> line, int i, DataReaderServer *server,
+                          Client *client, VarDataBase *var_data_base) {
     Dijkstra shunting_yard(var_data_base->getSymbolTable());
     string var_name = line.at(i++);
     // check valid input
-    if (isdigit(var_name[0]) || var_name == "var"){ // var cant start with digit or called var
+    if (isdigit(var_name[0]) || var_name == "var") { // var cant start with digit or called var
         __throw_runtime_error("invalid name of var");
     }
     if (line.at(i++) != "=") { // second arg must be operator "="

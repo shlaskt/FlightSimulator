@@ -11,7 +11,8 @@
  * @param itor iterator
  * @param server
  */
-int EqualCommand::doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base) {
+int EqualCommand::doCommand(vector<string> line, int i, DataReaderServer *server,
+        Client *client, VarDataBase* var_data_base) {
     Dijkstra shunting_yard(var_data_base->getSymbolTable());
     string var = (line[i++]);
     double val;
