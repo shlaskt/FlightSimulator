@@ -4,7 +4,8 @@
 
 #include "InputManager.h"
 
-InputManager::InputManager(InputReader *inputReader) : inputReader(inputReader) {};
+InputManager::InputManager(InputReader *inputReader) : inputReader(inputReader) {}
+
 
 vector<string> &InputManager::readParseredLine() {
     string line = inputReader->readLine();
