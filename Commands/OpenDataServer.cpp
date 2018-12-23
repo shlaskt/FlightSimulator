@@ -18,9 +18,10 @@ struct params_to_socket {
  *
  * @param args x,y-> port, time
  */
-int OpenDataServer::doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base) {
+int OpenDataServer::doCommand(vector<string> line, int i, DataReaderServer *server,
+        Client *client, VarDataBase* var_data_base) {
     Dijkstra shunting_yard(var_data_base->getSymbolTable());
-    double i_port, i_time; // change to double?
+    double i_port, i_time;
     // check valid - should be 2 non-negative numbers
     try {
         i_port = shunting_yard(line[i]); // initialize port

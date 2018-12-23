@@ -97,8 +97,8 @@ string DataReaderServer::readSocket(int newsockfd) {
             cout << buffer << endl; // for check
         }
         vector<double> split_buff = split(buffer);
-        this->updatePathMap(split_buff); // update the map
-        // updateSymbolTable();
+        this->updatePathMap(split_buff); // update the path map
+        varDataBase->updateSymbolTable(); // update the symbol table
     }
     return ""; //until it will return "exit"
 

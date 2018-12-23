@@ -19,29 +19,36 @@ int Client::open(string ip, int port) {
         __throw_runtime_error("ERROR opening socket - sockfd<0");
     }
 
-    server = gethostbyname(argv);
+    server = gethostbyname(ip.c_str());
 
     if (server == NULL) {
         __throw_runtime_error("ERROR opening socket - no such host");
     }
-
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr, server->h_length);
     serv_addr.sin_port = htons(port);
 
     /* Now connect to the server */
-    if (connect(sock_fd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
-        perror("ERROR connecting");
-        exit(1);
+    while (true) {
+        int c = connect(sock_fd, (struct sockaddr *) &serv_addr, sizeof(serv_addr));
+        if (c == 0) {
+            break;
+            perror("ERROR connecting");
+            exit(1);
+        }
     }
+    cout << "connect" << endl;
+
     return 0;
 }
+
 
 /* Now ask for a message from the user, this message
    * will be read by server
 */
 string Client::set(string path) {
+    const char *c_path = path.c_str();
     int n;
     char buffer[BUF];
 
@@ -49,11 +56,13 @@ string Client::set(string path) {
     bzero(buffer, BUF);
     //fgets(buffer, BUF, stdin);
 
-    size_t path_len = path.size();
+    size_t path_len = strlen(c_path);
 
     /* Send message to the server */
 //    n = write(sockfd, buffer, strlen(buffer));
-    n = write(sock_fd, &path, path_len);
+
+    // "set path val \r\n strlen(buffer)"
+    n = write(sock_fd, c_path, path_len);
 
     if (n < 0) {
         __throw_runtime_error("ERROR writing to socket - n<0");

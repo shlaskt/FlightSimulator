@@ -3,15 +3,20 @@
 //
 
 #include "ConnectCommand.h"
+#include "../Sockets/Client.h"
 
 
-int ConnectCommand::doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base) {
+int ConnectCommand::doCommand(vector<string> line, int i, DataReaderServer *server, Client *client,
+                              VarDataBase *var_data_base) {
     Dijkstra shunting_yard(var_data_base->getSymbolTable());
     string ip = line.at(i++); // get ip
     string port_s = line.at(i++);
     // check valid and return port (to involve double calculate)
-    int port= checkValid(ip, port_s, shunting_yard);
+    int port = checkValid(ip, port_s, shunting_yard);
+    // open data client
+    client->open(ip, port);
 
+    // remember to change the while true to normal if
 
 }
 
@@ -38,5 +43,5 @@ int ConnectCommand::checkValid(string ip, string port_s, Dijkstra shunting_yard)
     if (port < 0)
         __throw_runtime_error("Error in connectCommand - negative params to port");
 
-    return (int)port; // castint to int
+    return (int) port; // castint to int
 }

@@ -7,13 +7,17 @@
 
 #include "../Dijkstra.h"
 #include "Command.h"
+#define SET "set"
+#define SPACE ' '
+#define RN "\r\n"
 
 class EqualCommand : public Command {
 //    VarDataBase varDataBase;
 public:
     EqualCommand() {};
 
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base);
+    virtual int doCommand(vector<string> line, int i, DataReaderServer *server,Client *client,
+            VarDataBase* var_data_base);
 };
 
 

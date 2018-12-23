@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include "../Sockets/DataReaderServer.h"
+#include "../Sockets/Client.h"
 
 using namespace std;
 
@@ -25,7 +26,8 @@ public:
      /**
       * doCommand
       */
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base)= 0;
+    virtual int doCommand(vector<string> line, int i, DataReaderServer *server,
+            Client *client, VarDataBase* var_data_base)= 0;
 /**
  * get server
  * @return

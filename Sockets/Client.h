@@ -23,7 +23,7 @@ class Client {
     int sock_fd;
 public:
     int open(string ip, int port);
-    string set(string);
+    string set(string path);
 
 };
 

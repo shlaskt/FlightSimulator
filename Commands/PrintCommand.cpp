@@ -12,7 +12,8 @@
  * @param itor
  * @param server
  */
-int PrintCommand::doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base) {
+int PrintCommand::doCommand(vector<string> line, int i, DataReaderServer *server,
+        Client * client, VarDataBase* var_data_base) {
     Dijkstra shunting_yard(var_data_base->getSymbolTable());
     string print_me = (line[i]); // take value to print
     if (print_me[0] == '"') { // string

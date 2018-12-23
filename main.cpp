@@ -12,6 +12,8 @@ using namespace std;
 
 
 int main(int argc, char *argv[]) {
+    int x;
+    cin >> x;
     Controller *controller = new Controller(argc, argv);
     controller->runProgram();
 //    parserTests();

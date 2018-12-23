@@ -14,6 +14,7 @@
 #include "../Dijkstra.h"
 #include "pthread.h"
 #include <pthread.h>
+#include "../Sockets/Client.h"
 
 using namespace std;
 
@@ -28,7 +29,8 @@ class OpenDataServer : public Command {
 public:
     OpenDataServer(){};
 
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base);
+    virtual int doCommand(vector<string> line, int i, DataReaderServer *server,
+            Client *client, VarDataBase* var_data_base);
 };
 
 
