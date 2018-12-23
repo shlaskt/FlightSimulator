@@ -23,9 +23,9 @@ private:
 public:
     CommandDataBase();
 
-    ExpressionCommand *getCommand(vector<string>::iterator &it, DataReaderServer *reader);
+    ExpressionCommand *getCommand(vector<string> vec,int index, DataReaderServer *reader);
 
-    ExpressionConditionalsCommand *getConditionCommand(vector<string>::iterator &it,
+    ExpressionConditionalsCommand *getConditionCommand(vector<string> vec,int index,
             DataReaderServer *reader,list<Expression *> command_list);
 
     ~CommandDataBase();

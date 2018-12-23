@@ -114,22 +114,22 @@ void lexerTests() {
  * @param end iteartor end.
  * @return string exprresion.
  */
-string makeExpression(vector<string>::iterator &it, vector<string> vec) {
+string makeExpression(int &index, vector<string> vec) {
     string expression;
     bool is_this_operator;
     bool is_next_operator;
     bool is_this_right_parenthesis = false;
     bool is_quote;
-    string current = *it;
+    string current = vec[index];
     // case is a quote add all the quote to one expression.
     if (current[0] == '\"') {
-        expression += *it;
+        expression += vec[index];
         if (current.back() == '\"') return expression;
         do {
-            ++it;
+            ++index;
             // if only one expression end function.
             //forword iterator.
-            current = *(it);
+            current = vec[index];
             expression = expression + " " + current;
         } while (current.back() != '\"');
         return expression;
@@ -143,24 +143,27 @@ string makeExpression(vector<string>::iterator &it, vector<string> vec) {
             if (current == ")") is_this_right_parenthesis = true;
         } else { is_this_operator = false; }
         //forword the iterator.
-        ++it;
+        if (index == vec.size() - 1) {
+            break;
+        }
+        ++index;
         //update current.
-        current = *it;
+        current = vec[index];
         // check if operator.
         if (current == "+" || current == "-" || current == "*" || current == "/"
             || current == "(" || current == ")") {
             is_next_operator = true;
         } else {
             // if there is right paranthesis and after it a number.
-            if (is_this_right_parenthesis && it != vec.end()) {
+            if (is_this_right_parenthesis && index != vec.size()) {
                 break;
             }
             is_next_operator = false;
         }
         is_this_right_parenthesis = false;
-    } while ((is_this_operator || is_next_operator) && it != vec.end() && current != ",");
+    } while ((is_this_operator || is_next_operator) && index != vec.size() && current != ",");
     // if reached to the end, return it -- * twice because end loop do ++ becuase need to read the current value.
-    it--;
+    --index;
     //added spaces to make it valid.
     return addSpaces(expression);
 }
@@ -171,19 +174,20 @@ string makeExpression(vector<string>::iterator &it, vector<string> vec) {
  * @return vector after paresed.
  */
 vector<string> parser(string line) {
+    int index = 0;
     vector<string> lexered_line = lexer(line);
     if (lexered_line.size() == 0) {
         throw runtime_error("error in lexering line");
     }
     // get first value and forword the iterator.
-    vector<string>::iterator it = (lexered_line.begin());
+    //    vector<string>::iterator it = (lexered_line.begin());
     vector<string> parserd_line;
     // save expression in one place together.
     bool is_neg = true;
-    for (int i = 0; it != lexered_line.end() && i < lexered_line.size(); ++it, i++) {
+    for (int i = 0; index < lexered_line.size() && i < lexered_line.size(); index++, i++) {
         string expression = "";
-        string current = *it;
-
+        //string current = *it;
+        string current = lexered_line[index];
         /**
          * need to check if it is a minus repressent neg and not minus operator:
          * 3 option that the minus is neg:
@@ -193,17 +197,17 @@ vector<string> parser(string line) {
          */
 
         if (current == "-") {
-            if ((*prev(it, 1) == "=") || i == 1 || (i > 1 && (*prev(it, 1) == ","))) {
+            // if ((*prev(it, 1) == "=") || i == 1 || (i > 1 && (*prev(it, 1) == ","))) {
+            if (lexered_line[index - 1] == "=" || i == 1 || (i > 1 && lexered_line[index - 1] == ","))
                 // send the end of the iterator to know when to stop.
 //                vector<string>::iterator it_end = lexered_line.end();
                 // call the makeExpression with the vector the string from "-" include.
-                expression += makeExpression(it, lexered_line);
-                parserd_line.push_back(expression);
-                continue;
-            }
+                expression += makeExpression(index, lexered_line);
+            parserd_line.push_back(expression);
+            continue;
         } else if (current[0] == '\"') {
 //            vector<string>::iterator it_end = lexered_line.end();
-            expression += makeExpression(it, lexered_line);
+            expression += makeExpression(index, lexered_line);
             parserd_line.push_back(expression);
         } else if (current == "+" || current == "-" || current == "*" ||
                    current == "/" || current == "(") {
@@ -212,13 +216,13 @@ vector<string> parser(string line) {
             //send to function that make expression.
             if (current == "(") {
                 // call the makeExpression with the vector the string from '(' include.
-                expression += makeExpression(it, lexered_line);
+                expression += makeExpression(index, lexered_line);
             } else {
                 // its an operator, sent the vector from before the operator.
-                vector<string>::iterator prev_it = prev(it, 1);
-                expression += makeExpression(prev_it, lexered_line);
+                int prev_index = index - 1;
+                expression += makeExpression(prev_index, lexered_line);
                 // update the iterator to its place
-                it = prev_it;
+                index = prev_index;
                 // need to remove the previous argument added that need to be begin of expression.
                 parserd_line.pop_back();
             }
@@ -226,12 +230,13 @@ vector<string> parser(string line) {
             parserd_line.push_back(expression);
         } else {
             // relate to "," ass a value only if it's not a separator before neg expression.
-            if (current == "," && *next(it, 1) == "-") continue;
+            if (current == "," && lexered_line[index + 1] == "-") continue;
             //incase no need to make expression, add the value of the vector as is.
-            parserd_line.push_back(*it);
+            parserd_line.push_back(lexered_line[index]);
         }
     }
-    return parserd_line;
+    return
+            parserd_line;
 }
 
 void parserTests() {
