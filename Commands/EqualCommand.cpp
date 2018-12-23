@@ -11,22 +11,23 @@
  * @param itor iterator
  * @param server
  */
-void EqualCommand::doCommand(vector<string>::iterator &itor, DataReaderServer *server) {
+int EqualCommand::doCommand(vector<string> line, int i, DataReaderServer *server) {
     Dijkstra shunting_yard(varDataBase.getSymbolTable());
-    string var = (*itor);
+    string var = (line[i++]);
     double val;
     if(!varDataBase.isVarExists(var)){ // var isn't exists
         __throw_runtime_error("var isn't exists - need to assign with 'var' command first");
     }
-    // else - var exists
-    ++itor; // to skip the "="
+    // else - var exists, make sure you have ' = '
+    if(line[i++] != "=") __throw_runtime_error("Error in Equal - '=' excepted");
+    // try to calculate to assign into the var
     try {
-        val = shunting_yard((*++itor)); // get the number / var value to assign the exists var
+        val = shunting_yard((line[i++])); // get the number / var value to assign the exists var
     } catch (const out_of_range& no_such_var){
         // if there is no var in this name- dijkstra throw error
         __throw_runtime_error("Error in Equal - invalid params to var");
     }
     // update var
     varDataBase.assignVarValue(var, val); // without binding
-    ++itor; // increase iterator
+    return i; // return index
 }

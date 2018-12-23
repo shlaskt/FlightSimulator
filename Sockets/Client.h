@@ -20,9 +20,10 @@
 using namespace std;
 
 class Client {
+    int sock_fd;
 public:
     int open(string ip, int port);
-    string set(int, string);
+    string set(string);
 
 };
 

@@ -14,7 +14,7 @@
 class SleepCommand : public Command{
     VarDataBase varDataBase;
 public:
-    virtual void doCommand(vector<string>::iterator &itor, DataReaderServer* server);
+    virtual int doCommand(vector<string> line, int i, DataReaderServer *server);
 };
 
 
