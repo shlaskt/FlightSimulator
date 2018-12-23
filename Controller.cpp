@@ -43,6 +43,9 @@ vector<Expression *> Controller::conditionParser(bool find_parenthesis) {
     if (!find_parenthesis && parsered_line.back() != "{") {
         // check if didn't find "{" open to read command.
         throw runtime_error("syntax error, didn't find \"{\"");
+    } else if (parsered_line[0] == "{" && parsered_line.size() == 1) {
+        // skip on line "{".
+        parsered_line = inputManager->readParseredLine();
     }
     // read and create commands until '}' or eof.
     while (!parsered_line.back().empty() && parsered_line.back() != "}") {
@@ -109,12 +112,7 @@ Expression *Controller::getCommandFromLine(vector<string> &parsered_line, int &i
  * @param it to iterate the line and find "{".
  */
 bool Controller::CheckValidityOfConditionCommand(vector<string> &vec) {
-    for (vector<string>::iterator it = vec.begin(); it != vec.end(); ++it) {
-        if (*it == "{") {
-            return true;
-        }
-    }
-    return false;
+    return (vec.back() == "{");
 }
 
 Controller::~Controller() {
