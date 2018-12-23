@@ -12,20 +12,20 @@
  * @param itor iterator on the string
  * @param server
  */
-void VarCommand::doCommand(vector<string>::iterator &itor, DataReaderServer *server) {
+int VarCommand::doCommand(vector<string> line, int i, DataReaderServer *server) {
     Dijkstra shunting_yard(varDataBase.getSymbolTable());
-    string var_name = (*itor);
+    string var_name = line.at(i++);
     // check valid input
     if (isdigit(var_name[0]) || var_name == "var"){ // var cant start with digit or called var
         __throw_runtime_error("invalid name of var");
     }
-    if (*++itor != "=") { // second arg must be operator "="
+    if (line.at(i++) != "=") { // second arg must be operator "="
         __throw_runtime_error("invalid var assign-> '=' expected");
     }
     // check if bind assign or shallow assign
-    if (*++itor == "bind") { // assign to path
+    if (line.at(i) == "bind") { // assign to path
         // can be bind to path, or bind to path of other var
-        string arg_to_bind = *++itor;
+        string arg_to_bind = line.at(++i);
         if (varDataBase.isVarExists(arg_to_bind)) { // var, bind to the var's path
             string path = varDataBase.getPath(arg_to_bind);
             varDataBase.createAndBindVarToPath(var_name, path);
@@ -35,12 +35,13 @@ void VarCommand::doCommand(vector<string>::iterator &itor, DataReaderServer *ser
     } else { // no bind-> assign to expression
         double val;
         try {
-            val = shunting_yard(*itor); // get the number / var value to assign the new var
+            val = shunting_yard(line.at(i)); // get the number / var value to assign the new var
+
         } catch (const out_of_range &no_such_var) {
             // if there is no var in this name- dijkstra throw error
             __throw_runtime_error("invalid params to var");
         }
         varDataBase.assignVarValue(var_name, val);
     }
-    ++itor; // increase iterator
+    return ++i; // increase index
 }

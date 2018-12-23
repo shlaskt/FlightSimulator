@@ -5,48 +5,43 @@
 
 
 #include "Client.h"
-// "example- connect 127.0.0.1 5402"
+// example- "connect 127.0.0.1 5402"
 
 int Client::open(string ip, int port) {
     const char *argv = ip.c_str(); // convert to char*
-    int sockfd, portno;
     struct sockaddr_in serv_addr;
     struct hostent *server;
 
-    portno = port;
-
     /* Create a socket point */
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    sock_fd = socket(AF_INET, SOCK_STREAM, 0);
 
-    if (sockfd < 0) {
-        perror("ERROR opening socket");
-        exit(1);
+    if (sock_fd < 0) {
+        __throw_runtime_error("ERROR opening socket - sockfd<0");
     }
 
     server = gethostbyname(argv);
 
     if (server == NULL) {
-        fprintf(stderr, "ERROR, no such host\n");
-        exit(0);
+        __throw_runtime_error("ERROR opening socket - no such host");
     }
 
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr, server->h_length);
-    serv_addr.sin_port = htons(portno);
+    serv_addr.sin_port = htons(port);
 
     /* Now connect to the server */
-    if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
+    if (connect(sock_fd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
         perror("ERROR connecting");
         exit(1);
     }
-    return sockfd;
+    return 0;
 }
 
 /* Now ask for a message from the user, this message
    * will be read by server
 */
-string Client::set(int sockfd, string path) {
+string Client::set(string path) {
     int n;
     char buffer[BUF];
 
@@ -54,15 +49,14 @@ string Client::set(int sockfd, string path) {
     bzero(buffer, BUF);
     //fgets(buffer, BUF, stdin);
 
-    size_t path_len=path.size();
+    size_t path_len = path.size();
 
     /* Send message to the server */
 //    n = write(sockfd, buffer, strlen(buffer));
-    n = write(sockfd, &path, path_len);
+    n = write(sock_fd, &path, path_len);
 
     if (n < 0) {
-        perror("ERROR writing to socket");
-        exit(1);
+        __throw_runtime_error("ERROR writing to socket - n<0");
     }
 
     /* Now read server response */

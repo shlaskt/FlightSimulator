@@ -16,7 +16,7 @@ class ConditionCommand : public Command {
 protected: // for if and while commands only
     list<Expression *> list_of_commands;
 
-    vector<string> getConditionStatement(vector<string>::iterator &itor);
+    vector<string> getConditionStatement(vector<string> line, int i);
 
     bool checkCondition(string expression_1, string condition, string expression_2, Dijkstra shunting_yard);
 
@@ -24,7 +24,7 @@ public:
     // pure virtual - cant create condition command without if / while
     void setListOfCommands(list<Expression *> command_list);
 
-    virtual void doCommand(vector<string>::iterator &itor, DataReaderServer *server) = 0;
+    virtual int doCommand(vector<string> line, int i, DataReaderServer *server)= 0;
 };
 
 

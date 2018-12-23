@@ -4,15 +4,15 @@
 
 #include "ConditionCommand.h"
 
-vector<string> ConditionCommand::getConditionStatement(vector<string>::iterator &itor) {
-    string expression_1 = *itor++; // first arg
-    string condition = *itor++; // <, >, !, =
-    if (*itor == "=") { // condition with 2 chars- like >=, <=, !=, ==...
-        condition += *itor++;
+vector<string> ConditionCommand::getConditionStatement(vector<string> line, int i) {
+    string expression_1 = line.at(i++); // first arg
+    string condition = line.at(i++); // <, >, !, =
+    if (line[i] == "=") { // condition with 2 chars- like >=, <=, !=, ==...
+        condition += line[i++];
     }
-    string expression_2 = *itor; // second arg
+    string expression_2 = line[i++]; // second arg
     // inset to vector
-    vector<string> condition_stat = {expression_1, condition, expression_2};
+    vector<string> condition_stat = {expression_1, condition, expression_2, to_string(i)};
     return condition_stat;
 }
 
@@ -26,7 +26,7 @@ bool ConditionCommand::checkCondition(string expression_1, string condition, str
         ex2 = shunting_yard(expression_2);
     } catch (const out_of_range &no_such_var) {
         // if there is var without decleration in the expression- dijkstra throw error
-        __throw_runtime_error("Error in IfCommand - invalid params");
+        __throw_runtime_error("Error in condition command - invalid params");
     }
     // cant do switch-case on string in c++ :(
     if (condition == "<") return (ex1 < ex2);
@@ -36,7 +36,7 @@ bool ConditionCommand::checkCondition(string expression_1, string condition, str
     if (condition == "==") return (ex1 == ex2);
     if (condition == "!=") return (ex1 != ex2);
     // else ( !, = ,#, $...)
-    __throw_runtime_error("Error in IfCommand - invalid condition");
+    __throw_runtime_error("Error in condition Command - invalid condition");
 }
 
 /**

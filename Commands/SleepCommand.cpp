@@ -9,13 +9,13 @@
  * @param itor x is given inside
  * @param server
  */
-void SleepCommand::doCommand(vector<string>::iterator &itor, DataReaderServer *server) {
+int SleepCommand::doCommand(vector<string> line, int i, DataReaderServer *server) {
     Dijkstra shunting_yard(varDataBase.getSymbolTable());
     try {
-        usleep(static_cast<unsigned int> (shunting_yard(*itor) * MILI_SEC));
+        usleep(static_cast<unsigned int> (shunting_yard(line.at(i)) * MILI_SEC));
     } catch (const out_of_range& no_such_var){
         // if there is no var in this name- dijkstra throw error
         __throw_runtime_error("Error in Sleep Command - invalid params");
     }
-    ++itor; // increase iterator
+    return ++i; // increase index
 }

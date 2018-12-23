@@ -12,9 +12,9 @@
  * @param itor
  * @param server
  */
-void PrintCommand::doCommand(vector<string>::iterator &itor, DataReaderServer *server) {
+int PrintCommand::doCommand(vector<string> line, int i, DataReaderServer *server) {
     Dijkstra shunting_yard(varDataBase.getSymbolTable());
-    string print_me = (*itor); // take value to print
+    string print_me = (line[i]); // take value to print
     if (print_me[0] == '"') { // string
         cout << print_me << endl;
     } else if (varDataBase.isVarExists(print_me)) { // var
@@ -27,5 +27,5 @@ void PrintCommand::doCommand(vector<string>::iterator &itor, DataReaderServer *s
             __throw_runtime_error("Error in PrintCommend : invalid params to print");
         }
     }
-    ++itor; // increase iterator
+    return ++i; // increase index
 }

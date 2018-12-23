@@ -5,17 +5,16 @@
 #ifndef FLIGHTSIMULATOR_CONNECTCOMMAND_H
 #define FLIGHTSIMULATOR_CONNECTCOMMAND_H
 
+#include "../Dijkstra.h"
 
 #include "Command.h"
 
 class ConnectCommand : public Command {
-private:
-    void CreateThread(struct params_to_socket *params);
+    VarDataBase varDataBase;
+    int checkValid(string ip, string port_s, Dijkstra shunting_yard);
 
 public:
-    ConnectCommand();
-
-    virtual void doCommand(vector<string>::iterator &itor, DataReaderServer *server);
+    virtual int doCommand(vector<string> line, int i, DataReaderServer *server);
 };
 
 
