@@ -30,6 +30,8 @@ public:
 
     bool isVarExists(string var);
 
+    bool isVarBinded(string var);
+
     void assignVarValue(string var, double val);
 
     double getPathValue(string path) const;
