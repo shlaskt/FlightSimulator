@@ -7,17 +7,19 @@
 
 
 #include <list>
+#include <vector>
 #include "ExpressionCommand.h"
 #include "../Commands/ConditionCommand.h"
 
 class ExpressionConditionalsCommand : public Expression {
 private:
     ConditionCommand *command;
-    vector<string>::iterator &iterator;
+    vector<string> vec;
+    int index;
     DataReaderServer *reader;
     list<Expression *> command_lists;
 public:
-    ExpressionConditionalsCommand(ConditionCommand *command, vector<string>::iterator &iterator,
+    ExpressionConditionalsCommand(ConditionCommand *command, vector<string> vec,int index,
                                   DataReaderServer *reader, list<Expression *> list_c);
 
     double calculate();

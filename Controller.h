@@ -10,20 +10,20 @@
 #include "InputReaders/StdinReader.h"
 #include "InputReaders/FileReader.h"
 #include "InputManagement.h"
+#include "InputReaders/InputManager.h"
 
 class Controller {
 private:
+    InputManager *inputManager;
     CommandDataBase *command_data_base;
     VarDataBase *var_data_base;
     DataReaderServer *data_reader_server;
-    InputReader *inputReader;
     vector<Expression *> to_delete;
     vector<vector<string>> lines_vector;
-    vector<vector<string>::iterator> lines_iterators;
 
     bool CheckValidityOfConditionCommand(vector<string> &vec);
 
-    Expression *getCommandFromLine(vector<string> &parsered_line, vector<string>::iterator &it_p);
+    Expression *getCommandFromLine(vector<string> &parsered_line, int &index);
 
     list<Expression *> conditionParser(bool find_parenthesis);
 

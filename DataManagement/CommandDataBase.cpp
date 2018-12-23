@@ -38,13 +38,13 @@ CommandDataBase::CommandDataBase() {
  * @param rd data server to connect with the command.
  * @return expression command.
  */
-ExpressionCommand *CommandDataBase::getCommand(vector<string>::iterator &it, DataReaderServer *rd) {
+ExpressionCommand *CommandDataBase::getCommand(vector<string> vec,int index, DataReaderServer *rd) {
     // first parameter, the command name.
-    string command_name = (*it);
+    string command_name = vec[index];
     if (commands_map.find(command_name) != commands_map.end()) {
         Command *c = commands_map[command_name];
-        ++it;
-        ExpressionCommand *ex_command = new ExpressionCommand(c, it, rd);
+        ++index;
+        ExpressionCommand *ex_command = new ExpressionCommand(c,vec,index, rd);
         to_delete.push_back(ex_command);
         return ex_command;
     }
@@ -54,13 +54,14 @@ ExpressionCommand *CommandDataBase::getCommand(vector<string>::iterator &it, Dat
 
 
 ExpressionConditionalsCommand *
-CommandDataBase::getConditionCommand(vector<string>::iterator &it, DataReaderServer *reader,
-                                     list<Expression *> command_list) {
+CommandDataBase::getConditionCommand(vector<string> vec,int index,
+                                     DataReaderServer *reader,list<Expression *> command_list) {
     // first parameter, the command name.
-    string command_name = (*it);
+    string command_name = vec[index];
     if (condition_commands_map.find(command_name) != condition_commands_map.end()) {
         ConditionCommand *c = condition_commands_map[command_name];
-        ExpressionConditionalsCommand *ex_command = new ExpressionConditionalsCommand(c, ++it, reader, command_list);
+        ExpressionConditionalsCommand *ex_command = new ExpressionConditionalsCommand(c,vec,
+                ++index, reader, command_list);
         to_delete.push_back(ex_command);
         return ex_command;
     }

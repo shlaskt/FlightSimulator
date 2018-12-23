@@ -9,7 +9,7 @@
  * @return 0 if succeeded
  */
 double ExpressionCommand::calculate() {
-    command->doCommand(iterator, reader);
+    command->doCommand(line,index, reader);
     return 0;
 }
 
@@ -19,6 +19,7 @@ double ExpressionCommand::calculate() {
  * @param iterator to itrerate.
  * @param reader to connect with.
  */
-ExpressionCommand::ExpressionCommand(Command *command, vector<string>::iterator &iterator,
-                                     DataReaderServer *reader) : command(command), iterator(iterator),
-                                                                 reader(reader) {}
+ExpressionCommand::ExpressionCommand(Command *command, vector<string> vec,int index,
+                                     DataReaderServer *reader) : command(command), line(vec),
+                                     index(index),
+                                     reader(reader) {}
