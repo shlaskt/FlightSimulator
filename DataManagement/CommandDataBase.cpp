@@ -55,7 +55,7 @@ ExpressionCommand *CommandDataBase::getCommand(vector<string> vec, int index, Da
             /**
              * check if we se assaing of equasion:
              * check its not one of the cases like this:
-             * " >= "," <= "," != "," == "
+             * " >= "," <= "," != "," == ".
              */
             if (vec[index] == "=" && vec[index - 1] != "<" && vec[index - 1] != ">" && vec[index - 1] != "!"
                 && vec[index + 1] != "=") {
