@@ -3,14 +3,6 @@
 //
 
 #include "CommandDataBase.h"
-#include "../Commands/ConnectCommand.h"
-#include "../Commands/OpenDataServer.h"
-#include "../Commands/EqualCommand.h"
-#include "../Commands/IfCommand.h"
-#include "../Commands/WhileCommand.h"
-#include "../Commands/PrintCommand.h"
-#include "../Commands/SleepCommand.h"
-#include "../Commands/VarCommand.h"
 
 
 CommandDataBase::CommandDataBase() {
@@ -40,13 +32,13 @@ CommandDataBase::CommandDataBase() {
  * @return expression command.
  */
 ExpressionCommand *CommandDataBase::getCommand(vector<string> vec, int index, DataReaderServer *rd,
-                                               VarDataBase *varDataBase) {
+                                               VarDataBase *varDataBase, Client *client) {
     // first parameter, the command name.
     string command_name = vec[index];
     if (commands_map.find(command_name) != commands_map.end()) {
         Command *c = commands_map[command_name];
         ++index;
-        ExpressionCommand *ex_command = new ExpressionCommand(c, vec, index, rd, varDataBase);
+        ExpressionCommand *ex_command = new ExpressionCommand(c, vec, index, rd,client, varDataBase);
         to_delete.push_back(ex_command);
         return ex_command;
     } else {
@@ -73,14 +65,16 @@ ExpressionCommand *CommandDataBase::getCommand(vector<string> vec, int index, Da
 
 ExpressionConditionalsCommand *
 CommandDataBase::getConditionCommand(vector<string> vec, int index,
-                                     DataReaderServer *reader, vector<Expression *> command_list,
+                                     DataReaderServer *reader,Client *client, vector<Expression *> command_list,
                                      VarDataBase *varDataBase) {
     // first parameter, the command name.
     string command_name = vec[index];
     if (condition_commands_map.find(command_name) != condition_commands_map.end()) {
         ConditionCommand *c = condition_commands_map[command_name];
         ExpressionConditionalsCommand *ex_command = new ExpressionConditionalsCommand(c, vec,
-                                                                                      ++index, reader, command_list,
+                                                                                      ++index, reader,
+                                                                                      client,
+                                                                                      command_list,
                                                                                       varDataBase);
         to_delete.push_back(ex_command);
         return ex_command;

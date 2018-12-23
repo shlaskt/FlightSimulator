@@ -17,11 +17,14 @@ private:
     vector<string> vec;
     int index;
     DataReaderServer *reader;
+    Client *client;
     vector<Expression *> command_lists;
     VarDataBase *varDataBase;
 public:
     ExpressionConditionalsCommand(ConditionCommand *command, vector<string> vec, int index,
-                                  DataReaderServer *reader, vector<Expression *> command_lists,VarDataBase *vdb);
+                                  DataReaderServer *reader,
+                                  Client *client,
+                                  vector<Expression *> command_lists,VarDataBase *vdb);
 
     double calculate();
 };

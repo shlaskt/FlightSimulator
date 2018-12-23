@@ -9,6 +9,7 @@ Controller::Controller(int argc, char **argv) {
     command_data_base = new CommandDataBase();
     var_data_base = new VarDataBase();
     data_reader_server = new DataReaderServer(var_data_base);
+    client = new Client();
     /**
      *
      * decide if to split responsabilities between DataReaderServer And VarData Base.
@@ -132,6 +133,7 @@ Controller::~Controller() {
     delete (this->command_data_base);
     delete (this->var_data_base);
     delete (this->data_reader_server);
+    delete (this->client);
     delete (inputManager);
     for (vector<Expression *>::iterator it = to_delete.begin(); it != to_delete.end(); ++it) {
         delete *it;
