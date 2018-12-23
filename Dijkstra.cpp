@@ -14,7 +14,7 @@
  * Ctor - get map values
  * @param var_to_val
  */
-Dijkstra::Dijkstra(const map<string, double> &var_to_val) : var_to_val(var_to_val) {}
+Dijkstra::Dijkstra(map<string, double> *var_to_val) : var_to_val(var_to_val) {}
 
 
 /**
@@ -232,7 +232,7 @@ double Dijkstra::calculate(string string_before_evaluate_vars) {
             string_after_evaluate_vars += (space + argument);
         } else {
             // it is a variable, evalute it
-            double val = var_to_val.at(argument); // throw exception if no var
+            double val = var_to_val->at(argument); // throw exception if no var
             // place it back to the string
             string_after_evaluate_vars +=(space + to_string(val));
         }

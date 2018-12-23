@@ -36,7 +36,7 @@ void VarDataBase::initPathMap() {
  * @return var value.
  */
 double VarDataBase::getVarValue(string var) const {
-    return symbol_table.at(var);
+    return symbol_table->at(var);
 }
 
 /**
@@ -45,7 +45,7 @@ double VarDataBase::getVarValue(string var) const {
  * @return true if exists, false o.w
  */
 bool VarDataBase::isVarExists(string var) {
-    if (symbol_table.find(var) == symbol_table.end()) {
+    if (symbol_table->find(var) == symbol_table->end()) {
         return false;
     }
     return true;
@@ -55,6 +55,7 @@ bool VarDataBase::isVarExists(string var) {
  * Ctor
  */
 VarDataBase::VarDataBase() {
+    symbol_table = new map<string, double>;
     initPathMap();
 }
 
@@ -66,7 +67,7 @@ VarDataBase::VarDataBase() {
  */
 void VarDataBase::assignVarValue(string var, double val) {
     // update or insert var value in symbol table.
-    symbol_table[var] = val;
+    (*symbol_table)[var] = val;
     // if its bind var, find the path that need to be update and change its value.
     if (var_bind.find(var) != var_bind.end()) {
         paths_map[var_bind[var]] = val;
@@ -110,7 +111,7 @@ void VarDataBase::createAndBindVarToPath(string var, string path) {
     // if found the path key, bind var to it, and update var value.
     if (paths_map.count(path) != 0) {
         //add var to symbol table and update its value.
-        symbol_table[var] = paths_map[path];
+        (*symbol_table)[var] = paths_map[path];
         //bind between var and path.
         var_bind[var] = path;
     } else {
@@ -122,7 +123,7 @@ void VarDataBase::createAndBindVarToPath(string var, string path) {
  * return the symbol table map const, that way it wont change.
  * @return map of symbol table.
  */
-const map<string, double> &VarDataBase::getSymbolTable() const {
+map<string, double> *VarDataBase::getSymbolTable() {
     return this->symbol_table;
 }
 /**
@@ -130,7 +131,7 @@ const map<string, double> &VarDataBase::getSymbolTable() const {
  */
 void VarDataBase::updateSymbolTable() {
     for (map<string, string>::iterator it = var_bind.begin(); it != var_bind.end(); ++it) {
-        symbol_table.at(it->first) = paths_map.at(it->second);
+        symbol_table->at(it->first) = paths_map.at(it->second);
     }
 }
 
@@ -149,3 +150,6 @@ string VarDataBase::getPath(string var) const {
     }
 }
 
+VarDataBase::~VarDataBase() {
+    delete(symbol_table);
+}

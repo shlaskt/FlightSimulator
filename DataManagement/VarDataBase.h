@@ -14,7 +14,7 @@ using namespace std;
 class VarDataBase {
 private:
     map<string, double> paths_map;
-    map<string, double> symbol_table;
+    map<string, double> *symbol_table;
     map<string, string> var_bind;
 
     void initPathMap();
@@ -22,7 +22,7 @@ private:
 public:
     VarDataBase();
 
-    const map<string, double> &getSymbolTable() const;
+    map<string, double> *getSymbolTable();
 
     void createAndBindVarToPath(string var, string path);
 
@@ -39,6 +39,8 @@ public:
     void assignPathValue(string path, double val);
 
     void updateSymbolTable();
+
+    virtual ~VarDataBase();
 
 };
 

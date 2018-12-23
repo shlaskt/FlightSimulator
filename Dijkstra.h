@@ -17,11 +17,11 @@
 using namespace std;
 
 class Dijkstra {
-    map<string,double> var_to_val;
+    map<string,double> *var_to_val;
     int precedence(char op);
 
 public:
-    Dijkstra(const map<string, double> &var_to_val);
+    Dijkstra(map<string, double> *var_to_val);
 
 private:
     Expression* applyOp(double a, double b, char op);
