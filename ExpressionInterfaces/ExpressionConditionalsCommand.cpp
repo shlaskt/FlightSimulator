@@ -17,6 +17,6 @@ double ExpressionConditionalsCommand::calculate() {
 
 ExpressionConditionalsCommand::ExpressionConditionalsCommand(ConditionCommand *command, vector<string> vec,
                                                              int index, DataReaderServer *reader,
-                                                             list<Expression *> command_lists
+                                                             vector<Expression *> command_lists
                                                              ,VarDataBase *vdb) : command(
         command), vec(vec), index(index), reader(reader), command_lists(command_lists),varDataBase(vdb) {}

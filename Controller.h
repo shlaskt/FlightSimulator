@@ -25,7 +25,7 @@ private:
 
     Expression *getCommandFromLine(vector<string> &parsered_line, int &index);
 
-    list<Expression *> conditionParser(bool find_parenthesis);
+    vector<Expression *> conditionParser(bool find_parenthesis);
 
 public:
     Controller(int argc, char *argv[]);

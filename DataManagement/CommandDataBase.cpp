@@ -56,7 +56,7 @@ ExpressionCommand *CommandDataBase::getCommand(vector<string> vec, int index, Da
 
 ExpressionConditionalsCommand *
 CommandDataBase::getConditionCommand(vector<string> vec, int index,
-                                     DataReaderServer *reader, list<Expression *> command_list,
+                                     DataReaderServer *reader, vector<Expression *> command_list,
                                      VarDataBase *varDataBase) {
     // first parameter, the command name.
     string command_name = vec[index];

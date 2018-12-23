@@ -14,7 +14,7 @@ using namespace std;
 
 class ConditionCommand : public Command {
 protected: // for if and while commands only
-    list<Expression *> list_of_commands;
+    vector<Expression *> list_of_commands;
 
     vector<string> getConditionStatement(vector<string> line, int i);
 
@@ -22,9 +22,9 @@ protected: // for if and while commands only
 
 public:
     // pure virtual - cant create condition command without if / while
-    void setListOfCommands(list<Expression *> command_list);
+    void setListOfCommands(vector<Expression *> command_list);
 
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base)= 0;
+    virtual int doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase *var_data_base) = 0;
 };
 
 

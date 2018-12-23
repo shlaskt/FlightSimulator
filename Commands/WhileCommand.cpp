@@ -20,8 +20,8 @@ int WhileCommand::doCommand(vector<string> line, int i, DataReaderServer *server
 
     while (checkCondition(expression_1, condition, expression_2, shunting_yard)) {
         // do all the commands in the if untill the "}"
-        for (list<Expression *>::iterator it = list_of_commands.begin(); it != list_of_commands.end(); ++it) {
-            (*it)->calculate();
+        for (int j =0 ; j<list_of_commands.size(); j++) {
+            list_of_commands[j]->calculate();
         }
     }
     return i; // return the index

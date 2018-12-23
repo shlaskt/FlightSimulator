@@ -28,9 +28,9 @@ Controller::Controller(int argc, char **argv) {
  * @param find_parenthesis check if need to find "{" before making commands.
  * @return commands list to execute. "syntax error, didn't find "{""
  */
-list<Expression *> Controller::conditionParser(bool find_parenthesis) {
+vector<Expression *> Controller::conditionParser(bool find_parenthesis) {
     //list of commands to execute by reference(will saved after function done).
-    list<Expression *> commands_list;
+    vector<Expression *> commands_list;
     // read the next line.
     //string line = inputReader->readLine();
     vector<string> parsered_line = inputManager->readParseredLine();
@@ -89,7 +89,7 @@ Expression *Controller::getCommandFromLine(vector<string> &parsered_line, int &i
         //check if saw "{" in the same line as the command if or while.
         bool saw_parenthesis = CheckValidityOfConditionCommand(parsered_line);
         // add all commands to command list in the scope between {};
-        list<Expression *> command_lists = conditionParser(saw_parenthesis);
+        vector<Expression *> command_lists = conditionParser(saw_parenthesis);
         // create conditional command.
         expression_command =
                 (command_data_base->getConditionCommand(parsered_line, index, data_reader_server, command_lists,

@@ -43,7 +43,7 @@ bool ConditionCommand::checkCondition(string expression_1, string condition, str
  * set the list of the commands.
  * @param command_list to save.
  */
-void ConditionCommand::setListOfCommands(list<Expression *> command_list) {
+void ConditionCommand::setListOfCommands(vector<Expression *> command_list) {
     this->list_of_commands = command_list;
 }
 
