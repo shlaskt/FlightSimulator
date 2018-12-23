@@ -32,7 +32,7 @@ int EqualCommand::doCommand(vector<string> line, int i, DataReaderServer *server
     var_data_base->assignVarValue(var, val); // without binding
 
     // update the data client
-    if (var_data_base->isVarBinded(var){
+    if (var_data_base->isVarBinded(var)){
         string path = var_data_base->getPath(var);
         string s = SET + SPACE + path + SPACE + to_string(val) + RN;
         client->set(s); // send to set
