@@ -11,11 +11,11 @@
  * @param itor iterator
  * @param server
  */
-int EqualCommand::doCommand(vector<string> line, int i, DataReaderServer *server) {
-    Dijkstra shunting_yard(varDataBase.getSymbolTable());
+int EqualCommand::doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base) {
+    Dijkstra shunting_yard(var_data_base.getSymbolTable());
     string var = (line[i++]);
     double val;
-    if(!varDataBase.isVarExists(var)){ // var isn't exists
+    if(!var_data_base.isVarExists(var)){ // var isn't exists
         __throw_runtime_error("var isn't exists - need to assign with 'var' command first");
     }
     // else - var exists, make sure you have ' = '
@@ -28,6 +28,6 @@ int EqualCommand::doCommand(vector<string> line, int i, DataReaderServer *server
         __throw_runtime_error("Error in Equal - invalid params to var");
     }
     // update var
-    varDataBase.assignVarValue(var, val); // without binding
+    var_data_base.assignVarValue(var, val); // without binding
     return i; // return index
 }

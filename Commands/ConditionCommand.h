@@ -24,7 +24,7 @@ public:
     // pure virtual - cant create condition command without if / while
     void setListOfCommands(list<Expression *> command_list);
 
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server)= 0;
+    virtual int doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base)= 0;
 };
 
 

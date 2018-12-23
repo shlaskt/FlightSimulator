@@ -10,8 +10,8 @@
 #include "Command.h"
 
 class ConnectCommand : public Command {
-    VarDataBase varDataBase;
-    int checkValid(string ip, string port_s, Dijkstra shunting_yard);
+//    VarDataBase varDataBase;
+    int checkValid(string ip, string port_s, Dijkstra shunting_yard, VarDataBase* var_data_base);
 
 public:
     virtual int doCommand(vector<string> line, int i, DataReaderServer *server);

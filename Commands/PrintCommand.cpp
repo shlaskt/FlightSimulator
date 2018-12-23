@@ -12,8 +12,8 @@
  * @param itor
  * @param server
  */
-int PrintCommand::doCommand(vector<string> line, int i, DataReaderServer *server) {
-    Dijkstra shunting_yard(varDataBase.getSymbolTable());
+int PrintCommand::doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base) {
+    Dijkstra shunting_yard(var_data_base->getSymbolTable());
     string print_me = (line[i]); // take value to print
     if (print_me[0] == '"') { // string
         string update_print; // print text without ' " '
@@ -21,8 +21,8 @@ int PrintCommand::doCommand(vector<string> line, int i, DataReaderServer *server
             update_print += print_me[j];
         }
         cout << update_print << endl;
-    } else if (varDataBase.isVarExists(print_me)) { // var
-        cout << varDataBase.getVarValue(print_me) << endl;
+    } else if (var_data_base->isVarExists(print_me)) { // var
+        cout << var_data_base->getVarValue(print_me) << endl;
     } else { // expression
         try {
             cout << shunting_yard(print_me) << endl; // get the number / var value to assign the new var

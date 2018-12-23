@@ -10,9 +10,9 @@
 #include "Command.h"
 
 class VarCommand : public Command{
-    VarDataBase varDataBase;
+//    VarDataBase varDataBase;
 public:
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server);
+    virtual int doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base);
 
 };
 
