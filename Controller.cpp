@@ -68,7 +68,7 @@ void Controller::runProgram() {
         int index = inputManager->getStartVectorIndex();
         //parse vector in to expression.
         //send the last iterator made from the vector.
-        Expression *expression = getCommandFromLine(parsered_line, it);
+        Expression *expression = getCommandFromLine(parsered_line, index);
         expression->calculate();
         parsered_line = inputManager->readParseredLine();
     }

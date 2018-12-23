@@ -240,6 +240,7 @@ double Dijkstra::calculate(string string_before_evaluate_vars) {
     string_after_evaluate_vars+=space; // add one more whitespace
 
     double result = evaluate(string_after_evaluate_vars);
+    if (result == -0) return 0; // edge case
     return result;
 }
 
