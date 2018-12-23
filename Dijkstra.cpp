@@ -41,14 +41,27 @@ int Dijkstra::precedence(char op) {
  */
 Expression *Dijkstra::applyOp(double a, double b, char op) {
     switch (op) {
-        case '+':
-            return new PlusExpression(new Num(a), new Num(b));
-        case '-':
-            return new MinusExpression(new Num(a), new Num(b));
-        case '*':
-            return new MultiplyExpression(new Num(a), new Num(b));
-        case '/':
-            return new DivideExpression(new Num(a), new Num(b));
+        case '+': {
+            PlusExpression *p = new PlusExpression(new Num(a), new Num(b));
+            to_delete.push_back(p);
+            return p;
+        }
+        case '-': {
+            MinusExpression *p = new MinusExpression(new Num(a), new Num(b));
+            to_delete.push_back(p);
+            return p;
+        }
+        case '*': {
+            MultiplyExpression *p = new MultiplyExpression(new Num(a), new Num(b));
+            to_delete.push_back(p);
+            return p;
+        }
+        case '/':{
+            DivideExpression *p = new DivideExpression(new Num(a), new Num(b));
+            to_delete.push_back(p);
+            return p;
+        }
+
     }
 }
 
@@ -78,8 +91,8 @@ double Dijkstra::evaluate(string tokens) {
         else if (tokens[i] == '(') {
             ops.push(tokens[i]);
         }
-        // Current token is a number, push
-        // it to stack for numbers.
+            // Current token is a number, push
+            // it to stack for numbers.
         else if (isdigit(tokens[i]) || !is_op) {
             double val = 0;
             double float_num = 10;
@@ -126,7 +139,7 @@ double Dijkstra::evaluate(string tokens) {
             }
             ops.pop(); // pop opening brace.
         }
-        // Current token is an operator.
+            // Current token is an operator.
         else {
             is_op = false;
             /*
@@ -170,6 +183,7 @@ double Dijkstra::evaluate(string tokens) {
     // Top of 'values' contains result, return it.
     return values.top();
 }
+
 /**
  * split line to vector by separate sign
  * e.x - splitLine("hey-you-o", v, '-')
@@ -227,20 +241,26 @@ double Dijkstra::calculate(string string_before_evaluate_vars) {
         // if it operator -place it back to the string
         // add whitespace between every argument
         if (isdigit(argument[0])
-                    || argument == "+" || argument == "-" || argument == "*" || argument == "/"
-                    || argument == "(" || argument == ")" || argument == "") {
+            || argument == "+" || argument == "-" || argument == "*" || argument == "/"
+            || argument == "(" || argument == ")" || argument == "") {
             string_after_evaluate_vars += (space + argument);
         } else {
             // it is a variable, evalute it
             double val = var_to_val->at(argument); // throw exception if no var
             // place it back to the string
-            string_after_evaluate_vars +=(space + to_string(val));
+            string_after_evaluate_vars += (space + to_string(val));
         }
     }
-    string_after_evaluate_vars+=space; // add one more whitespace
+    string_after_evaluate_vars += space; // add one more whitespace
 
     double result = evaluate(string_after_evaluate_vars);
     if (result == -0) return 0; // edge case
     return result;
+}
+
+Dijkstra::~Dijkstra() {
+    for (vector<Expression *>::iterator it = to_delete.begin(); it != to_delete.end(); ++it) {
+        delete (*it);
+    }
 }
 

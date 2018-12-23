@@ -32,10 +32,11 @@ CommandDataBase::CommandDataBase() {
 }
 
 /**
- * the function get iterator as an input and make a command by the name of iterator by command map.
- * the first iterator value is the name of the command.
- * @param it to run over the line(interpreter).
+ * the function get vector and index as an input and make a command by the name of iterator by command map.
+ * the first vector value is the name of the command.
+ * @param index to run over the line(interpreter).
  * @param rd data server to connect with the command.
+ * @param vec vecotr parsered.
  * @return expression command.
  */
 ExpressionCommand *CommandDataBase::getCommand(vector<string> vec, int index, DataReaderServer *rd,
@@ -48,6 +49,22 @@ ExpressionCommand *CommandDataBase::getCommand(vector<string> vec, int index, Da
         ExpressionCommand *ex_command = new ExpressionCommand(c, vec, index, rd, varDataBase);
         to_delete.push_back(ex_command);
         return ex_command;
+    } else {
+        for (++index; index < vec.size(); ++index) {
+            int current_index = 0;
+            /**
+             * check if we se assaing of equasion:
+             * check its not one of the cases like this:
+             * " >= "," <= "," != "," == "
+             */
+            if (vec[index] == "=" && vec[index - 1] != "<" && vec[index - 1] != ">" && vec[index - 1] != "!"
+                && vec[index + 1] != "=") {
+                Command *c = commands_map["equal"];
+                ExpressionCommand *ex_command = new ExpressionCommand(c, vec, current_index, rd, varDataBase);
+                to_delete.push_back(ex_command);
+                return ex_command;
+            }
+        }
     }
     // if no matching key.
     throw runtime_error("there is no such command");

@@ -15,9 +15,13 @@ Controller::Controller(int argc, char **argv) {
      * for now var data base not in heap.(not pointer).
      */
     if (argc > 1) {
-        inputManager = new InputManager(new FileReader(argv[1]));
+        FileReader *reader = new FileReader(argv[1]);
+        inputManager = new InputManager(reader);
+        input_to_delete.push_back(reader);
     } else {
-        inputManager = new InputManager(new StdinReader());
+        StdinReader *reader = new StdinReader();
+        inputManager = new InputManager(reader);
+        input_to_delete.push_back(reader);
     }
 }
 
@@ -126,5 +130,11 @@ Controller::~Controller() {
         delete *it;
         *it = nullptr;
     }
+    for (vector<InputReader *>::iterator it = input_to_delete.begin(); it != input_to_delete.end(); ++it) {
+        delete *it;
+        *it = nullptr;
+    }
     to_delete.clear();
+
+    input_to_delete.clear();
 }

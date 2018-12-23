@@ -10,7 +10,8 @@
  * @param itor
  * @param server
  */
-int WhileCommand::doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase* var_data_base) {
+int WhileCommand::doCommand(vector<string> line, int i, DataReaderServer *server, VarDataBase *var_data_base) {
+    vector<Expression *> current_commands = this->list_of_commands;
     Dijkstra shunting_yard(var_data_base->getSymbolTable());
     vector<string> condition_statement = getConditionStatement(line, i);
     string expression_1 = condition_statement.at(0);
@@ -20,8 +21,8 @@ int WhileCommand::doCommand(vector<string> line, int i, DataReaderServer *server
 
     while (checkCondition(expression_1, condition, expression_2, shunting_yard)) {
         // do all the commands in the if untill the "}"
-        for (int j =0 ; j<list_of_commands.size(); j++) {
-            list_of_commands[j]->calculate();
+        for (int j = 0; j < current_commands.size(); j++) {
+            current_commands[j]->calculate();
         }
     }
     return i; // return the index

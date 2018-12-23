@@ -20,6 +20,7 @@ private:
     DataReaderServer *data_reader_server;
     vector<Expression *> to_delete;
     vector<vector<string>> lines_vector;
+    vector<InputReader*> input_to_delete;
 
     bool CheckValidityOfConditionCommand(vector<string> &vec);
 
