@@ -14,26 +14,33 @@
 #include <iostream>
 #include <bits/stdc++.h>
 #include <string>
+
 using namespace std;
 
 class Dijkstra {
-    map<string,double> *var_to_val;
+    map<string, double> *var_to_val;
+
     int precedence(char op);
 
+    vector<Expression *> to_delete;
 public:
     Dijkstra(map<string, double> *var_to_val);
 
 private:
-    Expression* applyOp(double a, double b, char op);
+    Expression *applyOp(double a, double b, char op);
+
     vector<string> splitLine(const string &str, char sign);
 
     double calculate(string tokens);
+
     double evaluate(string tokens);
 
 public:
-    double virtual operator()(char* str);
+    double virtual operator()(char *str);
+
     double virtual operator()(string str);
 
+    virtual ~Dijkstra();
 };
 
 

@@ -35,5 +35,6 @@ int main(int argc, char *argv[]) {
 
 //    vector<string> temp = lexer("OpenDataServer 5,-3  ");
 //    cout << "Hii" << endl;
+    delete controller;
     return 0;
 }
