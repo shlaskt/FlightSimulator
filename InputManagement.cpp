@@ -144,6 +144,7 @@ string makeExpression(int &index, vector<string> vec) {
         } else { is_this_operator = false; }
         //forword the iterator.
         if (index == vec.size() - 1) {
+            ++index;
             break;
         }
         ++index;
@@ -198,19 +199,22 @@ vector<string> parser(string line) {
 
         if (current == "-") {
             // if ((*prev(it, 1) == "=") || i == 1 || (i > 1 && (*prev(it, 1) == ","))) {
-            if (lexered_line[index - 1] == "=" || i == 1 || (i > 1 && lexered_line[index - 1] == ","))
+            if (lexered_line[index - 1] == "=" || i == 1 || (i > 1 && lexered_line[index - 1] == ",")) {
                 // send the end of the iterator to know when to stop.
 //                vector<string>::iterator it_end = lexered_line.end();
                 // call the makeExpression with the vector the string from "-" include.
                 expression += makeExpression(index, lexered_line);
-            parserd_line.push_back(expression);
-            continue;
-        } else if (current[0] == '\"') {
+                parserd_line.push_back(expression);
+                continue;
+            }
+        }
+        if (current[0] == '\"') {
 //            vector<string>::iterator it_end = lexered_line.end();
             expression += makeExpression(index, lexered_line);
             parserd_line.push_back(expression);
-        } else if (current == "+" || current == "-" || current == "*" ||
-                   current == "/" || current == "(") {
+        }
+        if (current == "+" || current == "-" || current == "*" ||
+            current == "/" || current == "(") {
             // send the end of the iterator to know when to stop.
 //            vector<string>::iterator it_end = lexered_line.end();
             //send to function that make expression.
@@ -235,6 +239,7 @@ vector<string> parser(string line) {
             parserd_line.push_back(lexered_line[index]);
         }
     }
+
     return
             parserd_line;
 }
