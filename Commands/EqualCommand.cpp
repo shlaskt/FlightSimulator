@@ -30,5 +30,10 @@ int EqualCommand::doCommand(vector<string> line, int i, DataReaderServer *server
     }
     // update var
     var_data_base->assignVarValue(var, val); // without binding
+
+    // update the data client
+    string path = var_data_base->getPath(var);
+    string s = SET + SPACE + path + SPACE + to_string(val) + RN;
+    client->set(s); // send to set
     return i; // return index
 }

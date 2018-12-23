@@ -7,6 +7,9 @@
 
 #include "../Dijkstra.h"
 #include "Command.h"
+#define SET "set"
+#define SPACE ' '
+#define RN "\r\n"
 
 class EqualCommand : public Command {
 //    VarDataBase varDataBase;

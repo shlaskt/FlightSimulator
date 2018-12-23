@@ -13,13 +13,10 @@ int ConnectCommand::doCommand(vector<string> line, int i, DataReaderServer *serv
     string port_s = line.at(i++);
     // check valid and return port (to involve double calculate)
     int port = checkValid(ip, port_s, shunting_yard);
-//    /**
-//     * just for now
-//     */
-//    Client client;
-//    client.open(ip, port);
-//    string s = "set controls/flight/rudder 1\r\n";
-//    client.set(s);
+    // open data client
+    client->open(ip, port);
+
+    // remember to change the while true to normal if
 
 }
 
