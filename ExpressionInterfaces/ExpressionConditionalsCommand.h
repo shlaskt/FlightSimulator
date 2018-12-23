@@ -18,9 +18,10 @@ private:
     int index;
     DataReaderServer *reader;
     list<Expression *> command_lists;
+    VarDataBase *varDataBase;
 public:
     ExpressionConditionalsCommand(ConditionCommand *command, vector<string> vec, int index,
-                                  DataReaderServer *reader, list<Expression *> command_lists);
+                                  DataReaderServer *reader, list<Expression *> command_lists,VarDataBase *vdb);
 
     double calculate();
 };
