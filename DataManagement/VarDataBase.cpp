@@ -153,3 +153,10 @@ string VarDataBase::getPath(string var) const {
 VarDataBase::~VarDataBase() {
     delete(symbol_table);
 }
+
+bool VarDataBase::isVarBinded(string var) {
+    if (var_bind.find(var) == var_bind.end()) {
+        return false;
+    }
+    return true;
+}

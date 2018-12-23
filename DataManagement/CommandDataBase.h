@@ -31,8 +31,9 @@ private:
 public:
     CommandDataBase();
 
-    ExpressionCommand *getCommand(vector<string> vec,int index, DataReaderServer *reader,VarDataBase *varDataBase,
-    Client *client);
+    ExpressionCommand *getCommand(vector<string> vec,int index, DataReaderServer *reader,
+            Client *client,VarDataBase *varDataBase
+    );
 
     ExpressionConditionalsCommand *getConditionCommand(vector<string> vec,int index,
             DataReaderServer *reader,Client *client,vector<Expression *> command_list,VarDataBase *varDataBase);

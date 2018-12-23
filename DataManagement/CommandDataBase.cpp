@@ -32,7 +32,7 @@ CommandDataBase::CommandDataBase() {
  * @return expression command.
  */
 ExpressionCommand *CommandDataBase::getCommand(vector<string> vec, int index, DataReaderServer *rd,
-                                               VarDataBase *varDataBase, Client *client) {
+                                               Client *client, VarDataBase *varDataBase) {
     // first parameter, the command name.
     string command_name = vec[index];
     if (commands_map.find(command_name) != commands_map.end()) {
@@ -52,7 +52,7 @@ ExpressionCommand *CommandDataBase::getCommand(vector<string> vec, int index, Da
             if (vec[index] == "=" && vec[index - 1] != "<" && vec[index - 1] != ">" && vec[index - 1] != "!"
                 && vec[index + 1] != "=") {
                 Command *c = commands_map["equal"];
-                ExpressionCommand *ex_command = new ExpressionCommand(c, vec, current_index, rd, varDataBase);
+                ExpressionCommand *ex_command = new ExpressionCommand(c, vec, current_index, rd,client, varDataBase);
                 to_delete.push_back(ex_command);
                 return ex_command;
             }

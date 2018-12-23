@@ -11,7 +11,7 @@
  */
 double ExpressionConditionalsCommand::calculate() {
     command->setListOfCommands(command_lists);
-    command->doCommand(vec, index, reader, varDataBase);
+    command->doCommand(vec, index, reader,client, varDataBase);
     return 0;
 }
 
