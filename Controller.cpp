@@ -59,9 +59,18 @@ vector<Expression *> Controller::conditionParser(bool find_parenthesis) {
         Expression *ex = getCommandFromLine(parsered_line, current_index);
         commands_list.push_back(ex);
         parsered_line = inputManager->readParseredLine();
-        if (parsered_line.back() == "}") {
+        //if only } end the loop.
+        if (parsered_line.size() == 1 && parsered_line.back() == "}") {
             break;
         }
+    }
+    // if last command contain }.
+    if (parsered_line.back() == "}") {
+        parsered_line.pop_back();
+        int current_index = inputManager->getStartVectorIndex();
+        //parserd vector of string line input.
+        Expression *ex = getCommandFromLine(parsered_line, current_index);
+        commands_list.push_back(ex);
     }
     return commands_list;
 }
