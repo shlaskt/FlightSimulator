@@ -36,6 +36,7 @@ int VarCommand::doCommand(vector<string> line, int i, DataReaderServer *server) 
         double val;
         try {
             val = shunting_yard(line.at(i)); // get the number / var value to assign the new var
+
         } catch (const out_of_range &no_such_var) {
             // if there is no var in this name- dijkstra throw error
             __throw_runtime_error("invalid params to var");

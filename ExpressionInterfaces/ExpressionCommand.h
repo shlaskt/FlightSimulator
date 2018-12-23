@@ -14,11 +14,12 @@
 class ExpressionCommand : public Expression {
 private:
     Command *command;
-    vector<string>::iterator &iterator;
+    vector<string> line;
+    int index;
     DataReaderServer *reader;
 
 public:
-    ExpressionCommand(Command *command,vector<string>::iterator &iterator, DataReaderServer *reader);
+    ExpressionCommand(Command *command,vector<string>vec, int index, DataReaderServer *reader);
 
     double calculate();
 

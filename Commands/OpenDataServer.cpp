@@ -9,6 +9,7 @@ struct params_to_socket {
     int port;
     int time;
     DataReaderServer *data_server;
+    int new_sock_fd;
 };
 
 /**
@@ -55,10 +56,8 @@ struct params_to_socket *OpenDataServer::initParams(double i_port, double i_time
  */
 void *CreateSocket(void *pVoid) {
     struct params_to_socket *params1 = (struct params_to_socket *) pVoid;
-    int newsockfd = params1->data_server->open(params1->port, params1->time); // open new socket
-
     while (true) {
-        auto x = params1->data_server->readSocket(newsockfd);
+        auto x = params1->data_server->readSocket(params1->new_sock_fd);
         if (x == "exit") break;
     }
     return nullptr;
@@ -70,6 +69,8 @@ void *CreateSocket(void *pVoid) {
  */
 void OpenDataServer::CreateThread(struct params_to_socket *params) {
     pthread_t trid;
+    int newsockfd = params->data_server->open(params->port, params->time); // open new socket
+    params->new_sock_fd=newsockfd;
     pthread_create(&trid, nullptr, CreateSocket, params);
 }
 

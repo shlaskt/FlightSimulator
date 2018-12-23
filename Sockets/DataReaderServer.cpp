@@ -98,7 +98,7 @@ string DataReaderServer::readSocket(int newsockfd) {
         }
         vector<double> split_buff = split(buffer);
         this->updatePathMap(split_buff); // update the map
-        //updateSymbolTable();
+        // updateSymbolTable();
     }
     return ""; //until it will return "exit"
 
