@@ -5,29 +5,29 @@
 #include "VarDataBase.h"
 
 void VarDataBase::initPathMap() {
-    this->paths_map.insert(pair<string, double>("/instrumentation/airspeed-indicator/indicated-speed-kt", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/altimeter/indicated-altitude-ft", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/altimeter/pressure-alt-ft", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/attitude-indicator/indicated-pitch-deg", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/attitude-indicator/indicated-roll-deg", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/attitude-indicator/internal-pitch-deg", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/attitude-indicator/internal-roll-deg", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/encoder/indicated-altitude-ft", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/encoder/pressure-alt-ft", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/gps/indicated-altitude-ft", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/gps/indicated-ground-speed-kt", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/gps/indicated-vertical-speed", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/heading-indicator/indicated-heading-deg", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/magnetic-compass/indicated-heading-deg", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/slip-skid-ball/indicated-slip-skid", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/turn-indicator/indicated-turn-rate", 0));
-    this->paths_map.insert(pair<string, double>("/instrumentation/vertical-speed-indicator/indicated-speed-fpm", 0));
-    this->paths_map.insert(pair<string, double>("/controls/flight/aileron", 0));
-    this->paths_map.insert(pair<string, double>("/controls/flight/elevator", 0));
-    this->paths_map.insert(pair<string, double>("/controls/flight/rudder", 0));
-    this->paths_map.insert(pair<string, double>("/controls/flight/flaps", 0));
-    this->paths_map.insert(pair<string, double>("/controls/engines/engine/throttle", 0));
-    this->paths_map.insert(pair<string, double>("/engines/engine/rpm", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/airspeed-indicator/indicated-speed-kt\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/altimeter/indicated-altitude-ft\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/altimeter/pressure-alt-ft\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/attitude-indicator/indicated-pitch-deg\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/attitude-indicator/indicated-roll-deg\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/attitude-indicator/internal-pitch-deg\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/attitude-indicator/internal-roll-deg\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/encoder/indicated-altitude-ft\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/encoder/pressure-alt-ft\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/gps/indicated-altitude-ft\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/gps/indicated-ground-speed-kt\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/gps/indicated-vertical-speed\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/heading-indicator/indicated-heading-deg\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/magnetic-compass/indicated-heading-deg\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/slip-skid-ball/indicated-slip-skid\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/turn-indicator/indicated-turn-rate\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/instrumentation/vertical-speed-indicator/indicated-speed-fpm\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/controls/flight/aileron\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/controls/flight/elevator\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/controls/flight/rudder\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/controls/flight/flaps\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/controls/engines/engine/throttle\"", 0));
+    this->paths_map.insert(pair<string, double>("\"/engines/engine/rpm\"", 0));
 }
 
 /**
@@ -109,7 +109,8 @@ void VarDataBase::assignPathValue(string path, double val) {
  */
 void VarDataBase::createAndBindVarToPath(string var, string path) {
     // if found the path key, bind var to it, and update var value.
-    if (paths_map.count(path) != 0) {
+//    if (paths_map.count(path) != 0) {
+    if (paths_map.find(path) != paths_map.end()) {
         //add var to symbol table and update its value.
         (*symbol_table)[var] = paths_map[path];
         //bind between var and path.
@@ -126,6 +127,7 @@ void VarDataBase::createAndBindVarToPath(string var, string path) {
 map<string, double> *VarDataBase::getSymbolTable() {
     return this->symbol_table;
 }
+
 /**
  * update all bind var in the symbol table by the var_bind map.
  */
@@ -151,7 +153,7 @@ string VarDataBase::getPath(string var) const {
 }
 
 VarDataBase::~VarDataBase() {
-    delete(symbol_table);
+    delete (symbol_table);
 }
 
 bool VarDataBase::isVarBinded(string var) {
