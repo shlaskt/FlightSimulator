@@ -10,7 +10,8 @@ extern bool is_server_opened;
  * Ctor
  * @param varDataBase
  */
-DataReaderServer::DataReaderServer(VarDataBase *varDataBase) : varDataBase(varDataBase) {}
+DataReaderServer::DataReaderServer(VarDataBase *varDataBase, pthread_mutex_t * mut) :
+varDataBase(varDataBase), mut(mut) {}
 
 /**
  * split to vector
@@ -71,13 +72,15 @@ int DataReaderServer::open(int port, int time_per_sec) {
 
     listen(sockfd, 1);
 
+    to_stop = false;
     cout << "waiting for connection..." << endl;
     is_server_opened = true;
 
     clilen = sizeof(cli_addr);
+    sockaddr_in client_sock;
 
     /* Accept actual connection from the client */
-    newsockfd = ::accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
+    newsockfd = ::accept(sockfd, (struct sockaddr *) &client_sock, (socklen_t *) &clilen);
 
     if (newsockfd < 0) {
         perror("ERROR on accept");
@@ -88,30 +91,44 @@ int DataReaderServer::open(int port, int time_per_sec) {
     return newsockfd; //return the new sockfd
 
 }
+
+void DataReaderServer::updateWithMutexTheSymbolTable() {
+    pthread_mutex_lock(mut);
+
+    for (map<string, string>::iterator it = varDataBase->getVar_bind().begin();
+    it != varDataBase->getVar_bind().end(); ++it) {
+        varDataBase->getSymbolTable()->at(it->first) = varDataBase->getPaths_map().at(it->second);
+    }
+
+    pthread_mutex_unlock(mut);
+}
+
 // check if is the wright way to read 1/tume
 /* If connection is established then start communicating */
 string DataReaderServer::readSocket(int newsockfd) {
-    while (true) {
+    while (!to_stop) {
         char buffer[BUF];
         bzero(buffer, BUF);
-        ssize_t n = read(newsockfd, buffer, BUF - 1);
+        ssize_t read_bytes;
+        read_bytes =read(newsockfd, buffer, BUF - 1);
 
-        if (n < 0) {
+        if (read_bytes < 0) {
             perror("ERROR reading from socket");
             exit(1);
-        } else if (n == 0) {
+        } else if (read_bytes == 0) {
             // ?
             int y = 0;
         } else {
-            buffer[n] = NULL; // warning
+            buffer[read_bytes] = NULL; // warning
             //sleep(1 / time_per_sec); // sleep for the given time
             cout << buffer << endl; // for check
         }
         vector<double> split_buff = split(buffer);
         this->updatePathMap(split_buff); // update the path map
-        varDataBase->updateSymbolTable(); // update the symbol table
+        //varDataBase->updateSymbolTable(); // update the symbol table
+        updateWithMutexTheSymbolTable();
     }
-    return ""; //until it will return "exit"
+    return "exit"; //until it will return "exit"
 
 }
 
@@ -145,6 +162,10 @@ void DataReaderServer::updatePathMap(vector<double> splited) {
     this->varDataBase->assignPathValue("\"/controls/flight/flaps\"", splited[20]);
     this->varDataBase->assignPathValue("\"/controls/engines/engine/throttle\"", splited[21]);
     this->varDataBase->assignPathValue("\"/engines/engine/rpm\"", splited[22]);
+}
+
+void DataReaderServer::stopReading() {
+    this->to_stop= true;
 }
 
 

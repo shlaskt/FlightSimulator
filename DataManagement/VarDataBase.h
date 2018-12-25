@@ -20,6 +20,14 @@ private:
     void initPathMap();
 
 public:
+
+    // for testing the mutex problem
+    map<string, double> *getSymbol_table();
+
+    map<string, double> &getPaths_map();
+
+    map<string, string> &getVar_bind();
+
     VarDataBase();
 
     map<string, double> *getSymbolTable();

@@ -125,6 +125,7 @@ void VarDataBase::createAndBindVarToPath(string var, string path) {
  * @return map of symbol table.
  */
 map<string, double> *VarDataBase::getSymbolTable() {
+
     return this->symbol_table;
 }
 
@@ -136,6 +137,7 @@ void VarDataBase::updateSymbolTable() {
         symbol_table->at(it->first) = paths_map.at(it->second);
     }
 }
+
 
 /**
  * return path of given var
@@ -162,3 +164,18 @@ bool VarDataBase::isVarBinded(string var) {
     }
     return true;
 }
+
+// for testing the mutex
+map<string, double> *VarDataBase::getSymbol_table() {
+    return symbol_table;
+}
+
+map<string, double> &VarDataBase::getPaths_map() {
+    return paths_map;
+}
+
+map<string, string> &VarDataBase::getVar_bind() {
+    return var_bind;
+}
+
+

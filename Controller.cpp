@@ -6,9 +6,10 @@
 
 
 Controller::Controller(int argc, char **argv) {
+    pthread_mutex_t *mut = new pthread_mutex_t();
     command_data_base = new CommandDataBase();
     var_data_base = new VarDataBase();
-    data_reader_server = new DataReaderServer(var_data_base);
+    data_reader_server = new DataReaderServer(var_data_base, mut);
     client = new Client();
     /**
      *
