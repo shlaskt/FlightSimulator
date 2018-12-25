@@ -4,16 +4,16 @@
 #include "Sockets/DataReaderServer.h"
 #include "Controller.h"
 #include <string>
+
+bool is_server_opened = false;
 /**
  * for now, do nothing.
  * @return
  */
 using namespace std;
 
-
 int main(int argc, char *argv[]) {
-    int x;
-    cin >> x;
+    char z;
     Controller *controller = new Controller(argc, argv);
     controller->runProgram();
 //    parserTests();

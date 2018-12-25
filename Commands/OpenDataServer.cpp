@@ -3,7 +3,7 @@
 //
 
 #include "OpenDataServer.h"
-
+extern bool is_server_opened;
 // struct with the parameters to the socket
 struct params_to_socket {
     int port;
@@ -19,7 +19,7 @@ struct params_to_socket {
  * @param args x,y-> port, time
  */
 int OpenDataServer::doCommand(vector<string> line, int i, DataReaderServer *server,
-        Client *client, VarDataBase* var_data_base) {
+                              Client *client, VarDataBase *var_data_base) {
     Dijkstra shunting_yard(var_data_base->getSymbolTable());
     double i_port, i_time;
     // check valid - should be 2 non-negative numbers
@@ -44,8 +44,8 @@ int OpenDataServer::doCommand(vector<string> line, int i, DataReaderServer *serv
 struct params_to_socket *OpenDataServer::initParams(double i_port, double i_time, DataReaderServer *server) {
     struct params_to_socket *params = new params_to_socket; // struct of params to sock
     // initialize the struct
-    params->port = (int)i_port; // initialize port - casting to int
-    params->time = (int)i_time; // initialize server - casting to int
+    params->port = (int) i_port; // initialize port - casting to int
+    params->time = (int) i_time; // initialize server - casting to int
     params->data_server = server;
     return params;
 }
@@ -56,6 +56,9 @@ struct params_to_socket *OpenDataServer::initParams(double i_port, double i_time
  * @return void* (nothing)
  */
 void *CreateSocket(void *pVoid) {
+    while(!is_server_opened){
+        this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 5000));
+    }
     struct params_to_socket *params1 = (struct params_to_socket *) pVoid;
     while (true) {
         auto x = params1->data_server->readSocket(params1->new_sock_fd);
@@ -71,7 +74,7 @@ void *CreateSocket(void *pVoid) {
 void OpenDataServer::CreateThread(struct params_to_socket *params) {
     pthread_t trid;
     int newsockfd = params->data_server->open(params->port, params->time); // open new socket
-    params->new_sock_fd=newsockfd;
+    params->new_sock_fd = newsockfd;
     pthread_create(&trid, nullptr, CreateSocket, params);
 }
 

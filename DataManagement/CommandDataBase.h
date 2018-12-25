@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 #include "../Commands/Command.h"
+#include "../Commands/EntercCommand.h"
 #include "../ExpressionInterfaces/ExpressionCommand.h"
 #include "../Commands/ConditionCommand.h"
 #include "../ExpressionInterfaces/ExpressionConditionalsCommand.h"

@@ -34,7 +34,7 @@ int EqualCommand::doCommand(vector<string> line, int i, DataReaderServer *server
     // update the data client
     if (var_data_base->isVarBinded(var)) {
         string path = var_data_base->getPath(var);
-        // delete first '  "/  ' and last '  "  ' from the path
+        // delete first '  "  ' and last '  "  ' from the path
         path = path.substr(2, path.length() - 3);
         // create the set command
         string s = "set";

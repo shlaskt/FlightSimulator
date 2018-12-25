@@ -17,7 +17,6 @@
 #include "../Sockets/Client.h"
 
 using namespace std;
-
 class OpenDataServer : public Command {
 //    VarDataBase varDataBase;
 
@@ -27,8 +26,8 @@ class OpenDataServer : public Command {
             DataReaderServer *server);
 
 public:
-    OpenDataServer(){};
 
+    OpenDataServer(){};
     virtual int doCommand(vector<string> line, int i, DataReaderServer *server,
             Client *client, VarDataBase* var_data_base);
 };

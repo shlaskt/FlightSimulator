@@ -32,7 +32,7 @@ int Client::open(string ip, int port) {
     /* Now connect to the server */
     while (true) {
         int c = connect(sock_fd, (struct sockaddr *) &serv_addr, sizeof(serv_addr));
-        if (c == 0) {
+        if (c >= 0) {
             break;
             perror("ERROR connecting");
             exit(1);
@@ -63,7 +63,9 @@ string Client::set(string path) {
 
     // "set path val \r\n strlen(buffer)"
     n = write(sock_fd, c_path, path_len);
-
+    /* Now read server response */
+    bzero(buffer, BUF);
+    n = read(sock_fd, buffer, BUF - 1);
     if (n < 0) {
         __throw_runtime_error("ERROR writing to socket - n<0");
     }

@@ -2,9 +2,10 @@
 // Created by tomer on 12/18/18.
 //
 #define BUF 1000
+#define ARGEUMENTS_NUM 22
 
 #include "DataReaderServer.h"
-
+extern bool is_server_opened;
 /**
  * Ctor
  * @param varDataBase
@@ -19,11 +20,20 @@ DataReaderServer::DataReaderServer(VarDataBase *varDataBase) : varDataBase(varDa
 vector<double> DataReaderServer::split(string buff) {
     vector<double> info;
     size_t pos = 0;
-    string delimiter = " ";
-    while ((pos = buff.find(delimiter)) != string::npos) {
+    size_t end_pos = 0;
+    string delimiter = ",";
+    string end_line = "\n";
+
+    if (buff.size() == 1000) {
+        pos = buff.find(end_line);
+        buff.erase(0, pos + end_line.length());
+    }
+    end_pos = buff.find(end_line);
+    while ((pos = buff.find(delimiter)) != string::npos && info.size() != ARGEUMENTS_NUM) {
         info.push_back(stod(buff.substr(0, pos)));
         buff.erase(0, pos + delimiter.length());
     }
+    pos = buff.find(end_line);
     info.push_back(stod(buff.substr(0, pos)));
     return info;
 }
@@ -62,8 +72,9 @@ int DataReaderServer::open(int port, int time_per_sec) {
     listen(sockfd, 1);
 
     cout << "waiting for connection..." << endl;
+    is_server_opened = true;
 
-    //clilen = sizeof(cli_addr);
+    clilen = sizeof(cli_addr);
 
     /* Accept actual connection from the client */
     newsockfd = ::accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
@@ -110,29 +121,30 @@ string DataReaderServer::readSocket(int newsockfd) {
  * @param splited vector
  */
 void DataReaderServer::updatePathMap(vector<double> splited) {
-    this->varDataBase->assignPathValue("/instrumentation/airspeed-indicator/indicated-speed-kt", splited[0]);
-    this->varDataBase->assignPathValue("/instrumentation/altimeter/indicated-altitude-ft", splited[1]);
-    this->varDataBase->assignPathValue("/instrumentation/altimeter/pressure-alt-ft", splited[2]);
-    this->varDataBase->assignPathValue("/instrumentation/attitude-indicator/indicated-pitch-deg", splited[3]);
-    this->varDataBase->assignPathValue("/instrumentation/attitude-indicator/indicated-roll-deg", splited[4]);
-    this->varDataBase->assignPathValue("/instrumentation/attitude-indicator/internal-pitch-deg", splited[5]);
-    this->varDataBase->assignPathValue("/instrumentation/attitude-indicator/internal-roll-deg", splited[6]);
-    this->varDataBase->assignPathValue("/instrumentation/encoder/indicated-altitude-ft", splited[7]);
-    this->varDataBase->assignPathValue("/instrumentation/encoder/pressure-alt-ft", splited[8]);
-    this->varDataBase->assignPathValue("/instrumentation/gps/indicated-altitude-ft", splited[9]);
-    this->varDataBase->assignPathValue("/instrumentation/gps/indicated-ground-speed-kt", splited[10]);
-    this->varDataBase->assignPathValue("/instrumentation/gps/indicated-vertical-speed", splited[11]);
-    this->varDataBase->assignPathValue("/instrumentation/heading-indicator/indicated-heading-deg", splited[12]);
-    this->varDataBase->assignPathValue("/instrumentation/magnetic-compass/indicated-heading-deg", splited[13]);
-    this->varDataBase->assignPathValue("/instrumentation/slip-skid-ball/indicated-slip-skid", splited[14]);
-    this->varDataBase->assignPathValue("/instrumentation/turn-indicator/indicated-turn-rate", splited[15]);
-    this->varDataBase->assignPathValue("/instrumentation/vertical-speed-indicator/indicated-speed-fpm", splited[16]);
-    this->varDataBase->assignPathValue("/controls/flight/aileron", splited[17]);
-    this->varDataBase->assignPathValue("/controls/flight/elevator", splited[18]);
-    this->varDataBase->assignPathValue("/controls/flight/rudder", splited[19]);
-    this->varDataBase->assignPathValue("/controls/flight/flaps", splited[20]);
-    this->varDataBase->assignPathValue("/controls/engines/engine/throttle", splited[21]);
-    this->varDataBase->assignPathValue("/engines/engine/rpm", splited[22]);
+    this->varDataBase->assignPathValue("\"/instrumentation/airspeed-indicator/indicated-speed-kt\"", splited[0]);
+    this->varDataBase->assignPathValue("\"/instrumentation/altimeter/indicated-altitude-ft\"", splited[1]);
+    this->varDataBase->assignPathValue("\"/instrumentation/altimeter/pressure-alt-ft\"", splited[2]);
+    this->varDataBase->assignPathValue("\"/instrumentation/attitude-indicator/indicated-pitch-deg\"", splited[3]);
+    this->varDataBase->assignPathValue("\"/instrumentation/attitude-indicator/indicated-roll-deg\"", splited[4]);
+    this->varDataBase->assignPathValue("\"/instrumentation/attitude-indicator/internal-pitch-deg\"", splited[5]);
+    this->varDataBase->assignPathValue("\"/instrumentation/attitude-indicator/internal-roll-deg\"", splited[6]);
+    this->varDataBase->assignPathValue("\"/instrumentation/encoder/indicated-altitude-ft\"", splited[7]);
+    this->varDataBase->assignPathValue("\"/instrumentation/encoder/pressure-alt-ft\"", splited[8]);
+    this->varDataBase->assignPathValue("\"/instrumentation/gps/indicated-altitude-ft\"", splited[9]);
+    this->varDataBase->assignPathValue("\"/instrumentation/gps/indicated-ground-speed-kt\"", splited[10]);
+    this->varDataBase->assignPathValue("\"/instrumentation/gps/indicated-vertical-speed\"", splited[11]);
+    this->varDataBase->assignPathValue("\"/instrumentation/heading-indicator/indicated-heading-deg\"", splited[12]);
+    this->varDataBase->assignPathValue("\"/instrumentation/magnetic-compass/indicated-heading-deg\"", splited[13]);
+    this->varDataBase->assignPathValue("\"/instrumentation/slip-skid-ball/indicated-slip-skid\"", splited[14]);
+    this->varDataBase->assignPathValue("\"/instrumentation/turn-indicator/indicated-turn-rate\"", splited[15]);
+    this->varDataBase->assignPathValue("\"/instrumentation/vertical-speed-indicator/indicated-speed-fpm\"",
+                                       splited[16]);
+    this->varDataBase->assignPathValue("\"/controls/flight/aileron\"", splited[17]);
+    this->varDataBase->assignPathValue("\"/controls/flight/elevator\"", splited[18]);
+    this->varDataBase->assignPathValue("\"/controls/flight/rudder\"", splited[19]);
+    this->varDataBase->assignPathValue("\"/controls/flight/flaps\"", splited[20]);
+    this->varDataBase->assignPathValue("\"/controls/engines/engine/throttle\"", splited[21]);
+    this->varDataBase->assignPathValue("\"/engines/engine/rpm\"", splited[22]);
 }
 
 

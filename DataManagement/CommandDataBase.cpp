@@ -15,6 +15,7 @@ CommandDataBase::CommandDataBase() {
     commands_map["print"] = new PrintCommand();
     commands_map["sleep"] = new SleepCommand();
     commands_map["var"] = new VarCommand();
+    commands_map["Enterc"] = new EntercCommand();
 
     /**
     * Conditional commands
