@@ -89,10 +89,6 @@ CommandDataBase::getConditionCommand(vector<string> vec, int index,
  * delete all the ExpressionCommand and .
  */
 CommandDataBase::~CommandDataBase() {
-    //delete all the ExpressionCommand and Command.
-    for (vector<Expression *>::iterator it = to_delete.begin(); it != to_delete.end(); ++it) {
-        delete (*it);
-    }
     for (map<string, Command *>::iterator it_command = commands_map.begin();
          it_command != commands_map.end(); ++it_command) {
         delete ((*it_command).second);
@@ -100,5 +96,9 @@ CommandDataBase::~CommandDataBase() {
     for (map<string, ConditionCommand *>::iterator it_command = condition_commands_map.begin();
          it_command != condition_commands_map.end(); ++it_command) {
         delete ((*it_command).second);
+    }
+    //delete all the ExpressionCommand and Command.
+    for (vector<Expression *>::iterator it = to_delete.begin(); it != to_delete.end(); ++it) {
+        delete (*it);
     }
 }

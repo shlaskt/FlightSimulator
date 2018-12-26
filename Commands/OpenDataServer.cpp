@@ -3,6 +3,8 @@
 //
 
 #include "OpenDataServer.h"
+
+//#define PORT 4510
 extern bool is_server_opened;
 // struct with the parameters to the socket
 struct params_to_socket {
@@ -36,7 +38,6 @@ int OpenDataServer::doCommand(vector<string> line, int i, DataReaderServer *serv
     struct params_to_socket *params = initParams(i_port, i_time, server);
 
     CreateThread(params); // open new thread
-    delete (params); // when finish- delete and return
     return ++i; // increase index
 }
 
@@ -56,9 +57,9 @@ struct params_to_socket *OpenDataServer::initParams(double i_port, double i_time
  * @return void* (nothing)
  */
 void *CreateSocket(void *pVoid) {
-    while(!is_server_opened){
-        this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 5000));
-    }
+//    while(!is_server_opened){
+//        this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 5000));
+//    }
     struct params_to_socket *params1 = (struct params_to_socket *) pVoid;
     while (true) {
         auto x = params1->data_server->readSocket(params1->new_sock_fd);
@@ -73,6 +74,9 @@ void *CreateSocket(void *pVoid) {
  */
 void OpenDataServer::CreateThread(struct params_to_socket *params) {
     pthread_t trid;
+//#ifdef PORT
+//    params->port = PORT;
+//#endif
     int newsockfd = params->data_server->open(params->port, params->time); // open new socket
     params->new_sock_fd = newsockfd;
     pthread_create(&trid, nullptr, CreateSocket, params);

@@ -27,3 +27,7 @@ string FileReader::readLine() {
     }
     return line;
 }
+
+FileReader::~FileReader() {
+    input.close();
+}

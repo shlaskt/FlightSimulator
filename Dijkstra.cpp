@@ -3,6 +3,7 @@
 //
 
 
+#include <list>
 /**
  * evaluate a given expression where tokens are separated by space.
  * include vars (getting a map <var,num> in the Ctor.
@@ -65,7 +66,35 @@ Expression *Dijkstra::applyOp(double a, double b, char op) {
     }
 }
 
+template<class T>
+class MyStack
+{
+    list<T> op;
+public:
+    T top()
+    {
+        auto itr = op.end();
+        return *(--itr);
+    }
 
+    T pop()
+    {
+        auto t = top();
+        op.pop_back();
+        return t;
+    }
+
+    void push(T ob)
+    {
+        op.push_back(ob);
+    }
+
+    bool empty()
+    {
+        return op.empty();
+    }
+
+};
 /**
  * returns value of  expression after evaluation.
  * @param tokens string with numbers and operators only
@@ -74,11 +103,12 @@ Expression *Dijkstra::applyOp(double a, double b, char op) {
 double Dijkstra::evaluate(string tokens) {
     int i;
     bool is_op = false; // check for "-" that came after operator
-    // stack to store integer values.
-    stack<double> values;
-    // stack to store operators.
-    stack<char> ops;
     double is_neg = 1; // to double it in 1 /-1 if needed
+    // stack to store operators.
+    MyStack<double> values;
+    // stack to store integer values.
+    MyStack<char> ops;
+
     for (i = 0; i < tokens.length(); i++) {
 
         // Current token is a whitespace,

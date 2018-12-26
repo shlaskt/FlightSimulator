@@ -3,8 +3,14 @@
 #include "Dijkstra.h"
 #include "Sockets/DataReaderServer.h"
 #include "Controller.h"
+#include <signal.h>
 #include <string>
 
+
+void handle(int signo)  {
+    perror("SIGSEGV");
+    exit(1);
+}
 bool is_server_opened = false;
 /**
  * for now, do nothing.
@@ -13,6 +19,7 @@ bool is_server_opened = false;
 using namespace std;
 
 int main(int argc, char *argv[]) {
+    signal(SIGSEGV, handle);
     char z;
     Controller *controller = new Controller(argc, argv);
     controller->runProgram();

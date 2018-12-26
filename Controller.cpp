@@ -6,9 +6,10 @@
 
 
 Controller::Controller(int argc, char **argv) {
+    pthread_mutex_t *mut = new pthread_mutex_t();
     command_data_base = new CommandDataBase();
     var_data_base = new VarDataBase();
-    data_reader_server = new DataReaderServer(var_data_base);
+    data_reader_server = new DataReaderServer(var_data_base, mut);
     client = new Client();
     /**
      *
@@ -62,7 +63,7 @@ vector<Expression *> Controller::conditionParser(bool find_parenthesis) {
         parsered_line = inputManager->readParseredLine();
         //if only } end the loop.
         if (parsered_line.size() == 1 && parsered_line.back() == "}") {
-            break;
+            return commands_list;
         }
     }
     // if last command contain }.
@@ -86,7 +87,9 @@ void Controller::runProgram() {
         //parse vector in to expression.
         //send the last iterator made from the vector.
         Expression *expression = getCommandFromLine(parsered_line, index);
+        pthread_mutex_lock(data_reader_server->getMutex());
         expression->calculate();
+        pthread_mutex_unlock(data_reader_server->getMutex());
         parsered_line = inputManager->readParseredLine();
     }
 }
@@ -109,12 +112,13 @@ Expression *Controller::getCommandFromLine(vector<string> &parsered_line, int &i
         vector<Expression *> command_lists = conditionParser(saw_parenthesis);
         // create conditional command.
         expression_command =
-                (command_data_base->getConditionCommand(parsered_line, index, data_reader_server,client, command_lists,
+                (command_data_base->getConditionCommand(parsered_line, index, data_reader_server, client, command_lists,
                                                         var_data_base));
 
     } else {
         // expression command create.
-        expression_command = (command_data_base->getCommand(parsered_line, index, data_reader_server,client, var_data_base));
+        expression_command = (command_data_base->getCommand(parsered_line, index, data_reader_server, client,
+                                                            var_data_base));
     }
     to_delete.push_back(expression_command);
     return expression_command;
@@ -130,11 +134,11 @@ bool Controller::CheckValidityOfConditionCommand(vector<string> &vec) {
 }
 
 Controller::~Controller() {
+    pthread_mutex_t *mut = data_reader_server->getMutex();
+    pthread_mutex_lock(mut);
     delete (this->command_data_base);
     delete (this->var_data_base);
-    delete (this->data_reader_server);
     delete (this->client);
-    delete (inputManager);
     for (vector<Expression *>::iterator it = to_delete.begin(); it != to_delete.end(); ++it) {
         delete *it;
         *it = nullptr;
@@ -143,6 +147,9 @@ Controller::~Controller() {
         delete *it;
         *it = nullptr;
     }
+    delete (inputManager);
+    pthread_mutex_unlock(mut);
+    delete (this->data_reader_server);
     to_delete.clear();
 
     input_to_delete.clear();

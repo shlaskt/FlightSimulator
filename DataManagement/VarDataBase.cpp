@@ -2,6 +2,7 @@
 // Created by eyal on 12/18/18.
 //
 
+#include <iostream>
 #include "VarDataBase.h"
 
 void VarDataBase::initPathMap() {
@@ -21,7 +22,8 @@ void VarDataBase::initPathMap() {
     this->paths_map.insert(pair<string, double>("\"/instrumentation/magnetic-compass/indicated-heading-deg\"", 0));
     this->paths_map.insert(pair<string, double>("\"/instrumentation/slip-skid-ball/indicated-slip-skid\"", 0));
     this->paths_map.insert(pair<string, double>("\"/instrumentation/turn-indicator/indicated-turn-rate\"", 0));
-    this->paths_map.insert(pair<string, double>("\"/instrumentation/vertical-speed-indicator/indicated-speed-fpm\"", 0));
+    this->paths_map.insert(
+            pair<string, double>("\"/instrumentation/vertical-speed-indicator/indicated-speed-fpm\"", 0));
     this->paths_map.insert(pair<string, double>("\"/controls/flight/aileron\"", 0));
     this->paths_map.insert(pair<string, double>("\"/controls/flight/elevator\"", 0));
     this->paths_map.insert(pair<string, double>("\"/controls/flight/rudder\"", 0));
@@ -116,7 +118,11 @@ void VarDataBase::createAndBindVarToPath(string var, string path) {
         //bind between var and path.
         var_bind[var] = path;
     } else {
-        throw runtime_error("there is no such path directory");
+        cout << "enter path that not in xml, wont listen to it.\npath:" << path << endl;
+        //asaing the var, the path, and bind it.
+        (*symbol_table)[var] = 0;
+        var_bind[var] = path;
+        paths_map[path] = 0;
     }
 }
 
@@ -125,6 +131,7 @@ void VarDataBase::createAndBindVarToPath(string var, string path) {
  * @return map of symbol table.
  */
 map<string, double> *VarDataBase::getSymbolTable() {
+
     return this->symbol_table;
 }
 
@@ -136,6 +143,7 @@ void VarDataBase::updateSymbolTable() {
         symbol_table->at(it->first) = paths_map.at(it->second);
     }
 }
+
 
 /**
  * return path of given var
@@ -162,3 +170,18 @@ bool VarDataBase::isVarBinded(string var) {
     }
     return true;
 }
+
+// for testing the mutex
+map<string, double> *VarDataBase::getSymbol_table() {
+    return symbol_table;
+}
+
+map<string, double> &VarDataBase::getPaths_map() {
+    return paths_map;
+}
+
+map<string, string> &VarDataBase::getVar_bind() {
+    return var_bind;
+}
+
+

@@ -27,9 +27,19 @@ using namespace std;
 
 class DataReaderServer {
 private:
+    bool to_stop;
     VarDataBase *varDataBase;
+    pthread_mutex_t *mut;
 public:
-    DataReaderServer(VarDataBase *varDataBase);
+    DataReaderServer(VarDataBase *varDataBase, pthread_mutex_t *mut);
+
+    void updateWithMutexTheSymbolTable();
+
+    void stopReading();
+
+    pthread_mutex_t *getMutex();
+
+    virtual ~DataReaderServer();
 
     int open(int port, int time_per_sec);
 
