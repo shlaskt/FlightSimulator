@@ -8,6 +8,7 @@
 
 int ConnectCommand::doCommand(vector<string> line, int i, DataReaderServer *server, Client *client,
                               VarDataBase *var_data_base) {
+
     Dijkstra shunting_yard(var_data_base->getSymbolTable());
     string ip = line.at(i++); // get ip
     string port_s = line.at(i++);

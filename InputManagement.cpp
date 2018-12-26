@@ -177,6 +177,7 @@ string makeExpression(int &index, vector<string> vec) {
 vector<string> parser(string line) {
     int index = 0;
     vector<string> lexered_line = lexer(line);
+    cout << line << endl;
     if (lexered_line.size() == 0) {
         throw runtime_error("error in lexering line");
     }

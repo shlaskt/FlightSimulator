@@ -5,13 +5,17 @@
 #define ARGEUMENTS_NUM 22
 
 #include "DataReaderServer.h"
+
 extern bool is_server_opened;
+
 /**
  * Ctor
  * @param varDataBase
  */
-DataReaderServer::DataReaderServer(VarDataBase *varDataBase, pthread_mutex_t * mut) :
-varDataBase(varDataBase), mut(mut) {}
+DataReaderServer::DataReaderServer(VarDataBase *varDataBase, pthread_mutex_t *mut) :
+        varDataBase(varDataBase), mut(mut) {
+    pthread_mutex_init(mut, nullptr);
+}
 
 /**
  * split to vector
@@ -21,18 +25,19 @@ varDataBase(varDataBase), mut(mut) {}
 vector<double> DataReaderServer::split(string buff) {
     vector<double> info;
     size_t pos = 0;
-    size_t end_pos = 0;
+    size_t start_pos = 0;
     string delimiter = ",";
     string end_line = "\n";
-
-    if (buff.size() == 1000) {
+    if (buff.find(delimiter) == 0) {
+        buff.substr(1, 400);
+    }
+    if (buff.size() > 500) {
         pos = buff.find(end_line);
         buff.erase(0, pos + end_line.length());
     }
-    end_pos = buff.find(end_line);
     while ((pos = buff.find(delimiter)) != string::npos && info.size() != ARGEUMENTS_NUM) {
-        info.push_back(stod(buff.substr(0, pos)));
-        buff.erase(0, pos + delimiter.length());
+        info.push_back(stod(buff.substr(start_pos, pos)));
+        buff.erase(start_pos, pos + delimiter.length());
     }
     pos = buff.find(end_line);
     info.push_back(stod(buff.substr(0, pos)));
@@ -93,10 +98,12 @@ int DataReaderServer::open(int port, int time_per_sec) {
 }
 
 void DataReaderServer::updateWithMutexTheSymbolTable() {
+    cout << "A" << endl;
     pthread_mutex_lock(mut);
+    cout << "B" << endl;
 
     for (map<string, string>::iterator it = varDataBase->getVar_bind().begin();
-    it != varDataBase->getVar_bind().end(); ++it) {
+         it != varDataBase->getVar_bind().end(); ++it) {
         varDataBase->getSymbolTable()->at(it->first) = varDataBase->getPaths_map().at(it->second);
     }
 
@@ -108,9 +115,9 @@ void DataReaderServer::updateWithMutexTheSymbolTable() {
 string DataReaderServer::readSocket(int newsockfd) {
     while (!to_stop) {
         char buffer[BUF];
-        bzero(buffer, BUF);
+//        bzero(buffer, BUF);
         ssize_t read_bytes;
-        read_bytes =read(newsockfd, buffer, BUF - 1);
+        read_bytes = read(newsockfd, buffer, BUF - 1);
 
         if (read_bytes < 0) {
             perror("ERROR reading from socket");
@@ -119,17 +126,17 @@ string DataReaderServer::readSocket(int newsockfd) {
             // ?
             int y = 0;
         } else {
-            buffer[read_bytes] = NULL; // warning
+            buffer[read_bytes] = 0; // warning
             //sleep(1 / time_per_sec); // sleep for the given time
-            cout << buffer << endl; // for check
+//            cout << buffer << endl; // for check
         }
         vector<double> split_buff = split(buffer);
         this->updatePathMap(split_buff); // update the path map
         //varDataBase->updateSymbolTable(); // update the symbol table
         updateWithMutexTheSymbolTable();
     }
-    return "exit"; //until it will return "exit"
 
+    return "exit"; //until it will return "exit"
 }
 
 /**
@@ -165,7 +172,17 @@ void DataReaderServer::updatePathMap(vector<double> splited) {
 }
 
 void DataReaderServer::stopReading() {
-    this->to_stop= true;
+    this->to_stop = true;
+}
+
+pthread_mutex_t *DataReaderServer::getMutex() {
+    return mut;
+}
+
+DataReaderServer::~DataReaderServer() {
+    // TODO inspect
+    // delete mut;
+
 }
 
 

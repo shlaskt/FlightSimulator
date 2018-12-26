@@ -8,6 +8,7 @@
 // example- "connect 127.0.0.1 5402"
 
 int Client::open(string ip, int port) {
+    cout << "SPIT\n";
     const char *argv = ip.c_str(); // convert to char*
     struct sockaddr_in serv_addr;
     struct hostent *server;
@@ -21,14 +22,17 @@ int Client::open(string ip, int port) {
 
     server = gethostbyname(ip.c_str());
 
-    if (server == NULL) {
+    if (server == nullptr) {
         __throw_runtime_error("ERROR opening socket - no such host");
     }
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr, server->h_length);
+    cout << ip << ", " << port;
     serv_addr.sin_port = htons(port);
 
+
+    cout << "Connect" << endl;
     /* Now connect to the server */
     while (true) {
         int c = connect(sock_fd, (struct sockaddr *) &serv_addr, sizeof(serv_addr));

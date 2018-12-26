@@ -15,6 +15,8 @@ private:
 public:
     FileReader(string file_name);
 
+    virtual ~FileReader();
+
     virtual string readLine();
 };
 
