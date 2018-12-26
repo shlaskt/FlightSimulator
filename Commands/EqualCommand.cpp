@@ -38,7 +38,8 @@ int EqualCommand::doCommand(vector<string> line, int i, DataReaderServer *server
         path = path.substr(2, path.length() - 3);
         // create the set command
         string s = "set";
-        s += SPACE + path + SPACE + to_string(val) + RN;
+        string value = to_string(val);
+        s += SPACE + path + SPACE + value + RN;
         client->set(s); // send to set
     }
     return i; // return index
