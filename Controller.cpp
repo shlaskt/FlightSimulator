@@ -11,13 +11,13 @@ Controller::Controller() {
     server = new DataReaderServer(maps->getSymbolMap(),mut);
     client = new Client();
     dijkstra = new Dijkstra(maps->getSymbolMap());
-    parser = new Parser(maps->getSymbolMap(),maps->getComMap());
+    interpreter = new Interpreter(maps->getSymbolMap(),maps->getComMap());
 }
 
 void Controller::runningProgram(int argc,char *argv[]) {
     maps->setDij(dijkstra);
     maps->setServer(server,client);
-    maps->setParser(parser);
+    maps->setInterpreter(interpreter);
     maps->initMapCom();
     LexerClass lexerClass;
     vector<vector<string>> afterLex;
@@ -30,14 +30,14 @@ void Controller::runningProgram(int argc,char *argv[]) {
     //pthread_mutex_destroy(&mut);
 
     afterLex = lexerClass.readFromFile(fileName);
-    int ans = parser->interpLine(afterLex);
+    int ans = interpreter->interpLine(afterLex);
 
     if(ans == 0){
         server->stopLoop();
         pthread_mutex_destroy(mut);
         delete mut;
         delete dijkstra;
-        delete parser;
+        delete interpreter;
         delete client;
         delete server;
     }
@@ -46,9 +46,9 @@ void Controller::runningProgram(int argc,char *argv[]) {
     pthread_mutex_destroy(mut);
     delete mut;
     delete dijkstra;
-    delete parser;
+    delete interpreter;
     delete client1;
     delete drs;*/
-    delete parser;
+    delete interpreter;
     delete maps;
 }

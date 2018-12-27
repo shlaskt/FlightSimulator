@@ -10,13 +10,13 @@
 #include "Commands/Command.h"
 
 
-class Parser {
+class Interpreter {
 private:
     map<string,double >* symbolTable;
     map<string, Command*>* commandMap;
 public:
 
-    Parser(map<string,double >* symbolTable,map<string, Command*>* commandMap){
+    Interpreter(map<string,double >* symbolTable,map<string, Command*>* commandMap){
         this->symbolTable = symbolTable;
         this->commandMap = commandMap;
     }

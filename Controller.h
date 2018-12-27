@@ -9,7 +9,7 @@
 #include "Commands/DataReaderServer.h"
 #include "Maps.h"
 #include "Commands/Client.h"
-#include "Parser.h"
+#include "Interpreter.h"
 #include "LexerClass.h"
 
 class Controller {
@@ -19,7 +19,7 @@ private:
     DataReaderServer *server;
     Client *client;
     Dijkstra *dijkstra;
-    Parser *parser;
+    Interpreter *interpreter;
 public:
     Controller();
 

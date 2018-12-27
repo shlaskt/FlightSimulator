@@ -2,9 +2,9 @@
 // Created by Eyal on 16/12/18.
 //
 
-#include "Parser.h"
+#include "Interpreter.h"
 
-int Parser::interpLine(vector<vector<string>> vector1) {
+int Interpreter::interpLine(vector<vector<string>> vector1) {
     bool flagExit = false;
     for(int i = 0;i<vector1.size();i++){
         //for the vars equal.
@@ -57,7 +57,7 @@ int Parser::interpLine(vector<vector<string>> vector1) {
     return 1;
 }
 
-int Parser::countLoopIf(vector<vector<string>> vector1) {
+int Interpreter::countLoopIf(vector<vector<string>> vector1) {
     int breaks = -1;
     int index = 0;
     int flag = 0;

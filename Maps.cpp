@@ -70,7 +70,7 @@ map<string, Command *> *Maps::getComMap() {
     return &(this->commandMap);
 }
 
-void Maps::setParser(Parser* p) {
+void Maps::setInterpreter(Interpreter* p) {
 
     this->pars=p;
 }

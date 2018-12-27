@@ -41,7 +41,7 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *ma
     }
     if (returnBoolSign(first,second,sign,map1)){
 
-        this->parser->interpLine(newVactor);
+        this->interpreter->interpLine(newVactor);
     }
 
     return 0;
@@ -73,7 +73,7 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *ma
     newVactor.erase(newVactor.begin()+0);
     if (returnBoolSign(first,second,sign,map1)){
 
-        this->parser->interpLine(newVactor);
+        this->interpreter->interpLine(newVactor);
     }
 
     return 0;

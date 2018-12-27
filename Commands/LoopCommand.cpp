@@ -45,7 +45,7 @@ int LoopCommand::doCommand(vector<vector<string>> vector1, map<string, double> *
 
     while (returnBoolSign(first,second,sign,map1)){
 
-        this->parser->interpLine(newVactor);
+        this->interpreter->interpLine(newVactor);
     }
 
     return 0;

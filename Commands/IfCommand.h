@@ -6,16 +6,16 @@
 #define FLIGHT_IFCOMMAND_H
 
 #include "Command.h"
-#include "../Parser.h"
+#include "../Interpreter.h"
 
 class IfCommand : public Command{
 private:
-    Parser* parser;
+    Interpreter* interpreter;
 public:
-    IfCommand(DataReaderServer* server5,Client* client1,Parser* parser1,Dijkstra* dij,pthread_mutex_t *mut)
+    IfCommand(DataReaderServer* server5,Client* client1,Interpreter* interpreter1,Dijkstra* dij,pthread_mutex_t *mut)
     :Command(server5,client1,dij,mut)
     {
-        this->parser = parser1;
+        this->interpreter = interpreter1;
     }
     virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index);
     bool returnBoolSign(string first,string second,string sign, map<string, double> *map1);

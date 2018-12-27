@@ -9,7 +9,7 @@
 #include <string>
 #include "Commands/Command.h"
 #include "Commands/Client.h"
-#include "Parser.h"
+#include "Interpreter.h"
 using namespace std;
 
 
@@ -20,7 +20,7 @@ private:
     DataReaderServer* server1 ;
     Client* client;
     Dijkstra* dijkstra2;
-    Parser* pars;
+    Interpreter* pars;
     pthread_mutex_t *mut;
 public:
     Maps(pthread_mutex_t *mut){
@@ -34,7 +34,7 @@ public:
     void initMapCom();
     void setServer(DataReaderServer* dataReaderServer,Client* client1 );
     void setDij(Dijkstra* dijkstra);
-    void setParser(Parser* parser);
+    void setInterpreter(Interpreter* interpreter);
     ~Maps(){
         map<string,Command*>::iterator it = this->commandMap.begin();
         for(it;it!=this->commandMap.end();++it){
