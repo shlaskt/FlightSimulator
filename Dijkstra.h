@@ -37,7 +37,7 @@ private:
 
 public:
     double virtual operator()(char* str);
-    double virtual toVl(string str);
+    double virtual evluate(string str);
     void addToDelete(BinaryExpression* exp);
     ~Dijkstra(){
         vector<BinaryExpression*>::iterator it = this->deleteVector.begin();

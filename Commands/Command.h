@@ -19,18 +19,18 @@ class Command {
 protected:
     DataReaderServer *dataServer;
     Client *client;
-    Dijkstra *dijkstra1;
+    Dijkstra *dijkstra;
     pthread_mutex_t *mut;
 
 public:
     Command(DataReaderServer *dataServer, Client *client1, Dijkstra *dijkstra, pthread_mutex_t *mut) {
         this->dataServer = dataServer;
         this->client = client1;
-        this->dijkstra1 = dijkstra;
+        this->dijkstra = dijkstra;
         this->mut = mut;
     }
 
-    virtual int doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) = 0;
+    virtual int doCommand(vector<vector<string>> lines, map<string, double> *map1, int index) = 0;
 };
 
 

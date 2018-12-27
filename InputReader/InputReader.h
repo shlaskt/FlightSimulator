@@ -11,8 +11,6 @@
 using namespace std;
 
 class InputReader {
-protected:
-    string laxer();
 public:
     virtual string readLine() = 0;
 };

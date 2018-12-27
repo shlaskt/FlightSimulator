@@ -3,6 +3,7 @@
 //
 #include "Interpreter.h"
 
+#define FIRST 0
 using namespace std;
 
 
@@ -16,7 +17,7 @@ Interpreter::Interpreter(map<string, double> *symbolTable, map<string, Command *
     this->commandMap = commandMap;
 }
 
-bool Interpreter::interpLine(vector<vector<string>> vector1) {
+bool Interpreter::interpreteFile(vector<vector<string>> vector1) {
     bool flagExit = false;
     for (int i = 0; i < vector1.size(); i++) {
         //for the vars equal.
@@ -34,9 +35,9 @@ bool Interpreter::interpLine(vector<vector<string>> vector1) {
             newVec.erase(newVec.begin(), newVec.begin() + i);
             int ind = countLoopIf(newVec);
             newVec.erase(newVec.begin() + ind + 1, newVec.begin() + newVec.size());
-            this->commandMap->at("while")->doCommand(newVec, this->symbolTable, 0);
+            this->commandMap->at("while")->doCommand(newVec, this->symbolTable, FIRST);
             i = i + ind;
-        } else if (vector1[i][0] == "if") {
+        } else if (vector1[i][FIRST] == "if") {
             vector<vector<string>> newVec = vector1;
 
 
@@ -45,19 +46,19 @@ bool Interpreter::interpLine(vector<vector<string>> vector1) {
             newVec.erase(newVec.begin(), newVec.begin() + i);
             int ind = this->countLoopIf(newVec);
             newVec.erase(newVec.begin() + ind + 1, newVec.begin() + newVec.size());
-            this->commandMap->at("if")->doCommand(newVec, this->symbolTable, 0);
+            this->commandMap->at("if")->doCommand(newVec, this->symbolTable, FIRST);
             i = i + ind;
-        } else if (vector1[i][0] == "exit") {
+        } else if (vector1[i][FIRST] == "exit") {
 
             this->commandMap->at("exit")->doCommand(vector1, this->symbolTable, i);
             flagExit = true;
 
 
         } else {
-            string dd = vector1[i][0];
-            //int count = commandMap->count(vector1[i][0]);
-            Command *co = this->commandMap->at(vector1[i][0]);
-            this->commandMap->at(vector1[i][0])->doCommand(vector1, this->symbolTable, i);
+            string dd = vector1[i][FIRST];
+            //int count = commandMap->count(vector1[i][FIRST]);
+            Command *co = this->commandMap->at(vector1[i][FIRST]);
+            this->commandMap->at(vector1[i][FIRST])->doCommand(vector1, this->symbolTable, i);
 
         }
     }
@@ -184,7 +185,7 @@ string makeExpression(int &index, vector<string> vec) {
     bool is_quote;
     string current = vec[index];
     // case is a quote add all the quote to one expression.
-    if (current[0] == '\"') {
+    if (current[FIRST] == '\"') {
         expression += vec[index];
         if (current.back() == '\"') return expression;
         do {
@@ -272,7 +273,7 @@ vector<string> Interpreter::parser(string line) {
                 continue;
             }
         }
-        if (current[0] == '\"') {
+        if (current[FIRST] == '\"') {
 //            vector<string>::iterator it_end = lexered_line.end();
             expression += makeExpression(index, lexered_line);
             parserd_line.push_back(expression);
@@ -308,22 +309,18 @@ vector<string> Interpreter::parser(string line) {
             parserd_line;
 }
 
-vector<vector<string>> Interpreter::readFromFile(string fileName) {
+vector<vector<string>> Interpreter::readFromFile(InputReader *inputReader) {
     string command;
     string line;
     string buffer;
-    size_t found;
-    size_t begining = 0;
     vector<vector<string>> vector1;
-    ifstream myfile(fileName);
-    if (myfile.good()) {
-        while (getline(myfile, line)) {
-            vector<string> afterSplit = lexer(line);
-            if (afterSplit.size() > 0) {
-                vector1.push_back(lexer(line));
-            }
-
+    line = inputReader->readLine();
+    while (line != "") {
+        vector<string> afterSplit = lexer(line);
+        if (afterSplit.size() > 0) {
+            vector1.push_back(lexer(line));
         }
+        line = inputReader->readLine();
     }
     return vector1;
 }

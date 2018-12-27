@@ -14,6 +14,7 @@ FileReader::FileReader(string file_name) {
     input = ifstream(file_name);
     if (!input) {
         cout << "Cannot open " << file_name << " file." << endl;
+        exit(1);
     }
 }
 

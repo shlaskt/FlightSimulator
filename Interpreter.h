@@ -8,6 +8,7 @@
 
 #include <map>
 #include "Commands/Command.h"
+#include "InputReader/InputReader.h"
 #include <fstream>
 #include <string.h>
 #include <map>
@@ -16,16 +17,21 @@
 
 class Interpreter {
 private:
-    map<string,double >* symbolTable;
-    map<string, Command*>* commandMap;
+    map<string, double> *symbolTable;
+    map<string, Command *> *commandMap;
 public:
 
-    Interpreter(map<string,double >* symbolTable,map<string, Command*>* commandMap);
-    bool interpLine(vector<vector<string>>);
-    int countLoopIf(vector<vector<string>>);
-    vector<string> lexer(string line);
+    Interpreter(map<string, double> *symbolTable, map<string, Command *> *commandMap);
+
     vector<string> parser(string line);
-    vector<vector<string>> readFromFile(string fileName);
+
+    bool interpreteFile(vector<vector<string>>);
+
+    int countLoopIf(vector<vector<string>>);
+
+    vector<string> lexer(string line);
+
+    vector<vector<string>> readFromFile(InputReader *inputReader);
 
 };
 

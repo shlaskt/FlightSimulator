@@ -11,8 +11,8 @@ add_executable(flight main.cpp
         BinaryExpressions/Mul.cpp BinaryExpressions/Mul.h BinaryExpressions/Div.cpp
         BinaryExpressions/Div.h BinaryExpressions/Plus.cpp BinaryExpressions/Plus.h
         BinaryExpressions/Minus.cpp BinaryExpressions/Minus.h
-        Num.cpp Num.h Commands/DataReaderServer.cpp Commands/DataReaderServer.h Maps.cpp
-        Maps.h Interpreter.cpp Interpreter.h Commands/VarCommand.cpp
+        Num.cpp Num.h Commands/DataReaderServer.cpp Commands/DataReaderServer.h MapsData.cpp
+        MapsData.h Interpreter.cpp Interpreter.h Commands/VarCommand.cpp
         Commands/VarCommand.h
         Commands/EqualCommand.cpp Commands/EqualCommand.h Commands/WhileCommand.cpp Commands/WhileCommand.h
         Commands/ConnectCommand.cpp Commands/ConnectCommand.h ExpressionInterfaces/ExpressionCommand.cpp
@@ -22,5 +22,4 @@ add_executable(flight main.cpp
         Commands/IfCommand.h Commands/SleepCommand.cpp
         Commands/SleepCommand.h Commands/ExitCommand.cpp Commands/ExitCommand.h
         InputReader/FileReader.cpp InputReader/FileReader.h InputReader/InputReader.h
-        InputReader/StdinReader.cpp InputReader/StdinReader.h Controller.cpp Controller.h
-        InputReader/InputManage.cpp InputReader/InputManage.h)
+        InputReader/StdinReader.cpp InputReader/StdinReader.h Controller.cpp Controller.h)

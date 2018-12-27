@@ -216,7 +216,7 @@ double Dijkstra::operator()(char *str) {
  * @param str string
  * @return double - the value after evaluate
  */
-double Dijkstra::toVl(string str) {
+double Dijkstra::evluate(string str) {
     return calculate(str);
 }
 

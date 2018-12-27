@@ -25,7 +25,7 @@ class Client {
 
 private:
     struct sockaddr_in m_socket;
-    int sock_fd, client_sock_fd;
+    int sock_fd;
 
 public:
     int createSock(string ip, double port);

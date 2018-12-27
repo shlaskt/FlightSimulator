@@ -62,7 +62,7 @@ void Client::setData(string path) {
 
 
     if (n < 0) {
-        __throw_bad_exception();
+        throw runtime_error("error reading from socket");
     }
 
     /* Now read server response */

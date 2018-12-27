@@ -11,8 +11,6 @@
 class WhileCommand: public Command {
 
 private:
-    vector<Command> commands;
-    vector<int> indexForCommand;
     Interpreter* interpreter;
 public:
     WhileCommand(DataReaderServer* server5,Client* client1,Interpreter* interpreter1,Dijkstra* dij,pthread_mutex_t *mut)
@@ -22,7 +20,6 @@ public:
     }
     virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index);
     bool returnBoolSign(string first,string second,string sign, map<string, double> *map1);
-    void MakeCommandsVectors(vector<string>);
 };
 
 #endif //FLIGHT_WHILECOMMAND_H

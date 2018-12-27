@@ -15,7 +15,6 @@ private:
     DataReaderServer* server;
     Client* client1;
     Dijkstra* dij;
-    Interpreter* pars;
     pthread_mutex_t *mut;
     //pthread_mutex_t *mut;
 
@@ -27,9 +26,7 @@ public:
         this->client1=client1;
         this->dij = dij;
         this->mut = mut;
-        this->pars = pars;
     }
-
 };
 
 #endif //FLIGHT_EXITCOMMAND_H

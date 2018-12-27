@@ -8,12 +8,13 @@
 
 #include "ExpressionInterfaces/Expression.h"
 
-class Num: public Expression {
+class Num : public Expression {
 
 private:
     double num;
 public:
     virtual double calculate();
+
     Num(double num);
 
 };

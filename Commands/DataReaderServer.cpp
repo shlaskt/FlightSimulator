@@ -59,9 +59,10 @@ void DataReaderServer::accept()
     int clilen;
     client_sock_fd = ::accept(sock_fd, (struct sockaddr*) &client_sock, (socklen_t *)&clilen);
     if (client_sock_fd < 0) {
-        // TODO error
+        perror("unable to connect server.\n");
+        exit(1);
     }
-    std::cout << "hi" << std::endl;
+    std::cout << "connected" << std::endl;
 
 }
 
@@ -74,11 +75,11 @@ string DataReaderServer::readFromSock(){
         if (bytes_read < 0) {
             __throw_bad_exception();
         }   else if (bytes_read == 0)   {
-            // TODO connection closed
+
             int y = 0;
         } else  {
             buffer[bytes_read] = 0;
-            cout << buffer;
+//            cout << buffer;
         }
 
         vector<double> buffSplit = this->split(buffer);
@@ -98,6 +99,7 @@ string DataReaderServer::getPath(string var) {
     if(this->mapPath->count(var)==1){
         return this->mapPath->at(var);
     }
+    //case didnt find.
     return "";
 }
 
@@ -182,31 +184,31 @@ vector<double> DataReaderServer::split(string buff) {
 }
 
 
-void DataReaderServer::setMapPath(vector<double> vector1) {
+void DataReaderServer::setMapPath(vector<double> path_values) {
 
-    this->pathRead.at("/instrumentation/airspeed-indicator/indicated-speed-kt")=vector1[0];
-    this->pathRead.at("/instrumentation/altimeter/indicated-altitude-ft")=vector1[1];
-    this->pathRead.at("/instrumentation/altimeter/pressure-alt-ft")=vector1[2];
-    this->pathRead.at("/instrumentation/attitude-indicator/indicated-pitch-deg")=vector1[3];
-    this->pathRead.at("/instrumentation/attitude-indicator/indicated-roll-deg")=vector1[4];
-    this->pathRead.at("/instrumentation/attitude-indicator/internal-pitch-deg")=vector1[5];
-    this->pathRead.at("/instrumentation/attitude-indicator/internal-roll-deg")=vector1[6];
-    this->pathRead.at("/instrumentation/encoder/indicated-altitude-ft")=vector1[7];
-    this->pathRead.at("/instrumentation/encoder/pressure-alt-ft")=vector1[8];
-    this->pathRead.at("/instrumentation/gps/indicated-altitude-ft")=vector1[9];
-    this->pathRead.at("/instrumentation/gps/indicated-ground-speed-kt")=vector1[10];
-    this->pathRead.at("/instrumentation/gps/indicated-vertical-speed")=vector1[11];
-    this->pathRead.at("/instrumentation/heading-indicator/indicated-heading-deg")=vector1[12];
-    this->pathRead.at("/instrumentation/magnetic-compass/indicated-heading-deg")=vector1[13];
-    this->pathRead.at("/instrumentation/slip-skid-ball/indicated-slip-skid")=vector1[14];
-    this->pathRead.at("/instrumentation/turn-indicator/indicated-turn-rate")=vector1[15];
-    this->pathRead.at("/instrumentation/vertical-speed-indicator/indicated-speed-fpm")=vector1[16];
-    this->pathRead.at("/controls/flight/aileron")=vector1[17];
-    this->pathRead.at("/controls/flight/elevator")=vector1[18];
-    this->pathRead.at("/controls/flight/rudder")=vector1[19];
-    this->pathRead.at("/controls/flight/flaps")=vector1[20];
-    this->pathRead.at("/controls/engines/engine/throttle")=vector1[21];
-    this->pathRead.at("/engines/engine/rpm")=vector1[22];
+    this->pathRead.at("/instrumentation/airspeed-indicator/indicated-speed-kt")=path_values[0];
+    this->pathRead.at("/instrumentation/altimeter/indicated-altitude-ft")=path_values[1];
+    this->pathRead.at("/instrumentation/altimeter/pressure-alt-ft")=path_values[2];
+    this->pathRead.at("/instrumentation/attitude-indicator/indicated-pitch-deg")=path_values[3];
+    this->pathRead.at("/instrumentation/attitude-indicator/indicated-roll-deg")=path_values[4];
+    this->pathRead.at("/instrumentation/attitude-indicator/internal-pitch-deg")=path_values[5];
+    this->pathRead.at("/instrumentation/attitude-indicator/internal-roll-deg")=path_values[6];
+    this->pathRead.at("/instrumentation/encoder/indicated-altitude-ft")=path_values[7];
+    this->pathRead.at("/instrumentation/encoder/pressure-alt-ft")=path_values[8];
+    this->pathRead.at("/instrumentation/gps/indicated-altitude-ft")=path_values[9];
+    this->pathRead.at("/instrumentation/gps/indicated-ground-speed-kt")=path_values[10];
+    this->pathRead.at("/instrumentation/gps/indicated-vertical-speed")=path_values[11];
+    this->pathRead.at("/instrumentation/heading-indicator/indicated-heading-deg")=path_values[12];
+    this->pathRead.at("/instrumentation/magnetic-compass/indicated-heading-deg")=path_values[13];
+    this->pathRead.at("/instrumentation/slip-skid-ball/indicated-slip-skid")=path_values[14];
+    this->pathRead.at("/instrumentation/turn-indicator/indicated-turn-rate")=path_values[15];
+    this->pathRead.at("/instrumentation/vertical-speed-indicator/indicated-speed-fpm")=path_values[16];
+    this->pathRead.at("/controls/flight/aileron")=path_values[17];
+    this->pathRead.at("/controls/flight/elevator")=path_values[18];
+    this->pathRead.at("/controls/flight/rudder")=path_values[19];
+    this->pathRead.at("/controls/flight/flaps")=path_values[20];
+    this->pathRead.at("/controls/engines/engine/throttle")=path_values[21];
+    this->pathRead.at("/engines/engine/rpm")=path_values[22];
 
 }
 
@@ -224,12 +226,4 @@ void DataReaderServer::updateMap() {
 
     }
     pthread_mutex_unlock(this->mut);
-
-
 }
-
-
-
-
-
-//struct sockaddr_in getSock(){}

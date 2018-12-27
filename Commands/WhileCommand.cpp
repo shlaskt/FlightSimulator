@@ -25,9 +25,6 @@ int WhileCommand::doCommand(vector<vector<string>> vector1, map<string, double> 
         second=second+vector1[index][i]+" ";
         i++;
     }
-    //double firstParm= this->dijkstra1->operator()(first);
-    //double secondParm= this->dijkstra1->operator()(second);
-
     vector<vector<string>> newVactor=vector1;
     newVactor.erase(newVactor.begin()+0);
     //check the }
@@ -45,30 +42,18 @@ int WhileCommand::doCommand(vector<vector<string>> vector1, map<string, double> 
 
     while (returnBoolSign(first,second,sign,map1)){
 
-        this->interpreter->interpLine(newVactor);
+        this->interpreter->interpreteFile(newVactor);
     }
 
     return 0;
 }
 
 bool WhileCommand::returnBoolSign(string first, string second, string sign, map<string, double> *map1) {
-    double firstParm= this->dijkstra1->toVl(first);
-    double secondParm= this->dijkstra1->toVl(second);
+    double firstParm= this->dijkstra->evluate(first);
+    double secondParm= this->dijkstra->evluate(second);
 
     double firstVal = firstParm;
     double secondVal = secondParm;
-    //check if the first is var in map
-    /*if(map1->count(first)==1){
-        firstVal = map1->at(first);
-    } else{
-        firstVal=stod(first);
-    }
-    //check if the second is var in map
-    if(map1->count(second)==1){
-        secondVal= map1->at(second);
-    }else{
-        secondVal=stod(second);
-    }*/
 
     if(sign==">"){
         if(firstVal>secondVal){
@@ -119,10 +104,4 @@ bool WhileCommand::returnBoolSign(string first, string second, string sign, map<
     } else{
         __throw_bad_exception();
     }
-}
-
-void WhileCommand::MakeCommandsVectors(vector<string> vec)  {
-    /*for(vector<string>::iterator it=vec.begin();it!=vec.end();++it){
-
-    }*/
 }

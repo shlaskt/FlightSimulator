@@ -3,7 +3,9 @@
 //
 
 #include "Num.h"
-double Num::calculate() { return this->num;}
+
+double Num::calculate() { return this->num; }
+
 Num::Num(double num) {
-    this->num=num;
+    this->num = num;
 }

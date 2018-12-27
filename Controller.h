@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include "Commands/DataReaderServer.h"
-#include "Maps.h"
+#include "MapsData.h"
 #include "Commands/Client.h"
 #include "Interpreter.h"
 #include "InputReader/InputReader.h"
@@ -17,7 +17,7 @@
 class Controller {
 private:
     pthread_mutex_t *mut;
-    Maps *maps;
+    MapsData *dataMaps;
     DataReaderServer *server;
     Client *client;
     Dijkstra *dijkstra;

@@ -7,23 +7,52 @@
 Controller::Controller() {
     mut = new pthread_mutex_t();
     pthread_mutex_init(mut, nullptr);
-    maps = new Maps(mut);
-    server = new DataReaderServer(maps->getSymbolMap(), mut);
+    dataMaps = new MapsData(mut);
+    server = new DataReaderServer(dataMaps->getSymbolMap(), mut);
     client = new Client();
-    dijkstra = new Dijkstra(maps->getSymbolMap());
-    interpreter = new Interpreter(maps->getSymbolMap(), maps->getComMap());
+    dijkstra = new Dijkstra(dataMaps->getSymbolMap());
+    interpreter = new Interpreter(dataMaps->getSymbolMap(), dataMaps->getComMap());
+}
+
+InputReader *CreateReader(int argc, char *argv[]) {
+    switch (argc) {
+        case 1: {
+            throw runtime_error("didnt get file path");
+        }
+        case 2: {
+            string file_path = argv[1];
+            return new FileReader(file_path);
+        }
+        default: {
+            throw runtime_error("too many arguments to main");
+        }
+    }
 }
 
 void Controller::runningProgram(int argc, char *argv[]) {
-    maps->setDij(dijkstra);
-    maps->setServer(server, client);
-    maps->setInterpreter(interpreter);
-    maps->initMapCom();
+    dataMaps->setDij(dijkstra);
+    dataMaps->setServer(server, client);
+    dataMaps->setInterpreter(interpreter);
+    dataMaps->initMapCom();
+    InputReader *inputReader;
+    switch (argc) {
+        case 1: {
+            throw runtime_error("didnt get file path");
+        }
+        case 2: {
+            string file_path = argv[1];
+            inputReader = new FileReader(file_path);
+            break;
+        }
+        default: {
+            throw runtime_error("too many arguments to main");
+        }
+    }
+
     vector<vector<string>> afterLex;
 
-    string fileName = argv[1];
-    afterLex = interpreter->readFromFile(fileName);
-    bool was_exit = interpreter->interpLine(afterLex);
+    afterLex = interpreter->readFromFile(inputReader);
+    bool was_exit = interpreter->interpreteFile(afterLex);
 
     if (!was_exit) {
         server->stopLoop();
@@ -34,6 +63,7 @@ void Controller::runningProgram(int argc, char *argv[]) {
         delete client;
         delete server;
     }
+    delete inputReader;
     delete interpreter;
-    delete maps;
+    delete dataMaps;
 }

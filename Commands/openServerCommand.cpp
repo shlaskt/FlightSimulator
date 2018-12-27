@@ -16,8 +16,8 @@ int openServerCommand::doCommand(vector<vector<string>> vector1, map<string, dou
     int flag = 0;
     //if there are just 2 parameters
     if (vector1[index].size() == 3) {
-        this->port = this->dijkstra1->toVl(vector1[index][1]);
-        this->time = this->dijkstra1->toVl(vector1[index][2]);
+        this->port = this->dijkstra->evluate(vector1[index][1]);
+        this->time = this->dijkstra->evluate(vector1[index][2]);
         //its complicate expression
     } else {
 
@@ -61,8 +61,8 @@ int openServerCommand::doCommand(vector<vector<string>> vector1, map<string, dou
         for (i; i < vector1[index].size(); i++) {
             timeString = timeString + vector1[index][i] + " ";
         }
-        double portVal = this->dijkstra1->toVl(portString);
-        double time = this->dijkstra1->toVl(timeString);
+        double portVal = this->dijkstra->evluate(portString);
+        double time = this->dijkstra->evluate(timeString);
         this->port = portVal;
         this->time = time;
 
