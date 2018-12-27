@@ -1,5 +1,5 @@
 //
-// Created by reut on 13/12/18.
+// Created by Eyal on 13/12/18.
 //
 
 #ifndef FLIGHT_DIV_H

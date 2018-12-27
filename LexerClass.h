@@ -1,5 +1,5 @@
 //
-// Created by reut on 13/12/18.
+// Created by Eyal on 13/12/18.
 //
 
 #ifndef FLIGHT_LEXER_H
@@ -15,8 +15,7 @@ using namespace std;
 class LexerClass {
 
 public:
-    vector<string> Lexer();
-    vector<string> splitToCommand(string line);
+    vector<string> lexer(string line);
     vector<vector<string>> readFromFile(string fileName);
     };
 

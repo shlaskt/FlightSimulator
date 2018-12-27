@@ -1,5 +1,5 @@
 //
-// Created by reut on 18/12/18.
+// Created by Eyal on 18/12/18.
 //
 
 #ifndef FLIGHT_WHILECOMMAND_H
