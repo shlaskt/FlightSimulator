@@ -7,7 +7,7 @@
 
 
 #include <map>
-#include "Command.h"
+#include "Commands/Command.h"
 
 
 class Parser {

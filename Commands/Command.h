@@ -10,7 +10,7 @@
 #include <list>
 #include "DataReaderServer.h"
 #include "DataClient.h"
-#include "Dijkstra.h"
+#include "../Dijkstra.h"
 using namespace std;
 
 class Command

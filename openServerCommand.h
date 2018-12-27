@@ -3,7 +3,7 @@
 #ifndef FLIGHT_OPENSERVERCOMMAND_H
 #define FLIGHT_OPENSERVERCOMMAND_H
 
-#include "Command.h"
+#include "Commands/Command.h"
 
 class openServerCommand: public Command{
 private:

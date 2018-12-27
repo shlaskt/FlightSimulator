@@ -6,7 +6,7 @@
 #define FLIGHT_PRINTCOMMAND_H
 
 
-#include "Command.h"
+#include "Commands/Command.h"
 
 class PrintCommand : public Command{
 public:

@@ -6,7 +6,7 @@
 #define FLIGHT_DIV_H
 
 
-#include "ExpressionInterfaces/BinaryExpression.h"
+#include "../ExpressionInterfaces/BinaryExpression.h"
 
 class Div: public BinaryExpression {
 public:

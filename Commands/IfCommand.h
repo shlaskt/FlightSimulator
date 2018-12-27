@@ -6,7 +6,7 @@
 #define FLIGHT_IFCOMMAND_H
 
 #include "Command.h"
-#include "Parser.h"
+#include "../Parser.h"
 
 class IfCommand : public Command{
 private:

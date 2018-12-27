@@ -2,14 +2,14 @@
 
 #include "Maps.h"
 #include "openServerCommand.h"
-#include "DefineVarCommand.h"
-#include "EqualCommand.h"
-#include "ConnectCommand.h"
-#include "LoopCommand.h"
-#include "IfCommand.h"
+#include "Commands/DefineVarCommand.h"
+#include "Commands/EqualCommand.h"
+#include "Commands/ConnectCommand.h"
+#include "Commands/LoopCommand.h"
+#include "Commands/IfCommand.h"
 #include "PrintCommand.h"
 #include "SleepCommand.h"
-#include "ExitCommand.h"
+#include "Commands/ExitCommand.h"
 
 void Maps::setSymbel(string var, double value){
     this->symbolTable.at(var)=value;

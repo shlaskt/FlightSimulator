@@ -6,7 +6,7 @@
 #define FLIGHT_WHILECOMMAND_H
 
 #include "Command.h"
-#include "Parser.h"
+#include "../Parser.h"
 
 class LoopCommand: public Command {
 

@@ -7,7 +7,7 @@
 
 
 #include "Command.h"
-#include "Parser.h"
+#include "../Parser.h"
 
 
 class ExitCommand : public Command{

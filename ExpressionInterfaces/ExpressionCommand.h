@@ -6,7 +6,7 @@
 #define FLIGHT_EXPRESSIONCOMMAND_H
 
 #include "Expression.h"
-#include "../Command.h"
+#include "../Commands/Command.h"
 
 class ExpressionCommand: public Expression {
 private:

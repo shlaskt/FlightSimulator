@@ -7,8 +7,8 @@
 
 #include <map>
 #include <string>
-#include "Command.h"
-#include "DataClient.h"
+#include "Commands/Command.h"
+#include "Commands/DataClient.h"
 #include "Parser.h"
 using namespace std;
 

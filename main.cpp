@@ -1,7 +1,7 @@
 #include <iostream>
-#include "DataReaderServer.h"
+#include "Commands/DataReaderServer.h"
 #include "Maps.h"
-#include "DataClient.h"
+#include "Commands/DataClient.h"
 #include "Parser.h"
 #include "LexerClass.h"
 

@@ -12,7 +12,7 @@
 
 #include "Minus.h"
 #include "Mul.h"
-#include "Div.h"
+#include "Commands/Div.h"
 #include "ExpressionInterfaces/Expression.h"
 #include <iostream>
 #include <bits/stdc++.h>
