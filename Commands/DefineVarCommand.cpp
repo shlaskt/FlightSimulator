@@ -3,24 +3,24 @@
 #include "DefineVarCommand.h"
 #include <string>
 using namespace std;
-int DefineVarCommand::doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index){
+int DefineVarCommand::doCommand(vector<string> vec,map<string, double> *map1){
 
     // string temp = list1[index+3];
-    string temp = vector1[index][3];
+    string temp = vec[3];
     //if var is bind
 
     if(temp.compare("bind")==0){
         //add to map
         pthread_mutex_lock(this->mut);
-        map1->insert(pair<string,double >(vector1[index][1],0));
+        map1->insert(pair<string,double >(vec[1],0));
         pthread_mutex_unlock(this->mut);
         //if the 4th elemt is in the map
-        if(map1->count(vector1[index][4])==1){
-            string path25 = this->server1->getPath(vector1[index][4]);
-            this->server1->addPath(vector1[index][1],path25);
+        if(map1->count(vec[4])==1){
+            string path25 = this->server1->getPath(vec[4]);
+            this->server1->addPath(vec[1],path25);
         } else{
-            string nameVar = vector1[index][1];
-            string path = vector1[index][4];
+            string nameVar = vec[1];
+            string path = vec[4];
             path = path.substr(1,path.size()-2);
             this->server1->addPath(nameVar,path);
         }
@@ -30,11 +30,11 @@ int DefineVarCommand::doCommand(vector<vector<string>> vector1,map<string, doubl
 
         //if var isn't bind
     }else{
-        string var = vector1[index][1];
+        string var = vec[1];
                                     //temp = list1[index+3];
         string valueExp="";
-        for (int i=3;i<vector1[index].size();i++){
-            valueExp=valueExp+vector1[index][i]+" ";
+        for (int i=3;i<vec.size();i++){
+            valueExp=valueExp+vec[i]+" ";
         }
 
         double val=this->dijkstra1->toVl(valueExp);

@@ -4,7 +4,7 @@
 
 #include "ExitCommand.h"
 
-int ExitCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
+int ExitCommand::doCommand(vector<string> vec, map<string, double> *map1) {
     this->server->stopLoop();
 
     delete this->dij;

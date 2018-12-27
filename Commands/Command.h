@@ -30,7 +30,7 @@ public:
         this->mut = mut;
     }
 
-    virtual int doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) = 0;
+    virtual int doCommand(vector<string> vec, map<string, double> *map1) = 0;
 };
 
 

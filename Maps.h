@@ -17,6 +17,7 @@ class Maps {
 private:
     map<string,double > symbolTable;
     map<string, Command*> commandMap;
+    map<string, ConditionCommand*> connditionMap;
     DataReaderServer* server1 ;
     Client* client;
     Dijkstra* dijkstra2;
@@ -26,11 +27,12 @@ public:
     Maps(pthread_mutex_t *mut){
         this->mut = mut;
     }
-    void setSymbel(string var, double value);
+    void setSymbol(string var, double value);
     double getSymbol(string var);
     Command* getCommand(string comamnd);
     map<string,double >* getSymbolMap();
     map<string,Command* >* getComMap();
+    map<string,ConditionCommand* >* getConditionMap();
     void initMapCom();
     void setServer(DataReaderServer* dataReaderServer,Client* client1 );
     void setDij(Dijkstra* dijkstra);

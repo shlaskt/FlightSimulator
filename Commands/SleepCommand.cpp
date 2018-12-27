@@ -4,11 +4,11 @@
 
 #include "SleepCommand.h"
 
-int SleepCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
-    int size=vector1[index].size();
-    string paramToSleep="";
-    for (int i=1;i<size;i++){
-        paramToSleep=paramToSleep+vector1[index][i]+" ";
+int SleepCommand::doCommand(vector<string> vec, map<string, double> *map1) {
+    int size = vec.size();
+    string paramToSleep = "";
+    for (int i = 1; i < size; i++) {
+        paramToSleep = paramToSleep + vec[i] + " ";
 
     }
     double sleepVal = this->dijkstra1->toVl(paramToSleep);

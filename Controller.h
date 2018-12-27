@@ -9,7 +9,6 @@
 #include "Commands/DataReaderServer.h"
 #include "Maps.h"
 #include "Commands/Client.h"
-#include "Interpreter.h"
 #include "InputReader/InputReader.h"
 #include "InputReader/StdinReader.h"
 #include "InputReader/FileReader.h"
@@ -24,9 +23,7 @@ private:
     Interpreter *interpreter;
     InputReader *reader;
 public:
-    Controller();
-
-    vector<Command *> conditionParser(bool find_parenthesis);
+    Controller(int argc, char *argv[]);
 
     void runningProgram(int argc, char *argv[]);
 };

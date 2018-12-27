@@ -7,23 +7,23 @@ struct dataToSoc{
 
 };
 
-int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index) {
+int openServerCommand::doCommand(vector<string> vec,map<string, double> *map1) {
 
                         //this->port = stoi(list1[1+index]);
                         //this->time = stoi(list1[2+index]);
     int indexSeparate = 0;
     int flag = 0;
     //if there are just 2 parameters
-    if (vector1[index].size() == 3) {
-        this->port=this->dijkstra1->toVl(vector1[index][1]);
-        this->time=this->dijkstra1->toVl(vector1[index][2]);
+    if (vec.size() == 3) {
+        this->port=this->dijkstra1->toVl(vec[1]);
+        this->time=this->dijkstra1->toVl(vec[2]);
         //its complicate expression
     } else {
 
 
         //if seperate by ","
-        for(int t = 0; t<vector1[index].size();t++){
-            if(vector1[index][t]==","){
+        for(int t = 0; t<vec.size();t++){
+            if(vec[t]==","){
                 indexSeparate = t;
                 flag = 1;
                 break;
@@ -31,11 +31,11 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
         }
         //if seperate by " "
         if(flag==0){
-            for(int t = 1; t<vector1[index].size()-1;t++){
-                if((vector1[index][t]!="/")&&(vector1[index][t]!="*")
-                &&(vector1[index][t]!="+")&&(vector1[index][t]!="-")
-                &&(vector1[index][t+1]!="/")&&(vector1[index][t+1]!="*")
-                &&(vector1[index][t+1]!="+")&&(vector1[index][t+1]!="-")){
+            for(int t = 1; t<vec.size()-1;t++){
+                if((vec[t]!="/")&&(vec[t]!="*")
+                &&(vec[t]!="+")&&(vec[t]!="-")
+                &&(vec[t+1]!="/")&&(vec[t+1]!="*")
+                &&(vec[t+1]!="+")&&(vec[t+1]!="-")){
                    indexSeparate = t+1;
                     flag = 2;
                     break;
@@ -48,7 +48,7 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
         string portString = "";
         string timeString = "";
         for(int i = 1;i<indexSeparate;i++){
-            portString = portString+vector1[index][i]+" ";
+            portString = portString+vec[i]+" ";
         }
         int i;
         //if its ","
@@ -57,8 +57,8 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
         } else if(flag==2){
             i = indexSeparate;
         }
-        for(i;i<vector1[index].size();i++){
-            timeString = timeString+vector1[index][i]+" ";
+        for(i;i<vec.size();i++){
+            timeString = timeString+vec[i]+" ";
         }
         double portVal=this->dijkstra1->toVl(portString);
         double time=this->dijkstra1->toVl(timeString);

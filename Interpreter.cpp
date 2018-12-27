@@ -10,14 +10,87 @@ using namespace std;
  * Interpreter constructor.
  * @param symbolTable of the agruments.
  * @param commandMap command map.
+ * @param connditionMap1 map of conditions.
  */
-Interpreter::Interpreter(map<string, double> *symbolTable, map<string, Command *> *commandMap) {
+Interpreter::Interpreter(map<string, double> *symbolTable, map<string, Command *> *commandMap,
+                         map<string, ConditionCommand *> *connditionMap1, InputReader *reader) {
     this->symbolTable = symbolTable;
     this->commandMap = commandMap;
+    this->connditionMap = connditionMap1;
+    this->reader = reader;
+
 }
 
-int Interpreter::interpLine(vector<string> parsered_line) {
+/**
+ * work on lines. make every line to command and return the command list.
+ * use the member commandDataBase to get the commands from.
+ * use the member DataReaderServer to read and write to server.
+ * @param find_parenthesis check if need to find "{" before making commands.
+ * @return commands list to execute. "syntax error, didn't find "{""
+ */
+vector<Command *> Interpreter::conditionParser(bool find_parenthesis) {
+    //list of commands to execute by reference(will saved after function done).
+    vector<Command *> commands_list;
+    // read the next line.
+    //string line = inputReader->readLine();
+    string line = reader->readLine();
+    if (line == "") throw runtime_error("comile error in scop {}");
+    vector<string> parsered_line = lexer(line);
+//    lines_vector.push_back(parser(line));
+    /**
+     * i want the parsered vector and also the iterator still be alive after
+     * function end, so i save them inside member.
+     */
+//    lines_iterators.push_back(lines_vector[lines_vector.size() - 1].begin());
+    if (!find_parenthesis && parsered_line.back() != "{") {
+        // check if didn't find "{" open to read command.
+        throw runtime_error("syntax error, didn't find \"{\"");
+    } else if (parsered_line[0] == "{" && parsered_line.size() == 1) {
+        // skip on line "{".
+        line = reader->readLine();
+        if (line == "") throw runtime_error("comile error in scop {}");
+        parsered_line = lexer(line);
+    }
+    // read and create commands until '}' or eof.
+    while (!parsered_line.back().empty() && parsered_line.back() != "}") {
+        //save the iterator reference to add to the commands.
+        int current_index = 0;
+        //parserd vector of string line input.
+//        Command *com = commandMap->at(parsered_line[0]);
+        Command *command = interprateLine(parsered_line);
+        commands_list.push_back(command);
+        line = reader->readLine();
+        if (line == "") throw runtime_error("comile error in scop {}");
+        parsered_line = lexer(line);
+        //if only } end the loop.
+        if (parsered_line.size() == 1 && parsered_line.back() == "}") {
+            return commands_list;
+        }
+    }
+    // if last command contain }.
+    if (parsered_line.back() == "}") {
+        parsered_line.pop_back();
+        int current_index = 0;
+        //parserd vector of string line input.
+        Command *command = interprateLine(parsered_line);
+        commands_list.push_back(command);
+    }
+    return commands_list;
+}
+
+/**
+ * get iterator to a line of condition and check if it has "{".
+ * throw exception if not.
+ * @param it to iterate the line and find "{".
+ */
+bool Interpreter::CheckValidityOfConditionCommand(vector<string> &vec) {
+    return (vec.back() == "{");
+}
+
+Command *Interpreter::interprateLine(vector<string> parsered_line) {
     bool flagExit = false;
+    bool parantesis;
+    Command *command;
     //for the vars equal.
     int jump;
     //check if there is no var like this.
@@ -25,10 +98,13 @@ int Interpreter::interpLine(vector<string> parsered_line) {
         if (parsered_line[1] != "=") {
             throw runtime_error("no such var");
         }
-        this->commandMap->at("equal")->doCommand(parsered_line, this->symbolTable, i);
+        command = this->commandMap->at("equal");
     } else if (parsered_line[0] == "while") {
-        vector<string> newVec = parsered_line;
-
+        parantesis = CheckValidityOfConditionCommand(parsered_line);
+        vector<Command *> commands_list = conditionParser(parantesis);
+        ConditionCommand *con = connditionMap->at("while");
+        con->setCommands(commands_list);
+        return con;
         // TODO:
         //fix it to be one line.
         //no need for this lines
@@ -38,9 +114,11 @@ int Interpreter::interpLine(vector<string> parsered_line) {
         //this->commandMap->at("while")->doCommand(newVec, this->symbolTable, 0);
         //i = i + ind;
     } else if (parsered_line[0] == "if") {
-        //vector<string> newVec = parsered_line;
-
-
+        parantesis = CheckValidityOfConditionCommand(parsered_line);
+        vector<Command *> commands_list = conditionParser(parantesis);
+        ConditionCommand *con = connditionMap->at("if");
+        con->setCommands(commands_list);
+        return con;
         // TODO:
         //לבדוק אם חותך נכון
         //newVec.erase(newVec.begin(), newVec.begin() + i);
@@ -50,50 +128,17 @@ int Interpreter::interpLine(vector<string> parsered_line) {
         //i = i + ind;
     } else if (parsered_line[0] == "exit") {
 
-        this->commandMap->at("exit")->doCommand(parsered_line, this->symbolTable, i);
+        command = this->commandMap->at("exit");
         flagExit = true;
 
-
     } else {
-        string dd = parsered_line[0];
-        //int count = commandMap->count(parsered_line[i][0]);
-        Command *co = this->commandMap->at(parsered_line[0]);
-        this->commandMap->at(parsered_line[0])->doCommand(parsered_line, this->symbolTable, i);
+        //string dd = parsered_line[0];
+//        int count = commandMap->count(parsered_line[i][0]);
+        //Command *co = this->commandMap->at(parsered_line[0]);
+        command = this->commandMap->at(parsered_line[0]);
 
     }
-    //if he didnt call to exit
-    if (!flagExit) {
-        return 0;
-    }
-    return 1;
-}
-
-int Interpreter::countLoopIf(vector<vector<string>> vector1) {
-    int breaks = -1;
-    int index = 0;
-    int flag = 0;
-    for (int i = 1; i < vector1.size(); i++) {
-        for (int j = 0; j < vector1[i].size(); j++) {
-            if ((vector1[i][j] == "while") || (vector1[i][j] == "if")) {
-                flag++;
-            }
-            if ((vector1[i][j] == "}")) {
-
-                if (flag == 0) {
-                    breaks = i;
-                }
-                flag--;
-            }
-            if (breaks >= 0) {
-                break;
-            }
-        }
-        if (breaks >= 0) {
-            break;
-        }
-    }
-    index = breaks;
-    return index;
+    return command;
 }
 
 /**
@@ -232,23 +277,23 @@ vector<string> Interpreter::lexer(string line) {
 //}
 
 vector<vector<string>> Interpreter::readFromFile(string fileName) {
-    string command;
-    string line;
-    string buffer;
-    size_t found;
-    size_t begining = 0;
-    vector<vector<string>> vector1;
-    ifstream myfile(fileName);
-    if (myfile.good()) {
-        while (getline(myfile, line)) {
-            vector<string> afterSplit = lexer(line);
-            if (afterSplit.size() > 0) {
-                vector1.push_back(lexer(line));
-            }
-
-        }
-    }
-    return vector1;
+//    string command;
+//    string line;
+//    string buffer;
+//    size_t found;
+//    size_t begining = 0;
+//    //vector<vector<string>> vector1;
+//    ifstream myfile(fileName);
+//    if (myfile.good()) {
+//        while (getline(myfile, line)) {
+//            vector<string> afterSplit = lexer(line);
+//            if (afterSplit.size() > 0) {
+//                vector1.push_back(lexer(line));
+//            }
+//
+//        }
+//    }
+//    return vector1;
 }
 
 /**
