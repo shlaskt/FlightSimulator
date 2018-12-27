@@ -13,7 +13,7 @@ add_executable(flight main.cpp LexerClass.cpp LexerClass.h
         Maps.h Parser.cpp Parser.h Commands/DefineVarCommand.cpp Commands/DefineVarCommand.h
         Commands/EqualCommand.cpp Commands/EqualCommand.h Commands/LoopCommand.cpp Commands/LoopCommand.h
         Commands/ConnectCommand.cpp Commands/ConnectCommand.h ExpressionInterfaces/ExpressionCommand.cpp
-        ExpressionInterfaces/ExpressionCommand.h Commands/DataClient.cpp Commands/DataClient.h Commands/PrintCommand.cpp
+        ExpressionInterfaces/ExpressionCommand.h Commands/Client.cpp Commands/Client.h Commands/PrintCommand.cpp
         Commands/PrintCommand.h Dijkstra.cpp Dijkstra.h Commands/IfCommand.cpp Commands/IfCommand.h Commands/SleepCommand.cpp
         Commands/SleepCommand.h Commands/ExitCommand.cpp Commands/ExitCommand.h
-        InputReader/FileReader.cpp InputReader/FileReader.h InputReader/InputReadInterface.h InputReader/StdinReader.cpp InputReader/StdinReader.h)
+        InputReader/FileReader.cpp InputReader/FileReader.h InputReader/InputReadInterface.h InputReader/StdinReader.cpp InputReader/StdinReader.h Controller.cpp Controller.h)

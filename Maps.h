@@ -8,7 +8,7 @@
 #include <map>
 #include <string>
 #include "Commands/Command.h"
-#include "Commands/DataClient.h"
+#include "Commands/Client.h"
 #include "Parser.h"
 using namespace std;
 
@@ -18,7 +18,7 @@ private:
     map<string,double > symbolTable;
     map<string, Command*> commandMap;
     DataReaderServer* server1 ;
-    DataClient* dataClient;
+    Client* client;
     Dijkstra* dijkstra2;
     Parser* pars;
     pthread_mutex_t *mut;
@@ -32,7 +32,7 @@ public:
     map<string,double >* getSymbolMap();
     map<string,Command* >* getComMap();
     void initMapCom();
-    void setServer(DataReaderServer* dataReaderServer,DataClient* dataClient1 );
+    void setServer(DataReaderServer* dataReaderServer,Client* client1 );
     void setDij(Dijkstra* dijkstra);
     void setParser(Parser* parser);
     ~Maps(){

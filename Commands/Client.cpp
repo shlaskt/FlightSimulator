@@ -3,10 +3,10 @@
 //
 
 #include <strings.h>
-#include "DataClient.h"
+#include "Client.h"
 #include <string>
 using namespace std;
-int DataClient::createSock(string ip, double port) {
+int Client::createSock(string ip, double port) {
     struct sockaddr_in serv_addr;
     struct hostent *server;
     /* Create a socket point */
@@ -41,7 +41,7 @@ int DataClient::createSock(string ip, double port) {
     return 0;
 }
 
-void DataClient::setData(string path) {
+void Client::setData(string path) {
 
     /* Now ask for a message from the user, this message
       * will be read by server

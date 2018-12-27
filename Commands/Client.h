@@ -21,7 +21,7 @@
 
 using namespace std;
 
-class DataClient {
+class Client {
 
 private:
     struct sockaddr_in m_socket;

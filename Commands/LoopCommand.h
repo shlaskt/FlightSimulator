@@ -15,8 +15,8 @@ private:
     vector<int> indexForCommand;
     Parser* parser;
 public:
-    LoopCommand(DataReaderServer* server5,DataClient* dataClient1,Parser* parser1,Dijkstra* dij,pthread_mutex_t *mut)
-    :Command(server5,dataClient1,dij,mut)
+    LoopCommand(DataReaderServer* server5,Client* client1,Parser* parser1,Dijkstra* dij,pthread_mutex_t *mut)
+    :Command(server5,client1,dij,mut)
     {
         this->parser = parser1;
     }

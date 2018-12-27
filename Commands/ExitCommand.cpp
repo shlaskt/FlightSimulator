@@ -8,7 +8,7 @@ int ExitCommand::doCommand(vector<vector<string>> vector1, map<string, double> *
     this->server->stopLoop();
 
     delete this->dij;
-    delete this->dataClient1;
+    delete this->client1;
     delete this->server;
     pthread_mutex_destroy(mut);
     delete this->mut;

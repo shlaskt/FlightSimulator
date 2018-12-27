@@ -9,7 +9,7 @@
 #include <map>
 #include <list>
 #include "DataReaderServer.h"
-#include "DataClient.h"
+#include "Client.h"
 #include "../Dijkstra.h"
 using namespace std;
 
@@ -17,14 +17,14 @@ class Command
 {
 protected:
     DataReaderServer* server1;
-    DataClient* dataClient;
+    Client* client;
     Dijkstra* dijkstra1;
     pthread_mutex_t *mut;
 
 public:
-    Command(DataReaderServer* server2,DataClient* dataClient1,Dijkstra* dijkstra,pthread_mutex_t *mut){
+    Command(DataReaderServer* server2,Client* client1,Dijkstra* dijkstra,pthread_mutex_t *mut){
         this->server1 = server2;
-        this->dataClient = dataClient1;
+        this->client = client1;
         this->dijkstra1 = dijkstra;
         this->mut = mut;
     }

@@ -27,7 +27,7 @@ int EqualCommand::doCommand(vector<vector<string>> vector1, map<string, double> 
         s = s+this->server1->getPath(vector1[index][0]);
                                             //s = s+" "+vector1[index][0]+"\r\n";
         s = s+" "+to_string(val)+"\r\n";
-        this->dataClient->setData(s);
+        this->client->setData(s);
     }
 
     return 3;
