@@ -22,8 +22,11 @@ private:
     Client *client;
     Dijkstra *dijkstra;
     Interpreter *interpreter;
+    InputReader *reader;
 public:
     Controller();
+
+    vector<Command *> conditionParser(bool find_parenthesis);
 
     void runningProgram(int argc, char *argv[]);
 };

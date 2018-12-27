@@ -21,9 +21,10 @@ private:
 public:
 
     Interpreter(map<string,double >* symbolTable,map<string, Command*>* commandMap);
-    int interpLine(vector<vector<string>>);
+    int interpLine(vector<string>);
     int countLoopIf(vector<vector<string>>);
     vector<string> lexer(string line);
+    vector<string> parser(string line);
 
     vector<vector<string>> readFromFile(string fileName);
 
