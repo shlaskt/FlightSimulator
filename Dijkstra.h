@@ -1,5 +1,5 @@
 //
-// Created by Eyal on 20/12/18.
+// Created by Tomer & Eyal on 20/12/18.
 //
 
 #ifndef FLIGHT_DIJKSTRA_H
@@ -37,7 +37,7 @@ private:
 
 public:
     double virtual operator()(char* str);
-    double virtual toVl(string str);
+    double virtual dijkstratoi(string str);
     void addToDelete(BinaryExpression* exp);
     ~Dijkstra(){
         vector<BinaryExpression*>::iterator it = this->deleteVector.begin();

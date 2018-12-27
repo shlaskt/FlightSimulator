@@ -1,5 +1,5 @@
 //
-// Created by Eyal on 19/12/18.
+// Created by Tomer & Eyal on 19/12/18.
 //
 
 #ifndef FLIGHT_DATACLIENT_H
@@ -25,11 +25,11 @@ class Client {
 
 private:
     struct sockaddr_in m_socket;
-    int sock_fd, client_sock_fd;
+    int new_sock_fd;
 
 public:
-    int createSock(string ip, double port);
-    void setData(string info);
+    int openSocket(string ip, double port);
+    void setData(string str_to_set);
 
 };
 

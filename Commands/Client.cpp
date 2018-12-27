@@ -1,18 +1,23 @@
 //
-// Created by Eyal on 19/12/18.
+// Created by Tomer & Eyal on 19/12/18.
 //
 
 #include <strings.h>
 #include "Client.h"
 #include <string>
-using namespace std;
-int Client::createSock(string ip, double port) {
+/**
+ * create new Socket
+ * @param ip the ip
+ * @param port the port
+ * @return 0 if succed
+ */
+int Client::openSocket(string ip, double port) {
     struct sockaddr_in serv_addr;
     struct hostent *server;
     /* Create a socket point */
-    this->sock_fd = socket(AF_INET, SOCK_STREAM, 0);
+    this->new_sock_fd = socket(AF_INET, SOCK_STREAM, 0);
     //args->defineSocketClient(this->sock_fd);
-    if (this->sock_fd < 0) {
+    if (this->new_sock_fd < 0) {
         perror("ERROR opening socket");
         exit(1);
     }
@@ -33,7 +38,7 @@ int Client::createSock(string ip, double port) {
     serv_addr.sin_port = htons(port);
 
     /* Now connect to the server */
-    if (connect(this->sock_fd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
+    if (connect(this->new_sock_fd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
         perror("ERROR connecting");
         exit(1);
     }
@@ -41,40 +46,27 @@ int Client::createSock(string ip, double port) {
     return 0;
 }
 
-void Client::setData(string path) {
+/**
+ * set data drom the files/user to the simulator
+ * @param str_to_set
+ */
+void Client::setData(string str_to_set) {
 
     /* Now ask for a message from the user, this message
       * will be read by server
    */
     int n;
     char buffer[1024];
-    //printf("Please enter the message: ");
     bzero(buffer,1024);
-    //fgets(buffer,255,stdin);
 
     /* Send message to the server */
-    size_t lenPath = path.size();
-    /*for(int i= 0;i<lenPath;i++){
-        buffer[i]=path[i];
-    }*/
-    const char * neaString=path.c_str();
-    n = write(this->sock_fd,neaString,lenPath);
-
+    size_t lenPath = str_to_set.size();
+    const char * neaString=str_to_set.c_str();
+    n = write(this->new_sock_fd,neaString,lenPath);
 
     if (n < 0) {
         __throw_bad_exception();
     }
-
-    /* Now read server response */
-    //bzero(buffer,256);
-    //n = read(this->sock_fd, buffer, 1023);
-
-    /*if (n < 0) {
-        perror("ERROR reading from socket");
-        exit(1);
-    }*/
-
-    //printf("%s\n",buffer);
 
 }
 

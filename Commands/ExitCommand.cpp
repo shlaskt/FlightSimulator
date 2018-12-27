@@ -1,5 +1,5 @@
 //
-// Created by Eyal on 24/12/18.
+// Created by Tomer & Eyal on 24/12/18.
 //
 
 #include "ExitCommand.h"
@@ -12,6 +12,6 @@ int ExitCommand::doCommand(vector<vector<string>> vector1, map<string, double> *
     delete this->server;
     pthread_mutex_destroy(mut);
     delete this->mut;
-    cout <<"exiiiittttt";
+    cout <<"exit from the program";
 
 }

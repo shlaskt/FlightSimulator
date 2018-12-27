@@ -1,5 +1,5 @@
 //
-// Created by eyal on 12/27/18.
+// Created by Tomer & eyal on 12/27/18.
 //
 
 #ifndef FLIGHT_STDINREADER_H
@@ -7,7 +7,7 @@
 
 
 //
-// Created by eyal on 12/21/18.
+// Created by Tomer & eyal on 12/21/18.
 //
 
 #include "InputReadInterface.h"

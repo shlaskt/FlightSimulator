@@ -15,8 +15,8 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
     int flag = 0;
     //if there are just 2 parameters
     if (vector1[index].size() == 3) {
-        this->port=this->dijkstra1->toVl(vector1[index][1]);
-        this->time=this->dijkstra1->toVl(vector1[index][2]);
+        this->port=this->shunting_yard->dijkstratoi(vector1[index][1]);
+        this->time=this->shunting_yard->dijkstratoi(vector1[index][2]);
         //its complicate expression
     } else {
 
@@ -60,8 +60,8 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
         for(i;i<vector1[index].size();i++){
             timeString = timeString+vector1[index][i]+" ";
         }
-        double portVal=this->dijkstra1->toVl(portString);
-        double time=this->dijkstra1->toVl(timeString);
+        double portVal=this->shunting_yard->dijkstratoi(portString);
+        double time=this->shunting_yard->dijkstratoi(timeString);
         this->port = portVal;
         this->time = time;
 
@@ -72,7 +72,7 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
     struct dataToSoc *params = new dataToSoc;
     params->port = this->port;
     params->timeRead = this->time;
-    params->server2 = this->server1;
+    params->server2 = this->server;
     this->OpenThread(params);
     delete (params);
     return 3;
@@ -84,7 +84,7 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
 void* OpenThreadFunc(void* args){
     ///read
     struct dataToSoc* params=(struct dataToSoc*) args;
-    //params->server2->createSock(params->port,params->timeRead);
+    //params->server2->openSocket(params->port,params->timeRead);
     while (true)    {
 
         auto x = params->server2->readFromSock();
@@ -99,7 +99,7 @@ void* openServerCommand:: OpenThread(void* pVoid) {
     //params->timeRead=this->time;
     struct dataToSoc* params=(struct dataToSoc*) pVoid;
     pthread_t trid;
-    params->server2->createSock(params->port,params->timeRead);
+    params->server2->openSocket(params->port, params->timeRead);
     pthread_create(&trid, nullptr,OpenThreadFunc,params);
     return 0;
 }

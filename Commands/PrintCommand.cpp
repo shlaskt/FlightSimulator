@@ -1,5 +1,5 @@
 //
-// Created by Eyal on 20/12/18.
+// Created by Tomer & Eyal on 20/12/18.
 //
 
 #include "PrintCommand.h"
@@ -21,7 +21,7 @@ int PrintCommand::doCommand(vector<vector<string>> vector1, map<string, double> 
         for(int i=1;i<size;i++){
             toPrint=toPrint+vector1[index][i]+" ";
         }
-        double pri=this->dijkstra1->toVl(toPrint);
+        double pri=this->shunting_yard->dijkstratoi(toPrint);
         cout << pri <<'\n';
 
     }

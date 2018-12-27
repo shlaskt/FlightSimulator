@@ -1,5 +1,5 @@
 //
-// Created by Eyal on 21/12/18.
+// Created by Tomer & Eyal on 21/12/18.
 //
 
 #ifndef FLIGHT_SLEEPCOMMAND_H

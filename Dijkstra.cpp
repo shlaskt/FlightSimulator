@@ -1,5 +1,5 @@
 //
-// Created by Eyal on 20/12/18.
+// Created by Tomer & Eyal on 20/12/18.
 //
 
 #include "Dijkstra.h"
@@ -216,7 +216,7 @@ double Dijkstra::operator()(char *str) {
  * @param str string
  * @return double - the value after evaluate
  */
-double Dijkstra::toVl(string str) {
+double Dijkstra::dijkstratoi(string str) {
     return calculate(str);
 }
 

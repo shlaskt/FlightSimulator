@@ -1,8 +1,6 @@
-//
 
+// Created by Tomer & Eyal on 13/12/18.
 
-// Created by Eyal on 13/12/18.
-//
 
 #include "Minus.h"
 double Minus::calculate(){

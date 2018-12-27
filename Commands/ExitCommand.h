@@ -1,5 +1,5 @@
 //
-// Created by Eyal on 24/12/18.
+// Created by Tomer & Eyal on 24/12/18.
 //
 
 #ifndef FLIGHT_EXITCOMMAND_H

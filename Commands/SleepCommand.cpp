@@ -1,5 +1,5 @@
 //
-// Created by Eyal on 21/12/18.
+// Created by Tomer & Eyal on 21/12/18.
 //
 
 #include "SleepCommand.h"
@@ -11,7 +11,7 @@ int SleepCommand::doCommand(vector<vector<string>> vector1, map<string, double> 
         paramToSleep=paramToSleep+vector1[index][i]+" ";
 
     }
-    double sleepVal = this->dijkstra1->toVl(paramToSleep);
+    double sleepVal = this->shunting_yard->dijkstratoi(paramToSleep);
     usleep(static_cast<unsigned int> (sleepVal * 1000));
 
 }

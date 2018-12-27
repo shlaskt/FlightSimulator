@@ -1,5 +1,5 @@
 //
-// Created by Eyal on 20/12/18.
+// Created by Tomer & Eyal on 20/12/18.
 //
 
 #include "IfCommand.h"
@@ -26,8 +26,8 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *ma
         second=second+vector1[index][i]+" ";
         i++;
     }
-    //double firstParm= this->dijkstra1->operator()(first);
-    //double secondParm= this->dijkstra1->operator()(second);
+    //double firstParm= this->shunting_yard->operator()(first);
+    //double secondParm= this->shunting_yard->operator()(second);
     vector<vector<string>> newVactor=vector1;
     newVactor.erase(newVactor.begin()+0);
     for(int o = 0;o<newVactor[newVactor.size()-1].size();o++){
@@ -66,8 +66,8 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *ma
         second=second+vector1[index][i]+" ";
         i++;
     }
-    //double firstParm= this->dijkstra1->operator()(first);
-    //double secondParm= this->dijkstra1->operator()(second);
+    //double firstParm= this->shunting_yard->operator()(first);
+    //double secondParm= this->shunting_yard->operator()(second);
 
     vector<vector<string>> newVactor=vector1;
     newVactor.erase(newVactor.begin()+0);
@@ -82,8 +82,8 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *ma
 
 }
 bool IfCommand::returnBoolSign(string first, string second, string sign, map<string, double> *map1) {
-    double firstParm= this->dijkstra1->toVl(first);
-    double secondParm= this->dijkstra1->toVl(second);
+    double firstParm= this->shunting_yard->dijkstratoi(first);
+    double secondParm= this->shunting_yard->dijkstratoi(second);
 
     double firstVal = firstParm;
     double secondVal = secondParm;
