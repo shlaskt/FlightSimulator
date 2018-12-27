@@ -252,6 +252,67 @@ vector<vector<string>> Interpreter::readFromFile(string fileName) {
 }
 
 /**
+ * get iterator to start and to end, and make it one string of exprresion.
+ * @param it start.
+ * @param end iteartor end.
+ * @return string exprresion.
+ */
+string makeExpression(int &index, vector<string> vec) {
+    string expression;
+    bool is_this_operator;
+    bool is_next_operator;
+    bool is_this_right_parenthesis = false;
+    bool is_quote;
+    string current = vec[index];
+    // case is a quote add all the quote to one expression.
+    if (current[0] == '\"') {
+        expression += vec[index];
+        if (current.back() == '\"') return expression;
+        do {
+            ++index;
+            // if only one expression end function.
+            //forword iterator.
+            current = vec[index];
+            expression = expression + " " + current;
+        } while (current.back() != '\"');
+        return expression;
+    }
+    do {
+        // adding value to expression.
+        expression += current;
+        if (current == "+" || current == "-" || current == "*" || current == "/"
+            || current == "(" || current == ")") {
+            is_this_operator = true;
+            if (current == ")") is_this_right_parenthesis = true;
+        } else { is_this_operator = false; }
+        //forword the iterator.
+        if (index == vec.size() - 1) {
+            ++index;
+            break;
+        }
+        ++index;
+        //update current.
+        current = vec[index];
+        // check if operator.
+        if (current == "+" || current == "-" || current == "*" || current == "/"
+            || current == "(" || current == ")") {
+            is_next_operator = true;
+        } else {
+            // if there is right paranthesis and after it a number.
+            if (is_this_right_parenthesis && index != vec.size()) {
+                break;
+            }
+            is_next_operator = false;
+        }
+        is_this_right_parenthesis = false;
+    } while ((is_this_operator || is_next_operator) && index != vec.size() && current != ",");
+    // if reached to the end, return it -- * twice because end loop do ++ becuase need to read the current value.
+    --index;
+    //added spaces to make it valid.
+    return addSpaces(expression);
+}
+
+/**
 * get line as a parameter and return vector in each index store expression.
 * @param line to parse.
 * @return vector after paresed.
@@ -326,6 +387,6 @@ vector<string> Interpreter::parser(string line) {
     return
             parserd_line;
 }
-}
+
 
 
