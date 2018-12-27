@@ -7,11 +7,11 @@
 
 
 #include "ExpressionInterfaces/BinaryExpression.h"
-#include "Plus.h"
+#include "BinaryExpressions/Plus.h"
 #include "Num.h"
 
-#include "Minus.h"
-#include "Mul.h"
+#include "BinaryExpressions/Minus.h"
+#include "BinaryExpressions/Mul.h"
 #include "Commands/Div.h"
 #include "ExpressionInterfaces/Expression.h"
 #include <iostream>

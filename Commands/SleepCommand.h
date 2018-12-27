@@ -6,7 +6,7 @@
 #define FLIGHT_SLEEPCOMMAND_H
 
 
-#include "Commands/Command.h"
+#include "Command.h"
 #include <unistd.h>
 class SleepCommand : public Command{
 public:

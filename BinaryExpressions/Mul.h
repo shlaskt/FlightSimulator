@@ -6,7 +6,7 @@
 #define FLIGHT_MUL_H
 
 
-#include "ExpressionInterfaces/BinaryExpression.h"
+#include "../ExpressionInterfaces/BinaryExpression.h"
 
 class Mul: public BinaryExpression {
 public:

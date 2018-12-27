@@ -1,14 +1,14 @@
 
 
 #include "Maps.h"
-#include "openServerCommand.h"
+#include "Commands/openServerCommand.h"
 #include "Commands/DefineVarCommand.h"
 #include "Commands/EqualCommand.h"
 #include "Commands/ConnectCommand.h"
 #include "Commands/LoopCommand.h"
 #include "Commands/IfCommand.h"
-#include "PrintCommand.h"
-#include "SleepCommand.h"
+#include "Commands/PrintCommand.h"
+#include "Commands/SleepCommand.h"
 #include "Commands/ExitCommand.h"
 
 void Maps::setSymbel(string var, double value){

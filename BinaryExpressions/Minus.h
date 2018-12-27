@@ -6,7 +6,7 @@
 #define FLIGHT_MINUS_H
 
 
-#include "ExpressionInterfaces/BinaryExpression.h"
+#include "../ExpressionInterfaces/BinaryExpression.h"
 
 class Minus: public BinaryExpression {
 public:
