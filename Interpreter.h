@@ -24,7 +24,7 @@ public:
     int interpLine(vector<vector<string>>);
     int countLoopIf(vector<vector<string>>);
     vector<string> lexer(string line);
-
+    vector<string> parser(string line);
     vector<vector<string>> readFromFile(string fileName);
 
 };

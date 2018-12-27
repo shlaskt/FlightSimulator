@@ -168,6 +168,7 @@ vector<string> splitLine(const string &line, char sign) {
     }
     return spaces_split;
 }
+
 vector<string> Interpreter::lexer(string line) {
     return splitLine(addSpaces(line), ' ');
 }
@@ -229,6 +230,146 @@ vector<string> Interpreter::lexer(string line) {
 //    }
 //    return vecAfterLex;
 //}
+
+
+/**
+ * get iterator to start and to end, and make it one string of exprresion.
+ * @param it start.
+ * @param end iteartor end.
+ * @return string exprresion.
+ */
+string makeExpression(int &index, vector<string> vec) {
+    string expression;
+    bool is_this_operator;
+    bool is_next_operator;
+    bool is_this_right_parenthesis = false;
+    bool is_quote;
+    string current = vec[index];
+    // case is a quote add all the quote to one expression.
+    if (current[0] == '\"') {
+        expression += vec[index];
+        if (current.back() == '\"') return expression;
+        do {
+            ++index;
+            // if only one expression end function.
+            //forword iterator.
+            current = vec[index];
+            expression = expression + " " + current;
+        } while (current.back() != '\"');
+        return expression;
+    }
+    do {
+        // adding value to expression.
+        expression += current;
+        if (current == "+" || current == "-" || current == "*" || current == "/"
+            || current == "(" || current == ")") {
+            is_this_operator = true;
+            if (current == ")") is_this_right_parenthesis = true;
+        } else { is_this_operator = false; }
+        //forword the iterator.
+        if (index == vec.size() - 1) {
+            ++index;
+            break;
+        }
+        ++index;
+        //update current.
+        current = vec[index];
+        // check if operator.
+        if (current == "+" || current == "-" || current == "*" || current == "/"
+            || current == "(" || current == ")") {
+            is_next_operator = true;
+        } else {
+            // if there is right paranthesis and after it a number.
+            if (is_this_right_parenthesis && index != vec.size()) {
+                break;
+            }
+            is_next_operator = false;
+        }
+        is_this_right_parenthesis = false;
+    } while ((is_this_operator || is_next_operator) && index != vec.size() && current != ",");
+    // if reached to the end, return it -- * twice because end loop do ++ becuase need to read the current value.
+    --index;
+    //added spaces to make it valid.
+    return addSpaces(expression);
+}
+
+
+/**
+ * get line as a parameter and return vector in each index store expression.
+ * @param line to parse.
+ * @return vector after paresed.
+ */
+vector<string> Interpreter::parser(string line) {
+    int index = 0;
+    vector<string> lexered_line = lexer(line);
+//    cout << line << endl;
+    if (lexered_line.size() == 0) {
+        throw runtime_error("error in lexering line");
+    }
+    // get first value and forword the iterator.
+    //    vector<string>::iterator it = (lexered_line.begin());
+    vector<string> parserd_line;
+    // save expression in one place together.
+    bool is_neg = true;
+    for (int i = 0; index < lexered_line.size() && i < lexered_line.size(); index++, i++) {
+        string expression = "";
+        //string current = *it;
+        string current = lexered_line[index];
+        /**
+         * need to check if it is a minus repressent neg and not minus operator:
+         * 3 option that the minus is neg:
+         * 1) '-' after operator =, meant it is neg.
+         * 2) '-' after first argument in the line. first argument is always command, so again its neg.
+         * 3) '-' in third argument or after. in this case there has to be ',' before the neg sign.
+         */
+
+        if (current == "-") {
+            // if ((*prev(it, 1) == "=") || i == 1 || (i > 1 && (*prev(it, 1) == ","))) {
+            if (lexered_line[index - 1] == "=" || i == 1 || (i > 1 && lexered_line[index - 1] == ",")) {
+                // send the end of the iterator to know when to stop.
+//                vector<string>::iterator it_end = lexered_line.end();
+                // call the makeExpression with the vector the string from "-" include.
+                expression += makeExpression(index, lexered_line);
+                parserd_line.push_back(expression);
+                continue;
+            }
+        }
+        if (current[0] == '\"') {
+//            vector<string>::iterator it_end = lexered_line.end();
+            expression += makeExpression(index, lexered_line);
+            parserd_line.push_back(expression);
+        }
+        if (current == "+" || current == "-" || current == "*" ||
+            current == "/" || current == "(") {
+            // send the end of the iterator to know when to stop.
+//            vector<string>::iterator it_end = lexered_line.end();
+            //send to function that make expression.
+            if (current == "(") {
+                // call the makeExpression with the vector the string from '(' include.
+                expression += makeExpression(index, lexered_line);
+            } else {
+                // its an operator, sent the vector from before the operator.
+                int prev_index = index - 1;
+                expression += makeExpression(prev_index, lexered_line);
+                // update the iterator to its place
+                index = prev_index;
+                // need to remove the previous argument added that need to be begin of expression.
+                parserd_line.pop_back();
+            }
+            // add the exprresion to the parserd vector:
+            parserd_line.push_back(expression);
+        } else {
+            // relate to "," ass a value only if it's not a separator before neg expression.
+            if (current == "," && lexered_line[index + 1] == "-") continue;
+            //incase no need to make expression, add the value of the vector as is.
+            parserd_line.push_back(lexered_line[index]);
+        }
+    }
+
+    return
+            parserd_line;
+}
+
 
 vector<vector<string>> Interpreter::readFromFile(string fileName) {
     string command;
