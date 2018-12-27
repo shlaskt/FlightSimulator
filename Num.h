@@ -1,27 +1,22 @@
 //
-// Created by eyal on 12/13/18.
+// Created by reut on 13/12/18.
 //
 
-#ifndef FLIGHTSIMULATOR_NUM_H
-#define FLIGHTSIMULATOR_NUM_H
+#ifndef FLIGHT_NUM_H
+#define FLIGHT_NUM_H
+
 
 #include "ExpressionInterfaces/Expression.h"
-#include <string>
 
-using namespace std;
+class Num: public Expression {
 
-class Num : public Expression {
 private:
     double num;
 public:
-
-    Num(string string_num);
-    Num(double number);
-    double getNum() const;
-
     virtual double calculate();
-    friend ostream &operator<<(ostream &stream, const Num &num);
+    Num(double num);
+
 };
 
 
-#endif //FLIGHTSIMULATOR_NUM_H
+#endif //FLIGHT_NUM_H

@@ -1,29 +1,16 @@
 //
-// Created by eyal on 12/13/18.
+// Created by reut on 13/12/18.
 //
 
 #include "BinaryExpression.h"
-/**
- * Ctor
- * @param left
- * @param right
- */
-BinaryExpression::BinaryExpression(Expression *left, Expression *right) : left(left), right(right) {}
+Expression* BinaryExpression:: getLeft(){
 
-
-/**
- * get the left expression.
- * @return left expression pointer.
- */
-Expression *BinaryExpression::getRight() const {
-    return this->right;
-}
-
-/**
- * get the right expression.
- * @return right expression pointer.
- */
-Expression *BinaryExpression::getLeft() const {
     return this->left;
 }
-
+Expression* BinaryExpression:: getRight(){
+    return this->right;
+}
+BinaryExpression::BinaryExpression(Expression *left,Expression *right) {
+    this->left=left;
+    this->right=right;
+}

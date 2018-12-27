@@ -1,47 +1,54 @@
 //
-// Created by tomer on 12/18/18.
+// Created by reut on 20/12/18.
 //
 
-#ifndef FLIGHTSIMULATOR_DIJKSTRA_H
-#define FLIGHTSIMULATOR_DIJKSTRA_H
+#ifndef FLIGHT_DIJKSTRA_H
+#define FLIGHT_DIJKSTRA_H
 
-#include "BinaryExpressions/PlusExpression.h"
+
+#include "ExpressionInterfaces/BinaryExpression.h"
+#include "Plus.h"
 #include "Num.h"
-#include "BinaryExpressions/MinusExpression.h"
-#include "BinaryExpressions/MultiplyExpression.h"
-#include "BinaryExpressions/DivideExpression.h"
+
+#include "Minus.h"
+#include "Mul.h"
+#include "Div.h"
 #include "ExpressionInterfaces/Expression.h"
 #include <iostream>
 #include <bits/stdc++.h>
 #include <string>
-
 using namespace std;
 
 class Dijkstra {
-    map<string, double> *var_to_val;
-
+    map<string,double>* var_to_val;
     int precedence(char op);
 
-    vector<Expression *> to_delete;
 public:
-    Dijkstra(map<string, double> *var_to_val);
+    Dijkstra(map<string, double>* var_to_val);
+
 
 private:
-    Expression *applyOp(double a, double b, char op);
-
+    Expression* applyOp(double a, double b, char op);
     vector<string> splitLine(const string &str, char sign);
+    vector<BinaryExpression*> deleteVector;
 
     double calculate(string tokens);
-
     double evaluate(string tokens);
 
 public:
-    double virtual operator()(char *str);
+    double virtual operator()(char* str);
+    double virtual toVl(string str);
+    void addToDelete(BinaryExpression* exp);
+    ~Dijkstra(){
+        vector<BinaryExpression*>::iterator it = this->deleteVector.begin();
+        for(it;it!=this->deleteVector.end();++it){
+            delete (*it)->getRight();
+            delete (*it)->getLeft();
+            delete (*it);
+        }
+    }
 
-    double virtual operator()(string str);
-
-    virtual ~Dijkstra();
 };
 
 
-#endif //FLIGHTSIMULATOR_DIJKSTRA_H
+#endif //FLIGHT_DIJKSTRA_H

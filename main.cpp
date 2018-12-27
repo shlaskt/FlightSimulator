@@ -1,49 +1,56 @@
 #include <iostream>
-#include "InputManagement.h"
-#include "Dijkstra.h"
-#include "Sockets/DataReaderServer.h"
-#include "Controller.h"
-#include <signal.h>
-#include <string>
+#include "DataReaderServer.h"
+#include "Maps.h"
+#include "DataClient.h"
+#include "Parser.h"
+#include "LexerClass.h"
+
+int main(int argc, char* argv[])  {
+
+    pthread_mutex_t *mut = new pthread_mutex_t();
+    pthread_mutex_init(mut, nullptr);
+    Maps* maps = new Maps(mut);
+    DataReaderServer* drs = new DataReaderServer(maps->getSymbolMap(),mut);
+    DataClient* dataClient1 = new DataClient();
+    Dijkstra* dijkstra = new Dijkstra(maps->getSymbolMap());
+    Parser* parser = new Parser(maps->getSymbolMap(),maps->getComMap());
+    maps->setDij(dijkstra);
+    maps->setServer(drs,dataClient1);
+    maps->setParser(parser);
+    maps->initMapCom();
+    LexerClass lexerClass;
+    vector<vector<string>> afterLex;
+
+    //read from the file
+    //string fileName="tempppppp";
+    string fileName=argv[1];
 
 
-void handle(int signo)  {
-    perror("SIGSEGV");
-    exit(1);
-}
-bool is_server_opened = false;
-/**
- * for now, do nothing.
- * @return
- */
-using namespace std;
+    //pthread_mutex_destroy(&mut);
 
-int main(int argc, char *argv[]) {
-    signal(SIGSEGV, handle);
-    char z;
-    Controller *controller = new Controller(argc, argv);
-    controller->runProgram();
-//    parserTests();
-//    VarDataBase varDataBase;
-//    DataReaderServer dataReaderServer(varDataBase);
-//    int sockfd = dataReaderServer.open(5400, 10);
-//    dataReaderServer.readSocket(sockfd);
-//    VarDataBase *varDataBase=new VarDataBase();
-//    DataReaderServer dataReaderServer(varDataBase);
-//    int sockfd = dataReaderServer.open(5400, 10);
-//    dataReaderServer.readSocket(sockfd);
-//    map<string,double> map;
-//    map["key1"]=5.2;
-//    map["key2"]=4;
-//    Dijkstra shunting_yard(map);
-//    cout << shunting_yard(" - 6 * 5 + ( key1 * ( 3 + 2 - ( key1 - - 4 ) ) ) ") << "\n";
-//    cout << shunting_yard("( 2.3 * -6 . 4 )") << "\n";
-//    cout << shunting_yard("100 * 2 + 12") << "\n";
-//    cout << shunting_yard("100 * (2 + 12 )") << "\n";
-//    cout << shunting_yard("100 * (2 + 12 ) / 14");
+    afterLex = lexerClass.readFromFile(fileName);
+    int ans = parser->interpLine(afterLex);
 
-//    vector<string> temp = lexer("OpenDataServer 5,-3  ");
-//    cout << "Hii" << endl;
-    delete controller;
+    if(ans == 0){
+        drs->stopLoop();
+        pthread_mutex_destroy(mut);
+        delete mut;
+        delete dijkstra;
+        delete parser;
+        delete dataClient1;
+        delete drs;
+    }
+    /*
+    //delete
+    pthread_mutex_destroy(mut);
+    delete mut;
+    delete dijkstra;
+    delete parser;
+    delete dataClient1;
+    delete drs;*/
+    delete parser;
+    delete maps;
     return 0;
+
 }
+
