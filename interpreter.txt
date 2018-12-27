@@ -13,6 +13,7 @@ var elevator = bind "/controls/flight/elevator"
 var alt = bind "/instrumentation/altimeter/indicated-altitude-ft"
 var rpm = bind "/engines/engine/rpm"
 var h0 = heading
+print h0
 breaks = 0
 rudder = 1
 while alt < 1000 {
