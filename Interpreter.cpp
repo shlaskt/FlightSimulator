@@ -6,7 +6,11 @@
 using namespace std;
 
 
-
+/**
+ * Interpreter constructor.
+ * @param symbolTable of the agruments.
+ * @param commandMap command map.
+ */
 Interpreter::Interpreter(map<string, double> *symbolTable, map<string, Command *> *commandMap) {
     this->symbolTable = symbolTable;
     this->commandMap = commandMap;
@@ -17,18 +21,18 @@ int Interpreter::interpLine(vector<vector<string>> vector1) {
     for (int i = 0; i < vector1.size(); i++) {
         //for the vars equal.
         int jump;
+        //check if there is no var like this.
         if (symbolTable->count(vector1[i][0]) == 1) {
             if (vector1[i][1] != "=") {
-                __throw_bad_exception();
+                throw runtime_error("no such var");
             }
             this->commandMap->at("equal")->doCommand(vector1, this->symbolTable, i);
-
         } else if (vector1[i][0] == "while") {
             vector<vector<string>> newVec = vector1;
 
 
             newVec.erase(newVec.begin(), newVec.begin() + i);
-            int ind = this->countLoopIf(newVec);
+            int ind = countLoopIf(newVec);
             newVec.erase(newVec.begin() + ind + 1, newVec.begin() + newVec.size());
             this->commandMap->at("while")->doCommand(newVec, this->symbolTable, 0);
             i = i + ind;
@@ -36,7 +40,7 @@ int Interpreter::interpLine(vector<vector<string>> vector1) {
             vector<vector<string>> newVec = vector1;
 
 
-            //TODO :
+            // TODO:
             //לבדוק אם חותך נכון
             newVec.erase(newVec.begin(), newVec.begin() + i);
             int ind = this->countLoopIf(newVec);
@@ -164,7 +168,6 @@ vector<string> splitLine(const string &line, char sign) {
     }
     return spaces_split;
 }
-
 vector<string> Interpreter::lexer(string line) {
     return splitLine(addSpaces(line), ' ');
 }

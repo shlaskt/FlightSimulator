@@ -7,9 +7,9 @@
 
 
 #include <fstream>
-#include "InputReadInterface.h"
+#include "InputReader.h"
 
-class FileReader: public InputReadInterface {
+class FileReader: public InputReader {
 private:
     ifstream input;
 public:

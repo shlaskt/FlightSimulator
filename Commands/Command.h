@@ -4,6 +4,7 @@
 
 #ifndef FLIGHT_COMMAND_H
 #define FLIGHT_COMMAND_H
+
 #include <string>
 #include <algorithm>
 #include <map>
@@ -11,24 +12,25 @@
 #include "DataReaderServer.h"
 #include "Client.h"
 #include "../Dijkstra.h"
+
 using namespace std;
 
-class Command
-{
+class Command {
 protected:
-    DataReaderServer* server1;
-    Client* client;
-    Dijkstra* dijkstra1;
+    DataReaderServer *server1;
+    Client *client;
+    Dijkstra *dijkstra1;
     pthread_mutex_t *mut;
 
 public:
-    Command(DataReaderServer* server2,Client* client1,Dijkstra* dijkstra,pthread_mutex_t *mut){
+    Command(DataReaderServer *server2, Client *client1, Dijkstra *dijkstra, pthread_mutex_t *mut) {
         this->server1 = server2;
         this->client = client1;
         this->dijkstra1 = dijkstra;
         this->mut = mut;
     }
-    virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index)=0;
+
+    virtual int doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) = 0;
 };
 
 

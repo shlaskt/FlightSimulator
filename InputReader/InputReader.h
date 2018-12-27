@@ -10,7 +10,7 @@
 
 using namespace std;
 
-class InputReadInterface {
+class InputReader {
 protected:
     string laxer();
 public:

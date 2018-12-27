@@ -10,11 +10,11 @@
 // Created by eyal on 12/21/18.
 //
 
-#include "InputReadInterface.h"
+#include "InputReader.h"
 
 #include <iostream>
 
-class StdinReader : public InputReadInterface {
+class StdinReader : public InputReader {
 public:
     StdinReader() {};
 
