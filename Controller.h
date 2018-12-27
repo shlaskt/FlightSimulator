@@ -1,40 +1,32 @@
 //
-// Created by eyal on 12/21/18.
+// Created by eyal on 12/27/18.
 //
 
-#ifndef FLIGHTSIMULATOR_CONTROLLER_H
-#define FLIGHTSIMULATOR_CONTROLLER_H
+#ifndef FLIGHT_CONTROLLER_H
+#define FLIGHT_CONTROLLER_H
 
-
-#include "DataManagement/CommandDataBase.h"
-#include "InputReaders/StdinReader.h"
-#include "InputReaders/FileReader.h"
-#include "InputManagement.h"
-#include "InputReaders/InputManager.h"
+#include <iostream>
+#include "Commands/DataReaderServer.h"
+#include "MapsData.h"
+#include "Commands/Client.h"
+#include "Interpreter.h"
+#include "InputReader/InputReader.h"
+#include "InputReader/StdinReader.h"
+#include "InputReader/FileReader.h"
 
 class Controller {
 private:
-    InputManager *inputManager;
-    CommandDataBase *command_data_base;
-    VarDataBase *var_data_base;
+    pthread_mutex_t *mut;
+    MapsData *dataMaps;
+    DataReaderServer *server;
     Client *client;
-    DataReaderServer *data_reader_server;
-    vector<Expression *> to_delete;
-    vector<InputReader*> input_to_delete;
-
-    bool CheckValidityOfConditionCommand(vector<string> &vec);
-
-    Expression *getCommandFromLine(vector<string> &parsered_line, int &index);
-
-    vector<Expression *> conditionParser(bool find_parenthesis);
-
+    Dijkstra *dijkstra;
+    Interpreter *interpreter;
 public:
-    Controller(int argc, char *argv[]);
+    Controller();
 
-    ~Controller();
-
-    void runProgram();
+    void runningProgram(int argc, char *argv[]);
 };
 
 
-#endif //FLIGHTSIMULATOR_CONTROLLER_H
+#endif //FLIGHT_CONTROLLER_H

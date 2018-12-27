@@ -1,21 +1,17 @@
-//
-// Created by tomer on 12/20/18.
-//
 
-#ifndef FLIGHTSIMULATOR_VARCOMMAND_H
-#define FLIGHTSIMULATOR_VARCOMMAND_H
 
-#include "../Dijkstra.h"
+#ifndef FLIGHT_DEFINEVARCOMMAND_H
+#define FLIGHT_DEFINEVARCOMMAND_H
 
 #include "Command.h"
 
-class VarCommand : public Command {
-//    VarDataBase varDataBase;
+class VarCommand: public Command{
 public:
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server,
-                          Client *client, VarDataBase *var_data_base);
+    virtual int doCommand(vector<vector<string>> lines,map<string, double>* map1,int index);
+    VarCommand(DataReaderServer* server5,Client* client1,Dijkstra* dij,pthread_mutex_t *mut)
+            :Command(server5,client1,dij,mut){}
+
 
 };
 
-
-#endif //FLIGHTSIMULATOR_VARCOMMAND_H
+#endif //FLIGHT_VarCommand_H

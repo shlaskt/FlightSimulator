@@ -1,20 +1,20 @@
 //
-// Created by tomer on 12/20/18.
+// Created by Eyal on 20/12/18.
 //
 
-#ifndef FLIGHTSIMULATOR_PRINTCOMMAND_H
-#define FLIGHTSIMULATOR_PRINTCOMMAND_H
+#ifndef FLIGHT_PRINTCOMMAND_H
+#define FLIGHT_PRINTCOMMAND_H
 
-#include "../Dijkstra.h"
 
 #include "Command.h"
 
-class PrintCommand : public Command {
-    // VarDataBase varDataBase;
+class PrintCommand : public Command{
 public:
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server,
-            Client *client, VarDataBase* var_data_base);
+    PrintCommand(DataReaderServer* server5,Client* client1,Dijkstra* dij,pthread_mutex_t *mut)
+            :Command(server5,client1,dij,mut){}
+    virtual int doCommand(vector<vector<string>> lines,map<string, double>* map1,int index);
+
 };
 
 
-#endif //FLIGHTSIMULATOR_PRINTCOMMAND_H
+#endif //FLIGHT_PRINTCOMMAND_H

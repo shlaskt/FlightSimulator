@@ -1,23 +1,20 @@
-//
-// Created by tomer on 12/20/18.
-//
 
-#ifndef FLIGHTSIMULATOR_EQUALCOMMAND_H
-#define FLIGHTSIMULATOR_EQUALCOMMAND_H
 
-#include "../Dijkstra.h"
+#ifndef FLIGHT_EQUALCOMMAND_H
+#define FLIGHT_EQUALCOMMAND_H
+
 #include "Command.h"
-#define SPACE ' '
-#define RN "\r\n"
+#include <pthread.h>
 
-class EqualCommand : public Command {
-//    VarDataBase varDataBase;
+class EqualCommand :public Command{
+
 public:
-    EqualCommand() {};
+    virtual int doCommand(vector<vector<string>> lines, map<string, double> *map1, int index);
+    EqualCommand(DataReaderServer* server5,Client* client1,Dijkstra* dij,pthread_mutex_t *mut)
+            :Command(server5,client1,dij,mut){}
 
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server,Client *client,
-            VarDataBase* var_data_base);
+
 };
 
 
-#endif //FLIGHTSIMULATOR_EQUALCOMMAND_H
+#endif //FLIGHT_EQUALCOMMAND_H

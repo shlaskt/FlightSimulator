@@ -1,15 +1,17 @@
-//
-// Created by eyal on 12/13/18.
-//
-
-#ifndef FLIGHTSIMULATOR_EXPRESSION_H
-#define FLIGHTSIMULATOR_EXPRESSION_H
 
 
-class Expression {
+#ifndef FLIGHT_EXPRESSION_H
+#define FLIGHT_EXPRESSION_H
+#include <string>
+#include <algorithm>
+#include <map>
+#include <list>
+using namespace std;
+
+class Expression
+{
 public:
-    virtual double calculate() = 0;
+    virtual double calculate()=0;
 };
 
-
-#endif //FLIGHTSIMULATOR_EXPRESSION_H
+#endif //FLIGHT_EXPRESSION_H

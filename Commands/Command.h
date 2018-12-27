@@ -1,58 +1,37 @@
 //
-// Created by tomer on 12/18/18.
+// Created by Eyal on 13/12/18.
 //
 
-#ifndef FLIGHTSIMULATOR_COMMAND_H
-#define FLIGHTSIMULATOR_COMMAND_H
+#ifndef FLIGHT_COMMAND_H
+#define FLIGHT_COMMAND_H
 
-#include <vector>
 #include <string>
-#include "../Sockets/DataReaderServer.h"
-#include "../Sockets/Client.h"
+#include <algorithm>
+#include <map>
+#include <list>
+#include "DataReaderServer.h"
+#include "Client.h"
+#include "../Dijkstra.h"
 
 using namespace std;
 
 class Command {
-//    DataReaderServer* server;
-//protected:
-//    vector<string>::iterator itor;
-public:
-    // Ctor for server and iterator - same for all commands
-//    Command(DataReaderServer *server,
-//            const vector<std::__cxx11::basic_string<char, std::char_traits<char>,
-//                    std::allocator<char>>, std::allocator<std::__cxx11::basic_string<char,
-//                    std::char_traits<char>, std::allocator<char>>>>::iterator &itor)
-//            : server(server), itor(itor) {}
-     /**
-      * doCommand
-      */
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server,
-            Client *client, VarDataBase* var_data_base)= 0;
-/**
- * get server
- * @return
- */
-//    DataReaderServer* getServer() {return server;}
+protected:
+    DataReaderServer *dataServer;
+    Client *client;
+    Dijkstra *dijkstra;
+    pthread_mutex_t *mut;
 
-//    /**
-//     * get iterator
-//     * @return
-//     */
-//    const vector<std::__cxx11::basic_string<char, std::char_traits<char>,
-//            std::allocator<char>>, std::allocator<std::__cxx11::basic_string<char,
-//            std::char_traits<char>, std::allocator<char>>>>::iterator &
-//    getItor() const {
-//        return itor;
-//    }
-///**
-// * set iterator
-// * @param itor
-// */
-//    void setItor(const vector<std::__cxx11::basic_string<char, std::char_traits<char>,
-//            std::allocator<char>>, std::allocator<std::__cxx11::basic_string<char,
-//            std::char_traits<char>, std::allocator<char>>>>::iterator &itor) {
-//        Command::itor = itor;
-//    }
+public:
+    Command(DataReaderServer *dataServer, Client *client1, Dijkstra *dijkstra, pthread_mutex_t *mut) {
+        this->dataServer = dataServer;
+        this->client = client1;
+        this->dijkstra = dijkstra;
+        this->mut = mut;
+    }
+
+    virtual int doCommand(vector<vector<string>> lines, map<string, double> *map1, int index) = 0;
 };
 
-#endif //FLIGHTSIMULATOR_COMMAND_H
+
+#endif //FLIGHT_COMMAND_H

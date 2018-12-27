@@ -1,22 +1,19 @@
 //
-// Created by tomer on 12/20/18.
+// Created by Eyal on 21/12/18.
 //
 
-#ifndef FLIGHTSIMULATOR_SLEEPCOMMAND_H
-#define FLIGHTSIMULATOR_SLEEPCOMMAND_H
+#ifndef FLIGHT_SLEEPCOMMAND_H
+#define FLIGHT_SLEEPCOMMAND_H
 
-#include "../Dijkstra.h"
 
 #include "Command.h"
-
-#define MILI_SEC 1000
-
+#include <unistd.h>
 class SleepCommand : public Command{
-//    VarDataBase varDataBase;
 public:
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server,
-            Client* client, VarDataBase* var_data_base);
+    SleepCommand(DataReaderServer* server5,Client* client1,Dijkstra* dij,pthread_mutex_t *mut)
+            :Command(server5,client1,dij,mut){}
+    virtual int doCommand(vector<vector<string>> lines,map<string, double>* map1,int index);
 };
 
 
-#endif //FLIGHTSIMULATOR_SLEEPCOMMAND_H
+#endif //FLIGHT_SLEEPCOMMAND_H

@@ -1,33 +1,21 @@
 //
-// Created by eyal on 12/18/18.
+// Created by Eyal on 18/12/18.
 //
 
-#ifndef FLIGHTSIMULATOR_EXPRESSIONCOMMAND_H
-#define FLIGHTSIMULATOR_EXPRESSIONCOMMAND_H
+#ifndef FLIGHT_EXPRESSIONCOMMAND_H
+#define FLIGHT_EXPRESSIONCOMMAND_H
 
-
-#include "../Commands/Command.h"
 #include "Expression.h"
-#include "../Sockets/DataReaderServer.h"
-#include "../Sockets/Client.h"
-#include <vector>
+#include "../Commands/Command.h"
 
-class ExpressionCommand : public Expression {
+class ExpressionCommand: public Expression {
 private:
-    Command *command;
-    vector<string> line;
-    int index;
-    DataReaderServer *reader;
-    Client *client;
-    VarDataBase *varDataBase;
-
+    Command* c;
 public:
-    ExpressionCommand(Command *command, const vector<string> &line, int index, DataReaderServer *reader, Client *client,
-                      VarDataBase *varDataBase);
-
-    double calculate();
+     double calculate();
+    ExpressionCommand(Command* c );
 
 };
 
 
-#endif //FLIGHTSIMULATOR_EXPRESSIONCOMMAND_H
+#endif //FLIGHT_EXPRESSIONCOMMAND_H

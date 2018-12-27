@@ -1,22 +1,17 @@
 //
-// Created by tomer on 12/20/18.
+// Created by Eyal on 21/12/18.
 //
 
 #include "SleepCommand.h"
 
-/**
- * sleep for x milisec
- * @param itor x is given inside
- * @param server
- */
-int SleepCommand::doCommand(vector<string> line, int i, DataReaderServer *server,
-                            Client *client, VarDataBase *var_data_base) {
-    Dijkstra shunting_yard(var_data_base->getSymbolTable());
-    try {
-        usleep(static_cast<unsigned int> (shunting_yard(line.at(i)) * MILI_SEC));
-    } catch (const out_of_range &no_such_var) {
-        // if there is no var in this name- dijkstra throw error
-        __throw_runtime_error("Error in Sleep Command - invalid params");
+int SleepCommand::doCommand(vector<vector<string>> lines, map<string, double> *map1, int index) {
+    int size=lines[index].size();
+    string paramToSleep="";
+    for (int i=1;i<size;i++){
+        paramToSleep=paramToSleep+lines[index][i]+" ";
+
     }
-    return ++i; // increase index
+    double sleepVal = this->dijkstra->evluate(paramToSleep);
+    usleep(static_cast<unsigned int> (sleepVal * 1000));
+
 }

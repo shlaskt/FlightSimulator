@@ -1,21 +1,16 @@
 //
-// Created by tomer on 12/18/18.
+// Created by Eyal on 20/12/18.
 //
 
-
-#include <list>
-/**
- * evaluate a given expression where tokens are separated by space.
- * include vars (getting a map <var,num> in the Ctor.
- * include negative ( 5 * - 3 , 5 - - 3, ect.)
- */
 #include "Dijkstra.h"
 
 /**
  * Ctor - get map values
  * @param var_to_val
  */
-Dijkstra::Dijkstra(map<string, double> *var_to_val) : var_to_val(var_to_val) {}
+Dijkstra::Dijkstra(map<string, double>* var_to_val){
+    this->var_to_val = var_to_val;
+}
 
 
 /**
@@ -43,58 +38,32 @@ int Dijkstra::precedence(char op) {
 Expression *Dijkstra::applyOp(double a, double b, char op) {
     switch (op) {
         case '+': {
-            PlusExpression *p = new PlusExpression(new Num(a), new Num(b));
-            to_delete.push_back(p);
-            return p;
+            BinaryExpression *newPlus = new Plus(new Num(a), new Num(b));
+            addToDelete(newPlus);
+            return newPlus;
         }
-        case '-': {
-            MinusExpression *p = new MinusExpression(new Num(a), new Num(b));
-            to_delete.push_back(p);
-            return p;
+        case '-':{
+            BinaryExpression *newMin = new Minus(new Num(a), new Num(b));
+            addToDelete(newMin);
+            return newMin;
         }
-        case '*': {
-            MultiplyExpression *p = new MultiplyExpression(new Num(a), new Num(b));
-            to_delete.push_back(p);
-            return p;
+        case '*':{
+            BinaryExpression *newMult = new Mul(new Num(a), new Num(b));
+            addToDelete(newMult);
+            return newMult;
         }
         case '/':{
-            DivideExpression *p = new DivideExpression(new Num(a), new Num(b));
-            to_delete.push_back(p);
-            return p;
+            BinaryExpression *newDiv = new Div(new Num(a), new Num(b));
+            addToDelete(newDiv);
+            return newDiv;
         }
-
     }
 }
+void Dijkstra::addToDelete(BinaryExpression* exp){
+    this->deleteVector.push_back(exp);
 
-template<class T>
-class MyStack
-{
-    list<T> op;
-public:
-    T top()
-    {
-        auto itr = op.end();
-        return *(--itr);
-    }
+}
 
-    T pop()
-    {
-        auto t = top();
-        op.pop_back();
-        return t;
-    }
-
-    void push(T ob)
-    {
-        op.push_back(ob);
-    }
-
-    bool empty()
-    {
-        return op.empty();
-    }
-
-};
 /**
  * returns value of  expression after evaluation.
  * @param tokens string with numbers and operators only
@@ -103,12 +72,11 @@ public:
 double Dijkstra::evaluate(string tokens) {
     int i;
     bool is_op = false; // check for "-" that came after operator
-    double is_neg = 1; // to double it in 1 /-1 if needed
-    // stack to store operators.
-    MyStack<double> values;
     // stack to store integer values.
-    MyStack<char> ops;
-
+    stack<double> values;
+    // stack to store operators.
+    stack<char> ops;
+    double is_neg = 1; // to double it in 1 /-1 if needed
     for (i = 0; i < tokens.length(); i++) {
 
         // Current token is a whitespace,
@@ -213,7 +181,6 @@ double Dijkstra::evaluate(string tokens) {
     // Top of 'values' contains result, return it.
     return values.top();
 }
-
 /**
  * split line to vector by separate sign
  * e.x - splitLine("hey-you-o", v, '-')
@@ -249,7 +216,7 @@ double Dijkstra::operator()(char *str) {
  * @param str string
  * @return double - the value after evaluate
  */
-double Dijkstra::operator()(string str) {
+double Dijkstra::evluate(string str) {
     return calculate(str);
 }
 
@@ -278,19 +245,14 @@ double Dijkstra::calculate(string string_before_evaluate_vars) {
             // it is a variable, evalute it
             double val = var_to_val->at(argument); // throw exception if no var
             // place it back to the string
-            string_after_evaluate_vars += (space + to_string(val));
+            string_after_evaluate_vars +=(space + to_string(val));
         }
     }
-    string_after_evaluate_vars += space; // add one more whitespace
+    string_after_evaluate_vars+=space; // add one more whitespace
 
     double result = evaluate(string_after_evaluate_vars);
-    if (result == -0) return 0; // edge case
+    if(result ==(-0)){ // edge case "-0"
+        result=0;
+    }
     return result;
 }
-
-Dijkstra::~Dijkstra() {
-    for (vector<Expression *>::iterator it = to_delete.begin(); it != to_delete.end(); ++it) {
-        delete (*it);
-    }
-}
-

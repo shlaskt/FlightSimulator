@@ -1,32 +1,73 @@
 //
-// Created by tomer on 12/20/18.
+// Created by Eyal on 20/12/18.
 //
 
 #include "IfCommand.h"
 
-/**
- * if command
- * check the condition and action
- * @param itor
- * @param server
- */
-int IfCommand::doCommand(vector<string> line, int i, DataReaderServer *server,
-        Client *client, VarDataBase *var_data_base) {
-    vector<Expression*> current_commands = this->list_of_commands;
-    Dijkstra shunting_yard(var_data_base->getSymbolTable());
-    vector<string> condition_statement = getConditionStatement(line, i);
-    string expression_1 = condition_statement.at(0);
-    string condition = condition_statement.at(1);
-    string expression_2 = condition_statement.at(2);
-    i = atoi(condition_statement.at(3).c_str()); // get the update index
+int IfCommand::doCommand(vector<vector<string>> lines, map<string, double> *map1, int index) {
 
-    if (checkCondition(expression_1, condition, expression_2, shunting_yard)) {
-        // do all the commands in the if untill the "}"
-        for (int j = 0; j < current_commands.size(); ++j) {
-            current_commands[j]->calculate();
+    int i = 1;
+    string first = "";
+    string second = "";
+    while ((lines[index][i] != "<") && (lines[index][i] != ">") && (lines[index][i] != "=") &&
+           (lines[index][i] != "!")) {
+        first = first + lines[index][i] + " ";
+        i++;
+    }
+    string sign = lines[index][i];
+    i++;
+    if (lines[index][i] == "=") {
+        sign = sign + lines[index][i];
+        i++;
+
+    }
+    while (lines[index][i] != "{") {
+        second = second + lines[index][i] + " ";
+        i++;
+    }
+    vector<vector<string>> newVactor = lines;
+    newVactor.erase(newVactor.begin() + 0);
+    for (int o = 0; o < newVactor[newVactor.size() - 1].size(); o++) {
+        if (newVactor[newVactor.size() - 1][o] == "}") {
+            newVactor[newVactor.size() - 1].erase(newVactor[newVactor.size() - 1].begin() + o);
+            break;
         }
     }
-    return i; // return the index
+    if (newVactor[newVactor.size() - 1].size() == 0) {
+        newVactor.erase(newVactor.begin() + newVactor.size());
+    }
+    if (returnBoolSign(first, second, sign, map1)) {
+
+        this->interpreter->interpreteFile(newVactor);
+    }
+
+    return 0;
+
 }
 
+bool IfCommand::returnBoolSign(string first, string second, string sign, map<string, double> *map1) {
+    double firstParm = this->dijkstra->evluate(first);
+    double secondParm = this->dijkstra->evluate(second);
+
+    double firstVal = firstParm;
+    double secondVal = secondParm;
+    if (sign == ">=") {
+        return (firstVal >= secondVal);
+    } else if (sign == "<=") {
+        return (firstVal <= secondVal);
+
+    } else if (sign == "==") {
+        return (firstVal == secondVal);
+
+    } else if (sign == "!=") {
+        return (firstVal != secondVal);
+    } else if (sign == ">") {
+        return (firstVal > secondVal);
+    } else if (sign == "<") {
+        return (firstVal < secondVal);
+
+    } else {
+        throw runtime_error("error on reading operator");
+    }
+}
 

@@ -1,24 +1,29 @@
-//
-// Created by tomer on 12/19/18.
-//
 
-#ifndef FLIGHTSIMULATOR_CONNECTCOMMAND_H
-#define FLIGHTSIMULATOR_CONNECTCOMMAND_H
+#ifndef FLIGHT_CONNECTCOMMAND_H
+#define FLIGHT_CONNECTCOMMAND_H
 
-#include "../Dijkstra.h"
+#include <stdio.h>
+#include <stdlib.h>
 
+#include <netdb.h>
+#include <unistd.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <string>
+#include <map>
 #include "Command.h"
+#include "Client.h"
+using namespace std;
 
-
-
-class ConnectCommand : public Command {
-//    VarDataBase varDataBase;
-    int checkValid(string ip, string port_s, Dijkstra shunting_yard);
+class ConnectCommand: public Command {
 
 public:
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server, Client *client,
-                          VarDataBase *var_data_base);
+    ConnectCommand(DataReaderServer* server5,Client* client1,Dijkstra* dij,pthread_mutex_t *mut)
+    :Command(server5,client1,dij,mut){}
+    virtual int doCommand(vector<vector<string>> lines,map<string, double>* map1,int index);
+
+
 };
 
 
-#endif //FLIGHTSIMULATOR_CONNECTCOMMAND_H
+#endif //FLIGHT_CONNECTCOMMAND_H

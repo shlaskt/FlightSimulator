@@ -1,30 +1,107 @@
-//
-// Created by tomer on 12/21/18.
-//
 
 #include "WhileCommand.h"
+#include <string>
 
-/**
- * while command
- * check the condition every iteration and action
- * @param itor
- * @param server
- */
-int WhileCommand::doCommand(vector<string> line, int i, DataReaderServer *server,
-                            Client *client, VarDataBase *var_data_base) {
-    vector<Expression *> current_commands = this->list_of_commands;
-    Dijkstra shunting_yard(var_data_base->getSymbolTable());
-    vector<string> condition_statement = getConditionStatement(line, i);
-    string expression_1 = condition_statement.at(0);
-    string condition = condition_statement.at(1);
-    string expression_2 = condition_statement.at(2);
-    i = atoi(condition_statement.at(3).c_str()); // get the update index
+using namespace std;
 
-    while (checkCondition(expression_1, condition, expression_2, shunting_yard)) {
-        // do all the commands in the if untill the "}"
-        for (int j = 0; j < current_commands.size(); j++) {
-            current_commands[j]->calculate();
+int WhileCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
+    int size=vector1[index].size();
+
+    int i=1;
+    string first="";
+    string second="";
+    while ((vector1[index][i]!="<")&&(vector1[index][i]!=">")&&(vector1[index][i]!="=")&&(vector1[index][i]!="!")){
+        first=first+vector1[index][i]+" ";
+        i++;
+    }
+    string sign = vector1[index][i];
+    i++;
+    if (vector1[index][i]=="="){
+        sign = sign+vector1[index][i];
+        i++;
+
+    }
+    while (vector1[index][i]!="{"){
+        second=second+vector1[index][i]+" ";
+        i++;
+    }
+    vector<vector<string>> newVactor=vector1;
+    newVactor.erase(newVactor.begin()+0);
+    //check the }
+    for(int o = 0;o<newVactor[newVactor.size()-1].size();o++){
+        if(newVactor[newVactor.size()-1][o]=="}"){
+            newVactor[newVactor.size()-1].erase(newVactor[newVactor.size()-1].begin()+o);
+            break;
         }
     }
-    return i; // return the index
+    //if the last vector is empty erase the vector
+    if(newVactor[newVactor.size()-1].size()==0){
+        newVactor.erase(newVactor.begin()+newVactor.size());
+    }
+    //newVactor.erase(newVactor.begin()+newVactor.size());
+
+    while (returnBoolSign(first,second,sign,map1)){
+
+        this->interpreter->interpreteFile(newVactor);
+    }
+
+    return 0;
+}
+
+bool WhileCommand::returnBoolSign(string first, string second, string sign, map<string, double> *map1) {
+    double firstParm= this->dijkstra->evluate(first);
+    double secondParm= this->dijkstra->evluate(second);
+
+    double firstVal = firstParm;
+    double secondVal = secondParm;
+
+    if(sign==">"){
+        if(firstVal>secondVal){
+            return true;
+        } else{
+            return false;
+        }
+
+
+    } else if(sign=="<"){
+        if(firstVal<secondVal){
+            return true;
+        } else{
+            return false;
+        }
+
+
+    } else if(sign==">="){
+        if(firstVal>=secondVal){
+            return true;
+        } else{
+            return false;
+        }
+
+
+    } else if(sign=="<="){
+        if(firstVal<=secondVal){
+            return true;
+        } else{
+            return false;
+        }
+
+
+    } else if(sign=="=="){
+        if(firstVal==secondVal){
+            return true;
+        } else{
+            return false;
+        }
+    }
+    else if(sign=="!="){
+        if(firstVal!=secondVal){
+            return true;
+        } else{
+            return false;
+        }
+
+    } else{
+        __throw_bad_exception();
+    }
 }

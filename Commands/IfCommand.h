@@ -1,21 +1,27 @@
 //
-// Created by tomer on 12/20/18.
+// Created by Eyal on 20/12/18.
 //
 
-#ifndef FLIGHTSIMULATOR_IFCOMMAND_H
-#define FLIGHTSIMULATOR_IFCOMMAND_H
+#ifndef FLIGHT_IFCOMMAND_H
+#define FLIGHT_IFCOMMAND_H
 
-#include "../Dijkstra.h"
+#include "Command.h"
+#include "../Interpreter.h"
 
-#include "ConditionCommand.h"
-
-class IfCommand :public ConditionCommand{
-//    VarDataBase varDataBase;
+class IfCommand : public Command{
+private:
+    Interpreter* interpreter;
 public:
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server,
-            Client *client, VarDataBase* var_data_base);
+    IfCommand(DataReaderServer* server5,Client* client1,Interpreter* interpreter1,Dijkstra* dij,pthread_mutex_t *mut)
+    :Command(server5,client1,dij,mut)
+    {
+        this->interpreter = interpreter1;
+    }
+    virtual int doCommand(vector<vector<string>> lines,map<string, double>* map1,int index);
+    bool returnBoolSign(string first,string second,string sign, map<string, double> *map1);
+
 
 };
 
 
-#endif //FLIGHTSIMULATOR_IFCOMMAND_H
+#endif //FLIGHT_IFCOMMAND_H

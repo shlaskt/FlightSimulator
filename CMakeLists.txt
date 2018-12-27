@@ -1,32 +1,25 @@
-cmake_minimum_required(VERSION 3.13)
-project(FlightSimulator)
-#set(CMAKE_CXX_FLAGS "-std=c++14 -pthread")
+cmake_minimum_required(VERSION 3.12)
+project(flight)
 
-set(CMAKE_CXX_STANDARD 14)
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-
-
-
-add_executable(FlightSimulator main.cpp ExpressionInterfaces/Expression.h ExpressionInterfaces/BinaryExpression.cpp
-        ExpressionInterfaces/BinaryExpression.h UnaryExpressions/UnaryExpression.cpp UnaryExpressions/UnaryExpression.h
-        BinaryExpressions/PlusExpression.cpp BinaryExpressions/PlusExpression.h BinaryExpressions/MinusExpression.cpp
-        BinaryExpressions/MinusExpression.h BinaryExpressions/MultiplyExpression.cpp
-        BinaryExpressions/MultiplyExpression.h BinaryExpressions/DivideExpression.cpp
-        BinaryExpressions/DivideExpression.h UnaryExpressions/NegExpression.cpp
-        UnaryExpressions/NegExpression.h Num.cpp Num.h Dijkstra.cpp Dijkstra.h
-        InputManagement.cpp InputManagement.h DataManagement/VarDataBase.cpp DataManagement/VarDataBase.h
-        ExpressionInterfaces/ExpressionCommand.cpp ExpressionInterfaces/ExpressionCommand.h
-        Sockets/Client.cpp Sockets/Client.h Sockets/DataReaderServer.cpp
-        Sockets/DataReaderServer.h Commands/Command.h Commands/OpenDataServer.cpp
-        Commands/OpenDataServer.h DataManagement/CommandDataBase.cpp DataManagement/CommandDataBase.h
-        Commands/ConnectCommand.cpp Commands/ConnectCommand.h InputReaders/InputReader.h
-        InputReaders/StdinReader.cpp InputReaders/StdinReader.h InputReaders/FileReader.cpp
-        InputReaders/FileReader.h Controller.cpp Controller.h
-        Commands/VarCommand.cpp Commands/VarCommand.h Commands/EqualCommand.cpp
-        Commands/EqualCommand.h Commands/PrintCommand.cpp Commands/PrintCommand.h
-        Commands/SleepCommand.cpp Commands/SleepCommand.h Commands/IfCommand.cpp
-        Commands/IfCommand.h ExpressionInterfaces/ExpressionConditionalsCommand.cpp
-        ExpressionInterfaces/ExpressionConditionalsCommand.h Commands/WhileCommand.cpp Commands/WhileCommand.h
-        Commands/ConditionCommand.cpp Commands/ConditionCommand.h InputReaders/InputManager.cpp InputReaders/InputManager.h Commands/EntercCommand.cpp Commands/EntercCommand.h)
-
-
+##set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread")
+add_executable(flight main.cpp
+        Commands/Command.h Commands/openServerCommand.cpp Commands/openServerCommand.h
+        ExpressionInterfaces/Expression.h
+        ExpressionInterfaces/BinaryExpression.cpp
+        ExpressionInterfaces/BinaryExpression.h
+        BinaryExpressions/Mul.cpp BinaryExpressions/Mul.h BinaryExpressions/Div.cpp
+        BinaryExpressions/Div.h BinaryExpressions/Plus.cpp BinaryExpressions/Plus.h
+        BinaryExpressions/Minus.cpp BinaryExpressions/Minus.h
+        Num.cpp Num.h Commands/DataReaderServer.cpp Commands/DataReaderServer.h MapsData.cpp
+        MapsData.h Interpreter.cpp Interpreter.h Commands/VarCommand.cpp
+        Commands/VarCommand.h
+        Commands/EqualCommand.cpp Commands/EqualCommand.h Commands/WhileCommand.cpp Commands/WhileCommand.h
+        Commands/ConnectCommand.cpp Commands/ConnectCommand.h ExpressionInterfaces/ExpressionCommand.cpp
+        ExpressionInterfaces/ExpressionCommand.h Commands/Client.cpp
+        Commands/Client.h Commands/PrintCommand.cpp
+        Commands/PrintCommand.h Dijkstra.cpp Dijkstra.h Commands/IfCommand.cpp
+        Commands/IfCommand.h Commands/SleepCommand.cpp
+        Commands/SleepCommand.h Commands/ExitCommand.cpp Commands/ExitCommand.h
+        InputReader/FileReader.cpp InputReader/FileReader.h InputReader/InputReader.h
+        InputReader/StdinReader.cpp InputReader/StdinReader.h Controller.cpp Controller.h)

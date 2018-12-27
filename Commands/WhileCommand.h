@@ -1,19 +1,25 @@
 //
-// Created by tomer on 12/21/18.
+// Created by Eyal on 18/12/18.
 //
 
-#ifndef FLIGHTSIMULATOR_WHILECOMMAND_H
-#define FLIGHTSIMULATOR_WHILECOMMAND_H
+#ifndef FLIGHT_WHILECOMMAND_H
+#define FLIGHT_WHILECOMMAND_H
 
+#include "Command.h"
+#include "../Interpreter.h"
 
-#include "ConditionCommand.h"
+class WhileCommand: public Command {
 
-class WhileCommand : public ConditionCommand {
-//    VarDataBase varDataBase;
+private:
+    Interpreter* interpreter;
 public:
-    virtual int doCommand(vector<string> line, int i, DataReaderServer *server,
-                          Client *client, VarDataBase *var_data_base);
+    WhileCommand(DataReaderServer* server5,Client* client1,Interpreter* interpreter1,Dijkstra* dij,pthread_mutex_t *mut)
+    :Command(server5,client1,dij,mut)
+    {
+        this->interpreter = interpreter1;
+    }
+    virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index);
+    bool returnBoolSign(string first,string second,string sign, map<string, double> *map1);
 };
 
-
-#endif //FLIGHTSIMULATOR_WHILECOMMAND_H
+#endif //FLIGHT_WHILECOMMAND_H

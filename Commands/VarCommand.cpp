@@ -1,48 +1,51 @@
-//
-// Created by tomer on 12/20/18.
-//
+
 
 #include "VarCommand.h"
+#include <string>
+using namespace std;
+int VarCommand::doCommand(vector<vector<string>> lines,map<string, double>* map1,int index){
 
-/**
- * assign var
- * if it should be bind -> bind it to the path
- * else - itsnt bind -> send it just to symbol map
- * after getting it's value
- * @param itor iterator on the string
- * @param server
- */
-int VarCommand::doCommand(vector<string> line, int i, DataReaderServer *server,
-                          Client *client, VarDataBase *var_data_base) {
-    Dijkstra shunting_yard(var_data_base->getSymbolTable());
-    string var_name = line.at(i++);
-    // check valid input
-    if (isdigit(var_name[0]) || var_name == "var") { // var cant start with digit or called var
-        __throw_runtime_error("invalid name of var");
-    }
-    if (line.at(i++) != "=") { // second arg must be operator "="
-        __throw_runtime_error("invalid var assign-> '=' expected");
-    }
-    // check if bind assign or shallow assign
-    if (line.at(i) == "bind") { // assign to path
-        // can be bind to path, or bind to path of other var
-        string arg_to_bind = line.at(++i);
-        if (var_data_base->isVarExists(arg_to_bind)) { // var, bind to the var's path
-            string path = var_data_base->getPath(arg_to_bind);
-            var_data_base->createAndBindVarToPath(var_name, path);
-        } else { // this is a path, bind directed to it
-            var_data_base->createAndBindVarToPath(var_name, arg_to_bind);
-        }
-    } else { // no bind-> assign to expression
-        double val;
-        try {
-            val = shunting_yard(line.at(i)); // get the number / var value to assign the new var
+    // string temp = list1[index+3];
+    string temp = lines[index][3];
+    //if var is bind
 
-        } catch (const out_of_range &no_such_var) {
-            // if there is no var in this name- dijkstra throw error
-            __throw_runtime_error("invalid params to var");
+    if(temp.compare("bind")==0){
+        //add to map
+        pthread_mutex_lock(this->mut);
+        map1->insert(pair<string,double >(lines[index][1],0));
+        pthread_mutex_unlock(this->mut);
+        //if the 4th elemt is in the map
+        if(map1->count(lines[index][4])==1){
+            string path25 = this->dataServer->getPath(lines[index][4]);
+            this->dataServer->addPath(lines[index][1],path25);
+        } else{
+            string nameVar = lines[index][1];
+            string path = lines[index][4];
+            path = path.substr(1,path.size()-2);
+            this->dataServer->addPath(nameVar,path);
         }
-        var_data_base->assignVarValue(var_name, val);
+        this->dataServer->updateMap();
+
+        return 5;
+
+        //if var isn't bind
+    }else{
+        string var = lines[index][1];
+                                    //temp = list1[index+3];
+        string valueExp="";
+        for (int i=3;i<lines[index].size();i++){
+            valueExp=valueExp+lines[index][i]+" ";
+        }
+
+        double val=this->dijkstra->evluate(valueExp);
+        pthread_mutex_lock(this->mut);
+        map1->insert(pair<string, double>(var,val));
+        pthread_mutex_unlock(this->mut);
+
+        return 4;
+
     }
-    return ++i; // increase index
+
+
 }
+
