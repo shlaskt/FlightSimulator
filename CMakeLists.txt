@@ -3,7 +3,7 @@ project(flight)
 
 ##set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread")
-add_executable(flight main.cpp LexerClass.cpp LexerClass.h
+add_executable(flight main.cpp
         Commands/Command.h Commands/openServerCommand.cpp Commands/openServerCommand.h
         ExpressionInterfaces/Expression.h
         ExpressionInterfaces/BinaryExpression.cpp

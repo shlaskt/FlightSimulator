@@ -10,7 +10,6 @@
 #include "Maps.h"
 #include "Commands/Client.h"
 #include "Interpreter.h"
-#include "LexerClass.h"
 
 class Controller {
 private:
