@@ -19,7 +19,6 @@ void Controller::runningProgram(int argc,char *argv[]) {
     maps->setServer(server,client);
     maps->setInterpreter(interpreter);
     maps->initMapCom();
-    LexerClass lexerClass;
     vector<vector<string>> afterLex;
 
     //read from the file
@@ -29,7 +28,7 @@ void Controller::runningProgram(int argc,char *argv[]) {
 
     //pthread_mutex_destroy(&mut);
 
-    afterLex = lexerClass.readFromFile(fileName);
+    afterLex = interpreter->readFromFile(fileName);
     int ans = interpreter->interpLine(afterLex);
 
     if(ans == 0){

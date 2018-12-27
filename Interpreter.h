@@ -8,6 +8,10 @@
 
 #include <map>
 #include "Commands/Command.h"
+#include <fstream>
+#include <string.h>
+#include <map>
+#include <list>
 
 
 class Interpreter {
@@ -16,12 +20,12 @@ private:
     map<string, Command*>* commandMap;
 public:
 
-    Interpreter(map<string,double >* symbolTable,map<string, Command*>* commandMap){
-        this->symbolTable = symbolTable;
-        this->commandMap = commandMap;
-    }
+    Interpreter(map<string,double >* symbolTable,map<string, Command*>* commandMap);
     int interpLine(vector<vector<string>>);
     int countLoopIf(vector<vector<string>>);
+    vector<string> lexer(string line);
+
+    vector<vector<string>> readFromFile(string fileName);
 
 };
 
