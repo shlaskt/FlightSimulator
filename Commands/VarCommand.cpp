@@ -1,9 +1,9 @@
 
 
-#include "DefineVarCommand.h"
+#include "VarCommand.h"
 #include <string>
 using namespace std;
-int DefineVarCommand::doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index){
+int VarCommand::doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index){
 
     // string temp = list1[index+3];
     string temp = vector1[index][3];
@@ -16,15 +16,15 @@ int DefineVarCommand::doCommand(vector<vector<string>> vector1,map<string, doubl
         pthread_mutex_unlock(this->mut);
         //if the 4th elemt is in the map
         if(map1->count(vector1[index][4])==1){
-            string path25 = this->server1->getPath(vector1[index][4]);
-            this->server1->addPath(vector1[index][1],path25);
+            string path25 = this->dataServer->getPath(vector1[index][4]);
+            this->dataServer->addPath(vector1[index][1],path25);
         } else{
             string nameVar = vector1[index][1];
             string path = vector1[index][4];
             path = path.substr(1,path.size()-2);
-            this->server1->addPath(nameVar,path);
+            this->dataServer->addPath(nameVar,path);
         }
-        this->server1->updateMap();
+        this->dataServer->updateMap();
 
         return 5;
 

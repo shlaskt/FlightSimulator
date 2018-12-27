@@ -16,7 +16,7 @@ Interpreter::Interpreter(map<string, double> *symbolTable, map<string, Command *
     this->commandMap = commandMap;
 }
 
-int Interpreter::interpLine(vector<vector<string>> vector1) {
+bool Interpreter::interpLine(vector<vector<string>> vector1) {
     bool flagExit = false;
     for (int i = 0; i < vector1.size(); i++) {
         //for the vars equal.
@@ -62,10 +62,7 @@ int Interpreter::interpLine(vector<vector<string>> vector1) {
         }
     }
     //if he didnt call to exit
-    if (!flagExit) {
-        return 0;
-    }
-    return 1;
+    return flagExit;
 }
 
 int Interpreter::countLoopIf(vector<vector<string>> vector1) {
@@ -172,65 +169,6 @@ vector<string> splitLine(const string &line, char sign) {
 vector<string> Interpreter::lexer(string line) {
     return splitLine(addSpaces(line), ' ');
 }
-
-//vector<string> LexerClass:: lexer(string line){
-//
-//    vector<string> vecAfterLex;
-//    string enterTolist = "";
-//    regex number("[0-9,.]*");
-//    regex var_name("[a-zA-Z_][a-zA-Z_0-9]*");
-//    regex stringEx("[^]*");
-//    regex whiteSpaces("[\t,\n, ]");
-//    //regex operators("[+,-,/,*,=]");
-//    regex operators("[^]");
-//    smatch m;
-//
-//    while(line.size()>0) {
-//        if (line[0] == '"') {
-//            regex_search(line, m, stringEx);
-//            for (unsigned i = 0; i < m.size(); ++i) {
-//                enterTolist += enterTolist + m.str(i);
-//            }
-//            vecAfterLex.push_back(enterTolist);
-//            line = line.substr(enterTolist.size(), line.size());
-//            enterTolist = "";
-//        } else if (line[0] == '\t' || line[0] == '\n' || line[0] == ' ') {
-//            regex_search(line, m, whiteSpaces);
-//            for (unsigned i = 0; i < m.size(); ++i) {
-//                enterTolist += enterTolist + m.str(i);
-//            }
-//            line = line.substr(enterTolist.size(), line.size());
-//            enterTolist = "";
-//        } else if (line[0] > 48 && line[0] < 58) {
-//            regex_search(line, m, number);
-//            for (unsigned i = 0; i < m.size(); ++i) {
-//                enterTolist += enterTolist + m.str(i);
-//            }
-//            vecAfterLex.push_back(enterTolist);
-//            line = line.substr(enterTolist.size(), line.size());
-//            enterTolist = "";
-//        } else if ((line[0] >= 65 && line[0] <= 90) || (line[0] >= 97 && line[0] <= 122)) {
-//            regex_search(line, m, var_name);
-//            for (unsigned i = 0; i < m.size(); ++i) {
-//                enterTolist += enterTolist + m.str(i);
-//            }
-//            vecAfterLex.push_back(enterTolist);
-//            line = line.substr(enterTolist.size(), line.size());
-//            enterTolist = "";
-//        } else {
-//            regex_search(line, m, operators);
-//            for (unsigned i = 0; i < m.size(); ++i) {
-//                enterTolist += enterTolist + m.str(i);
-//            }
-//            vecAfterLex.push_back(enterTolist);
-//            line = line.substr(enterTolist.size(), line.size());
-//            enterTolist = "";
-//        }
-//
-//    }
-//    return vecAfterLex;
-//}
-
 
 /**
  * get iterator to start and to end, and make it one string of exprresion.
@@ -369,7 +307,6 @@ vector<string> Interpreter::parser(string line) {
     return
             parserd_line;
 }
-
 
 vector<vector<string>> Interpreter::readFromFile(string fileName) {
     string command;

@@ -17,7 +17,7 @@ class Maps {
 private:
     map<string,double > symbolTable;
     map<string, Command*> commandMap;
-    DataReaderServer* server1 ;
+    DataReaderServer* dataServer ;
     Client* client;
     Dijkstra* dijkstra2;
     Interpreter* pars;

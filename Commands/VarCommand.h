@@ -5,13 +5,13 @@
 
 #include "Command.h"
 
-class DefineVarCommand: public Command{
+class VarCommand: public Command{
 public:
     virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index);
-    DefineVarCommand(DataReaderServer* server5,Client* client1,Dijkstra* dij,pthread_mutex_t *mut)
+    VarCommand(DataReaderServer* server5,Client* client1,Dijkstra* dij,pthread_mutex_t *mut)
             :Command(server5,client1,dij,mut){}
 
 
 };
 
-#endif //FLIGHT_DEFINEVARCOMMAND_H
+#endif //FLIGHT_VarCommand_H

@@ -17,14 +17,14 @@ using namespace std;
 
 class Command {
 protected:
-    DataReaderServer *server1;
+    DataReaderServer *dataServer;
     Client *client;
     Dijkstra *dijkstra1;
     pthread_mutex_t *mut;
 
 public:
-    Command(DataReaderServer *server2, Client *client1, Dijkstra *dijkstra, pthread_mutex_t *mut) {
-        this->server1 = server2;
+    Command(DataReaderServer *dataServer, Client *client1, Dijkstra *dijkstra, pthread_mutex_t *mut) {
+        this->dataServer = dataServer;
         this->client = client1;
         this->dijkstra1 = dijkstra;
         this->mut = mut;

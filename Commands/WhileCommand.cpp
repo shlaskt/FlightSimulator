@@ -1,10 +1,10 @@
 
-#include "LoopCommand.h"
+#include "WhileCommand.h"
 #include <string>
 
 using namespace std;
 
-int LoopCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
+int WhileCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
     int size=vector1[index].size();
 
     int i=1;
@@ -51,7 +51,7 @@ int LoopCommand::doCommand(vector<vector<string>> vector1, map<string, double> *
     return 0;
 }
 
-bool LoopCommand::returnBoolSign(string first, string second, string sign, map<string, double> *map1) {
+bool WhileCommand::returnBoolSign(string first, string second, string sign, map<string, double> *map1) {
     double firstParm= this->dijkstra1->toVl(first);
     double secondParm= this->dijkstra1->toVl(second);
 
@@ -121,7 +121,7 @@ bool LoopCommand::returnBoolSign(string first, string second, string sign, map<s
     }
 }
 
-void LoopCommand::MakeCommandsVectors(vector<string> vec)  {
+void WhileCommand::MakeCommandsVectors(vector<string> vec)  {
     /*for(vector<string>::iterator it=vec.begin();it!=vec.end();++it){
 
     }*/

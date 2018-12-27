@@ -8,14 +8,14 @@
 #include "Command.h"
 #include "../Interpreter.h"
 
-class LoopCommand: public Command {
+class WhileCommand: public Command {
 
 private:
     vector<Command> commands;
     vector<int> indexForCommand;
     Interpreter* interpreter;
 public:
-    LoopCommand(DataReaderServer* server5,Client* client1,Interpreter* interpreter1,Dijkstra* dij,pthread_mutex_t *mut)
+    WhileCommand(DataReaderServer* server5,Client* client1,Interpreter* interpreter1,Dijkstra* dij,pthread_mutex_t *mut)
     :Command(server5,client1,dij,mut)
     {
         this->interpreter = interpreter1;

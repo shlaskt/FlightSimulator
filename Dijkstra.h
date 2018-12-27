@@ -12,7 +12,7 @@
 
 #include "BinaryExpressions/Minus.h"
 #include "BinaryExpressions/Mul.h"
-#include "Commands/Div.h"
+#include "BinaryExpressions/Div.h"
 #include "ExpressionInterfaces/Expression.h"
 #include <iostream>
 #include <bits/stdc++.h>
