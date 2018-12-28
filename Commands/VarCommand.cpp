@@ -1,6 +1,6 @@
 
 
-#include "DefineVarCommand.h"
+#include "VarCommand.h"
 #include <string>
 using namespace std;
 /**
@@ -13,7 +13,7 @@ using namespace std;
  * @param index
  * @return
  */
-int DefineVarCommand::doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index){
+int VarCommand::doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index){
 
     // string temp = list1[index+3];
     string temp = vector1[index][3];
@@ -69,7 +69,7 @@ int DefineVarCommand::doCommand(vector<vector<string>> vector1,map<string, doubl
  * check the valid of var name
  * @param var_name
  */
-void DefineVarCommand::checkValidVarName(string var_name) {
+void VarCommand::checkValidVarName(string var_name) {
     if (isdigit(var_name[0]) || var_name == "var") { // var cant start with digit or called var
         __throw_runtime_error("invalid name of var");
     }

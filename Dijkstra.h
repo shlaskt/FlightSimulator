@@ -21,24 +21,18 @@ using namespace std;
 
 class Dijkstra {
     map<string,double>* var_to_val;
-    int precedence(char op);
-
-public:
-    Dijkstra(map<string, double>* var_to_val);
-
-
-private:
-    Expression* applyOp(double a, double b, char op);
-    vector<string> splitLine(const string &str, char sign);
     vector<BinaryExpression*> deleteVector;
 
-    double calculate(string tokens);
+    int precedence(char op);
+    Expression* applyOp(double a, double b, char op);
+    vector<string> splitLine(const string &str, char sign);
     double evaluate(string tokens);
 
 public:
-    double virtual operator()(char* str);
-    double virtual dijkstratoi(string str);
-    void addToDelete(BinaryExpression* exp);
+    Dijkstra(map<string, double>* var_to_val);
+    double dijkstratoi(string string_before_evaluate);
+//    double virtual dijkstratoi(string str);
+    void deleteInTheEnd(BinaryExpression *exp);
     ~Dijkstra(){
         vector<BinaryExpression*>::iterator it = this->deleteVector.begin();
         for(it;it!=this->deleteVector.end();++it){

@@ -39,29 +39,34 @@ Expression *Dijkstra::applyOp(double a, double b, char op) {
     switch (op) {
         case '+': {
             BinaryExpression *newPlus = new Plus(new Num(a), new Num(b));
-            addToDelete(newPlus);
+            deleteInTheEnd(newPlus);
             return newPlus;
         }
         case '-':{
             BinaryExpression *newMin = new Minus(new Num(a), new Num(b));
-            addToDelete(newMin);
+            deleteInTheEnd(newMin);
             return newMin;
         }
         case '*':{
             BinaryExpression *newMult = new Mul(new Num(a), new Num(b));
-            addToDelete(newMult);
+            deleteInTheEnd(newMult);
             return newMult;
         }
         case '/':{
             BinaryExpression *newDiv = new Div(new Num(a), new Num(b));
-            addToDelete(newDiv);
+            deleteInTheEnd(newDiv);
             return newDiv;
         }
     }
 }
-void Dijkstra::addToDelete(BinaryExpression* exp){
-    this->deleteVector.push_back(exp);
 
+/**
+ * insert to the vector of things that alloceted dynamicly
+ * to delete in the end
+ * @param exp
+ */
+void Dijkstra::deleteInTheEnd(BinaryExpression *exp){
+    this->deleteVector.push_back(exp);
 }
 
 /**
@@ -198,39 +203,20 @@ vector<string> Dijkstra::splitLine(const string &str, char sign) {
     return spaces_split;
 }
 
-/**
- * get string and evaluate it with shunting yard algorithm
- * for char*
- * @param str string
- * @return double - the value after evaluate
- */
-double Dijkstra::operator()(char *str) {
-    string string_before_evaluate_vars = (string) str;
-    return calculate(string_before_evaluate_vars);
 
-}
 
 /**
- * get string and evaluate it with shunting yard algorithm
- * for string
- * @param str string
- * @return double - the value after evaluate
- */
-double Dijkstra::dijkstratoi(string str) {
-    return calculate(str);
-}
-
-/**
+ * dijkstratoi (a reference to atoi func)
  * get the string and evalute vars if have
  * send to evaluate in shunting yard algoritm
  * return the value- double
- * @param string_before_evaluate_vars
+ * @param string_before_evaluate
  * @return val
  */
-double Dijkstra::calculate(string string_before_evaluate_vars) {
-    string string_after_evaluate_vars; // = ""
+double Dijkstra::dijkstratoi(string string_before_evaluate) {
+    string string_after_evaluate; // = ""
     // split the string to vector by whitespace
-    vector<string> splited = splitLine(string_before_evaluate_vars, ' ');
+    vector<string> splited = splitLine(string_before_evaluate, ' ');
     char space = ' ';
     for (vector<string>::iterator it = splited.begin(); it != splited.end(); it++) {
         string argument = (*it); // operator or number or var
@@ -240,19 +226,17 @@ double Dijkstra::calculate(string string_before_evaluate_vars) {
         if (isdigit(argument[0])
             || argument == "+" || argument == "-" || argument == "*" || argument == "/"
             || argument == "(" || argument == ")" || argument == "") {
-            string_after_evaluate_vars += (space + argument);
+            string_after_evaluate += (space + argument);
         } else {
             // it is a variable, evalute it
             double val = var_to_val->at(argument); // throw exception if no var
             // place it back to the string
-            string_after_evaluate_vars +=(space + to_string(val));
+            string_after_evaluate +=(space + to_string(val));
         }
     }
-    string_after_evaluate_vars+=space; // add one more whitespace
+    string_after_evaluate+=space; // add one more whitespace
 
-    double result = evaluate(string_after_evaluate_vars);
-    if(result ==(-0)){ // edge case "-0"
-        result=0;
-    }
+    double result = evaluate(string_after_evaluate);
+    if(result ==-0) return 0; // edge case "-0"
     return result;
 }

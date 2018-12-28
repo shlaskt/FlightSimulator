@@ -1,10 +1,9 @@
-//
-// Created by Tomer & Eyal on 20/12/18.
-//
 
-#include "IfCommand.h"
+#include "WhileCommand.h"
+#include <string>
 
-/**
+
+/***
  * if statement
  * check the left and right expressions and the conditions between
  * action as excepted
@@ -13,44 +12,47 @@
  * @param index
  * @return
  */
-int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
+int WhileCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
     int i = 1;
-    string expression_1;
-    string expression_2;
+    string expression_1 = "";
+    string expression_2 = "";
     while ((vector1[index][i] != "<") && (vector1[index][i] != ">") &&
            (vector1[index][i] != "=") && (vector1[index][i] != "!")) {
-        expression_1 += vector1[index][i] + " ";
+        expression_1 = expression_1 + vector1[index][i] + " ";
         i++;
     }
-    string condition = vector1[index][i];
+    string sign = vector1[index][i];
     i++;
     if (vector1[index][i] == "=") { // for !=,==,<=,>=
-        condition += vector1[index][i];
+        sign = sign + vector1[index][i];
         i++;
-
     }
     while (vector1[index][i] != "{") {
-        expression_2 += vector1[index][i] + " ";
+        expression_2 = expression_2 + vector1[index][i] + " ";
         i++;
     }
     vector<vector<string>> vector2 = vector1;
     vector2.erase(vector2.begin() + 0);
-    for (int i1 = 0; i1 < vector2[vector2.size() - 1].size(); i1++) {
-        if (vector2[vector2.size() - 1][i1] == "}") {
-            vector2[vector2.size() - 1].erase(vector2[vector2.size() - 1].begin() + i1);
+    //check the }
+    for (int o = 0; o < vector2[vector2.size() - 1].size(); o++) {
+        if (vector2[vector2.size() - 1][o] == "}") {
+            vector2[vector2.size() - 1].erase(vector2[vector2.size() - 1].begin() + o);
             break;
         }
     }
+    //if the last vector is empty erase the vector
     if (vector2[vector2.size() - 1].size() == 0) {
         vector2.erase(vector2.begin() + vector2.size());
     }
 
-    // if true - do the commands
-    if (checkCondition(expression_1, expression_2, condition, map1)) {
+    // while true - do the commands
+    while (checkCondition(expression_1, expression_2, sign, map1)) {
         this->interpreter->interpLine(vector2);
     }
+
     return 0;
 }
+
 
 /**
  * check the condition
@@ -60,7 +62,8 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *ma
  * @param map1
  * @return
  */
-bool IfCommand::checkCondition(string expression_1, string expression_2, string condition, map<string, double> *map1) {
+bool
+WhileCommand::checkCondition(string expression_1, string expression_2, string condition, map<string, double> *map1) {
     double ex1, ex2;     // calculate and check valid expressions
     // can change inside the loop
     try {
@@ -80,5 +83,3 @@ bool IfCommand::checkCondition(string expression_1, string expression_2, string 
     // else ( !, = ,#, $...)
     __throw_runtime_error("Error in condition Command - invalid condition");
 }
-
-

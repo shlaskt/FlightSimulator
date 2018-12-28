@@ -13,19 +13,18 @@
 class ExitCommand : public Command{
 private:
     DataReaderServer* server;
-    Client* client1;
-    Dijkstra* dij;
+    Client* data_client;
+    Dijkstra* dijkstra;
     Interpreter* pars;
     pthread_mutex_t *mut;
-    //pthread_mutex_t *mut;
 
 public:
     virtual int doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index);
-    ExitCommand(DataReaderServer* server5,Client* client1,Interpreter* pars,Dijkstra* dij,pthread_mutex_t *mut)
-    :Command(server5,client1,dij,mut){
+    ExitCommand(DataReaderServer* server5,Client* client1,Interpreter* pars,Dijkstra* dijkstra,pthread_mutex_t *mut)
+    :Command(server5,client1,dijkstra,mut){
         this->server = server5;
-        this->client1=client1;
-        this->dij = dij;
+        this->data_client=client1;
+        this->dijkstra = dijkstra;
         this->mut = mut;
         this->pars = pars;
     }

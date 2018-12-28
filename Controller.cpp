@@ -46,7 +46,7 @@ void Controller::runningProgram(int argc,char *argv[]) {
     delete mut;
     delete dijkstra;
     delete interpreter;
-    delete client1;
+    delete data_client;
     delete drs;*/
     delete interpreter;
     delete maps;

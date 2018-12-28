@@ -79,7 +79,7 @@ string DataReaderServer::readFromSock() {
             __throw_bad_exception();
         } else {
             buffer[bytes_read] = 0;
-            cout << buffer;
+            // cout << buffer; // for check
         }
 
         vector<double> buffSplit = this->split(buffer);

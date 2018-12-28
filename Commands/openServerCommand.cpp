@@ -1,16 +1,13 @@
 #include "openServerCommand.h"
 #include <pthread.h>
+
 struct dataToSoc{
     double port;
     double timeRead;
     DataReaderServer* server2;
-
 };
 
 int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index) {
-
-                        //this->port = stoi(list1[1+index]);
-                        //this->time = stoi(list1[2+index]);
     int indexSeparate = 0;
     int flag = 0;
     //if there are just 2 parameters
@@ -64,11 +61,8 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
         double time=this->shunting_yard->dijkstratoi(timeString);
         this->port = portVal;
         this->time = time;
-
-
     }
-
-        //open the thread
+    //open the thread
     struct dataToSoc *params = new dataToSoc;
     params->port = this->port;
     params->timeRead = this->time;
@@ -84,7 +78,6 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
 void* OpenThreadFunc(void* args){
     ///read
     struct dataToSoc* params=(struct dataToSoc*) args;
-    //params->server2->openSocket(params->port,params->timeRead);
     while (true)    {
 
         auto x = params->server2->readFromSock();
@@ -94,9 +87,6 @@ void* OpenThreadFunc(void* args){
     return nullptr;
 }
 void* openServerCommand:: OpenThread(void* pVoid) {
-    //struct dataToSoc* params=new dataToSoc;
-    //params->port=this->port;
-    //params->timeRead=this->time;
     struct dataToSoc* params=(struct dataToSoc*) pVoid;
     pthread_t trid;
     params->server2->openSocket(params->port, params->timeRead);
