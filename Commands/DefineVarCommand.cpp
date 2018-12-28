@@ -48,7 +48,14 @@ int DefineVarCommand::doCommand(vector<vector<string>> vector1,map<string, doubl
             val_str=val_str+vector1[index][i]+" ";
         }
         // evaluate val
-        double val=this->shunting_yard->dijkstratoi(val_str);
+        double val;
+        try {
+            val=this->shunting_yard->dijkstratoi(val_str); // get the number / var value to assign the new var
+
+        } catch (const out_of_range &no_such_var) {
+            // if there is no var in this name- dijkstra throw error
+            __throw_runtime_error("invalid params to var");
+        }
         // lock mutex and update map
         pthread_mutex_lock(this->mut);
         map1->insert(pair<string, double>(var,val));
