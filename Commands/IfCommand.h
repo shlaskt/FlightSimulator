@@ -12,8 +12,8 @@ class IfCommand : public Command{
 private:
     Interpreter* interpreter;
 public:
-    IfCommand(DataReaderServer* server5,Client* client1,Interpreter* interpreter1,Dijkstra* dij,pthread_mutex_t *mut)
-    :Command(server5,client1,dij,mut)
+    IfCommand(DataReaderServer* serverData,Client* client1,Interpreter* interpreter1,Dijkstra* dij,pthread_mutex_t *mut)
+    :Command(serverData,client1,dij,mut)
     {
         this->interpreter = interpreter1;
     }

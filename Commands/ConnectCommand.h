@@ -19,8 +19,8 @@ class ConnectCommand: public Command {
 
     double checkValid(string ip, string port_s);
 public:
-    ConnectCommand(DataReaderServer* server5,Client* client1,Dijkstra* dij,pthread_mutex_t *mut)
-    :Command(server5,client1,dij,mut){}
+    ConnectCommand(DataReaderServer* serverData,Client* client1,Dijkstra* dij,pthread_mutex_t *mut)
+    :Command(serverData,client1,dij,mut){}
     virtual int doCommand(vector<vector<string>> vector1,map<string, double>* symbol_table,int index);
 };
 

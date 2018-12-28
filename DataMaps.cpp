@@ -11,47 +11,47 @@
 #include "Commands/SleepCommand.h"
 #include "Commands/ExitCommand.h"
 
-map<string,double >* DataMaps::getSymbolMap() { return &(this->symbolTable);}
+map<string, double> *DataMaps::getSymbolMap() { return &(this->symbolTable); }
 
 
+void DataMaps::initMapCom() {
+    Command *whileCommand = new WhileCommand(this->dataServer, this->client, this->pars, this->shunting_yard,
+                                             this->mut);
+    this->commandMap.insert(pair<string, Command *>("while", whileCommand));
 
-void DataMaps:: initMapCom(){
-    Command* openData = new openServerCommand(this->dataServer,this->client,this->shunting_yard,this->mut);
-    this->commandMap.insert(pair<string, Command*>("openDataServer",openData));
+    Command *ifCommand = new IfCommand(this->dataServer, this->client, this->pars, this->shunting_yard, this->mut);
+    this->commandMap.insert(pair<string, Command *>("if", ifCommand));
 
-    Command* varCommand = new DefineVarCommand(this->dataServer,this->client,this->shunting_yard,this->mut);
-    this->commandMap.insert(pair<string, Command*>("var",varCommand));
+    Command *openData = new openServerCommand(this->dataServer, this->client, this->shunting_yard, this->mut);
+    this->commandMap.insert(pair<string, Command *>("openDataServer", openData));
 
-    Command* equalCommand = new EqualCommand(this->dataServer,this->client,this->shunting_yard,this->mut);
-    this->commandMap.insert(pair<string, Command*>("equal",equalCommand));
+    Command *varCommand = new DefineVarCommand(this->dataServer, this->client, this->shunting_yard, this->mut);
+    this->commandMap.insert(pair<string, Command *>("var", varCommand));
 
-    Command* connectCommand = new ConnectCommand(this->dataServer,this->client,this->shunting_yard,this->mut);
-    this->commandMap.insert(pair<string, Command*>("connect",connectCommand));
 
-    Command* whileCommand = new WhileCommand(this->dataServer,this->client,this->pars,this->shunting_yard,this->mut);
-    this->commandMap.insert(pair<string, Command*>("while",whileCommand));
+    Command *printCommand = new PrintCommand(this->dataServer, this->client, this->shunting_yard, this->mut);
+    this->commandMap.insert(pair<string, Command *>("print", printCommand));
 
-    Command* ifCommand = new IfCommand(this->dataServer,this->client,this->pars,this->shunting_yard,this->mut);
-    this->commandMap.insert(pair<string, Command*>("if",ifCommand));
+    Command *sleepCommand = new SleepCommand(this->dataServer, this->client, this->shunting_yard, this->mut);
+    this->commandMap.insert(pair<string, Command *>("sleep", sleepCommand));
+    Command *equalCommand = new EqualCommand(this->dataServer, this->client, this->shunting_yard, this->mut);
+    this->commandMap.insert(pair<string, Command *>("equal", equalCommand));
 
-    Command* printCommand = new PrintCommand(this->dataServer,this->client,this->shunting_yard,this->mut);
-    this->commandMap.insert(pair<string, Command*>("print",printCommand));
+    Command *connectCommand = new ConnectCommand(this->dataServer, this->client, this->shunting_yard, this->mut);
+    this->commandMap.insert(pair<string, Command *>("connect", connectCommand));
 
-    Command* sleepCommand = new SleepCommand(this->dataServer,this->client,this->shunting_yard,this->mut);
-    this->commandMap.insert(pair<string, Command*>("sleep",sleepCommand));
-
-    Command* exitCommand = new ExitCommand(this->dataServer,this->client,this->pars,this->shunting_yard,this->mut);
-    this->commandMap.insert(pair<string, Command*>("exit",exitCommand));
+    Command *exitCommand = new ExitCommand(this->dataServer, this->client, this->pars, this->shunting_yard, this->mut);
+    this->commandMap.insert(pair<string, Command *>("exit", exitCommand));
 
 }
 
-void DataMaps::setServer(DataReaderServer* dataReaderServer,Client* client1) {
+void DataMaps::setServer(DataReaderServer *dataReaderServer, Client *client1) {
     this->dataServer = dataReaderServer;
     this->client = client1;
 
 }
 
-void DataMaps::setDij(Dijkstra* dijkstra) {
+void DataMaps::setDij(Dijkstra *dijkstra) {
 
     this->shunting_yard = dijkstra;
 }
@@ -60,9 +60,9 @@ map<string, Command *> *DataMaps::getComMap() {
     return &(this->commandMap);
 }
 
-void DataMaps::setInterpreter(Interpreter* p) {
+void DataMaps::setInterpreter(Interpreter *p) {
 
-    this->pars=p;
+    this->pars = p;
 }
 
 

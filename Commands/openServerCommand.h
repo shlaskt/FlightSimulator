@@ -5,19 +5,20 @@
 
 #include "Command.h"
 
-class openServerCommand: public Command{
+class openServerCommand : public Command {
 private:
     double port;
     double time;
 
 public:
-   //int doCommand(list<string>);
-   virtual int doCommand(vector<vector<string>> vector1,map<string, double>* symbol_table,int index);
 
-    //void* OpenThreadFunc(void* args);
-    void* OpenThread(void* pVoid);
-    openServerCommand(DataReaderServer* server5,Client* client1,Dijkstra* dij,pthread_mutex_t *mut)
-            :Command(server5,client1,dij,mut){}
+    virtual int doCommand(vector<vector<string>> vector1, map<string, double> *symbol_table, int index);
+
+    void *OpenThread(void *pVoid);
+
+    openServerCommand(DataReaderServer *serverData, Client *client1, Dijkstra *dij, pthread_mutex_t *mut)
+            : Command(serverData, client1, dij, mut) {}
 
 };
+
 #endif //FLIGHT_OPENSERVERCOMMAND_H

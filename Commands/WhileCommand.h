@@ -13,9 +13,9 @@ class WhileCommand : public Command {
 private:
     Interpreter *interpreter;
 public:
-    WhileCommand(DataReaderServer *server5, Client *client1, Interpreter *interpreter1, Dijkstra *dij,
+    WhileCommand(DataReaderServer *serverData, Client *client1, Interpreter *interpreter1, Dijkstra *dij,
                  pthread_mutex_t *mut)
-            : Command(server5, client1, dij, mut) {
+            : Command(serverData, client1, dij, mut) {
         this->interpreter = interpreter1;
     }
 

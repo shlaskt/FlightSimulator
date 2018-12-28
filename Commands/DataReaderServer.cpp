@@ -78,7 +78,7 @@ string DataReaderServer::readFromSock() {
             throw runtime_error("unable to read from socket");
         } else {
             buffer[bytes_read] = 0;
-            cout << buffer;
+//            cout << buffer;
         }
 
         vector<double> buffSplit = this->split(buffer);
