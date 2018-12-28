@@ -5,24 +5,23 @@
 #include "PrintCommand.h"
 #include "iostream"
 
-int PrintCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
+int PrintCommand::doCommand(vector<vector<string>> lines, map<string, double> *symbol_table, int index) {
 
-    int size=vector1[index].size();
+    int size=lines[index].size();
     int find =0;
-    if((find = vector1[index][1].find("\""))!=std::string::npos){
-        string pri = vector1[index][1];
-        pri.erase(pri.begin()+find);
-        find = pri.find("\"");
-        pri.erase(pri.begin()+find,pri.begin()+ pri.size());
-        //string toPrint=vector1[index][1].substr(1,(vector1[index][2].size()-2));
-        std::cout << pri <<'\n';
+    if((find = lines[index][1].find("\""))!=std::string::npos){
+        string to_print = lines[index][1];
+        to_print.erase(to_print.begin()+find);
+        find = to_print.find("\"");
+        to_print.erase(to_print.begin()+find,to_print.begin()+ to_print.size());
+        std::cout << to_print <<'\n';
     } else{
         string toPrint="";
         for(int i=1;i<size;i++){
-            toPrint=toPrint+vector1[index][i]+" ";
+            toPrint=toPrint+lines[index][i]+" ";
         }
-        double pri=this->shunting_yard->dijkstratoi(toPrint);
-        cout << pri <<'\n';
+        double to_print=this->shunting_yard->dijkstratoi(toPrint);
+        cout << to_print <<'\n';
 
     }
 

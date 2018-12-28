@@ -7,19 +7,19 @@
 
 /**
  * connect command, get ip and port and connect
- * @param vector1
- * @param map1
+ * @param lines
+ * @param symbol_table
  * @param index
  * @return
  */
-int ConnectCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
+int ConnectCommand::doCommand(vector<vector<string>> lines, map<string, double> *symbol_table, int index) {
     string port_s;
-    int size = vector1[index].size();
+    int size = lines[index].size();
     // get ip
-    string ip = vector1[index][1];
+    string ip = lines[index][1];
     // get port as string
     for (int i = 2; i < size; i++) {
-        port_s = port_s + vector1[index][i] + " ";
+        port_s = port_s + lines[index][i] + " ";
     }
     // check valid of port and ip
     double port = checkValid(ip, port_s);

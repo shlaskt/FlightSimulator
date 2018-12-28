@@ -6,12 +6,12 @@
 
 /**
  * exit from the program
- * @param vector1
- * @param map1
+ * @param lines
+ * @param symbol_table
  * @param index
  * @return index- no need here
  */
-int ExitCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
+int ExitCommand::doCommand(vector<vector<string>> lines, map<string, double> *symbol_table, int index) {
     this->server->stopLoop(); // stop reading
     // delete all dynamic allocations
     delete this->dijkstra;

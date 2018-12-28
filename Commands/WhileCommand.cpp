@@ -7,31 +7,31 @@
  * if statement
  * check the left and right expressions and the conditions between
  * action as excepted
- * @param vector1
- * @param map1
+ * @param lines
+ * @param symbol_table
  * @param index
  * @return
  */
-int WhileCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
+int WhileCommand::doCommand(vector<vector<string>> lines, map<string, double> *symbol_table, int index) {
     int i = 1;
     string expression_1 = "";
     string expression_2 = "";
-    while ((vector1[index][i] != "<") && (vector1[index][i] != ">") &&
-           (vector1[index][i] != "=") && (vector1[index][i] != "!")) {
-        expression_1 = expression_1 + vector1[index][i] + " ";
+    while ((lines[index][i] != "<") && (lines[index][i] != ">") &&
+           (lines[index][i] != "=") && (lines[index][i] != "!")) {
+        expression_1 = expression_1 + lines[index][i] + " ";
         i++;
     }
-    string sign = vector1[index][i];
+    string sign = lines[index][i];
     i++;
-    if (vector1[index][i] == "=") { // for !=,==,<=,>=
-        sign = sign + vector1[index][i];
+    if (lines[index][i] == "=") { // for !=,==,<=,>=
+        sign = sign + lines[index][i];
         i++;
     }
-    while (vector1[index][i] != "{") {
-        expression_2 = expression_2 + vector1[index][i] + " ";
+    while (lines[index][i] != "{") {
+        expression_2 = expression_2 + lines[index][i] + " ";
         i++;
     }
-    vector<vector<string>> vector2 = vector1;
+    vector<vector<string>> vector2 = lines;
     vector2.erase(vector2.begin() + 0);
     //check the }
     for (int o = 0; o < vector2[vector2.size() - 1].size(); o++) {
@@ -46,7 +46,7 @@ int WhileCommand::doCommand(vector<vector<string>> vector1, map<string, double> 
     }
 
     // while true - do the commands
-    while (checkCondition(expression_1, expression_2, sign, map1)) {
+    while (checkCondition(expression_1, expression_2, sign, symbol_table)) {
         this->interpreter->interpLine(vector2);
     }
 
@@ -59,11 +59,11 @@ int WhileCommand::doCommand(vector<vector<string>> vector1, map<string, double> 
  * @param expression_1
  * @param expression_2
  * @param condition
- * @param map1
+ * @param symbol_table
  * @return
  */
 bool
-WhileCommand::checkCondition(string expression_1, string expression_2, string condition, map<string, double> *map1) {
+WhileCommand::checkCondition(string expression_1, string expression_2, string condition, map<string, double> *symbol_table) {
     double ex1, ex2;     // calculate and check valid expressions
     // can change inside the loop
     try {

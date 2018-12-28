@@ -1,20 +1,18 @@
 #include "AssignCommand.h"
 
 /**
- * assign (update) the value in the right arg to the left arg
- * left arg must be declared var (if new var- VarCommand handle it)
- * right arg must be expression- var/num
- * @param vector1
- * @param map1
+ *
+ * @param lines
+ * @param symbol_table
  * @param index
  * @return
  */
-int AssignCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
+int AssignCommand::doCommand(vector<vector<string>> lines, map<string, double> *symbol_table, int index) {
 
     string var = "";
     //save the value we need to update
-    for (int i = 2; i < vector1[index].size(); i++) {
-        var = var + vector1[index][i] + " ";
+    for (int i = 2; i < lines[index].size(); i++) {
+        var = var + lines[index][i] + " ";
     }
     double val;
     try {
@@ -27,16 +25,16 @@ int AssignCommand::doCommand(vector<vector<string>> vector1, map<string, double>
 
     // lock mutex and update map
     pthread_mutex_lock(this->mut);
-    if (map1->count(vector1[index][0])) {
-        (*map1)[vector1[index][0]] = val;
+    if (symbol_table->count(lines[index][0])) {
+        (*symbol_table)[lines[index][0]] = val;
     } else {
         __throw_runtime_error("var isn't exists - need to assign with 'var' command first");
     }
     pthread_mutex_unlock(this->mut);
 
     // update the data client
-    if (this->server->getPath(vector1[index][0]) != "") {
-        string path = this->server->getPath(vector1[index][0]);
+    if (this->server->getPath(lines[index][0]) != "") {
+        string path = this->server->getPath(lines[index][0]);
         string str_to_set = SET + path + SPACE + to_string(val) + RN;
         this->client->setData(str_to_set);
     }

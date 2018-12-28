@@ -7,20 +7,20 @@ struct dataToSoc{
     DataReaderServer* server2;
 };
 
-int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index) {
+int openServerCommand::doCommand(vector<vector<string>> lines,map<string, double>* symbol_table,int index) {
     int indexSeparate = 0;
     int flag = 0;
     //if there are just 2 parameters
-    if (vector1[index].size() == 3) {
-        this->port=this->shunting_yard->dijkstratoi(vector1[index][1]);
-        this->time=this->shunting_yard->dijkstratoi(vector1[index][2]);
+    if (lines[index].size() == 3) {
+        this->port=this->shunting_yard->dijkstratoi(lines[index][1]);
+        this->time=this->shunting_yard->dijkstratoi(lines[index][2]);
         //its complicate expression
     } else {
 
 
         //if seperate by ","
-        for(int t = 0; t<vector1[index].size();t++){
-            if(vector1[index][t]==","){
+        for(int t = 0; t<lines[index].size();t++){
+            if(lines[index][t]==","){
                 indexSeparate = t;
                 flag = 1;
                 break;
@@ -28,11 +28,11 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
         }
         //if seperate by " "
         if(flag==0){
-            for(int t = 1; t<vector1[index].size()-1;t++){
-                if((vector1[index][t]!="/")&&(vector1[index][t]!="*")
-                &&(vector1[index][t]!="+")&&(vector1[index][t]!="-")
-                &&(vector1[index][t+1]!="/")&&(vector1[index][t+1]!="*")
-                &&(vector1[index][t+1]!="+")&&(vector1[index][t+1]!="-")){
+            for(int t = 1; t<lines[index].size()-1;t++){
+                if((lines[index][t]!="/")&&(lines[index][t]!="*")
+                &&(lines[index][t]!="+")&&(lines[index][t]!="-")
+                &&(lines[index][t+1]!="/")&&(lines[index][t+1]!="*")
+                &&(lines[index][t+1]!="+")&&(lines[index][t+1]!="-")){
                    indexSeparate = t+1;
                     flag = 2;
                     break;
@@ -45,7 +45,7 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
         string portString = "";
         string timeString = "";
         for(int i = 1;i<indexSeparate;i++){
-            portString = portString+vector1[index][i]+" ";
+            portString = portString+lines[index][i]+" ";
         }
         int i;
         //if its ","
@@ -54,8 +54,8 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
         } else if(flag==2){
             i = indexSeparate;
         }
-        for(i;i<vector1[index].size();i++){
-            timeString = timeString+vector1[index][i]+" ";
+        for(i;i<lines[index].size();i++){
+            timeString = timeString+lines[index][i]+" ";
         }
         double portVal=this->shunting_yard->dijkstratoi(portString);
         double time=this->shunting_yard->dijkstratoi(timeString);

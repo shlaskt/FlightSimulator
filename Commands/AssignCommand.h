@@ -5,18 +5,18 @@
 
 #include "Command.h"
 #include <pthread.h>
+
 #define SET "set "
 #define SPACE ' '
 #define RN "\r\n"
 
-class AssignCommand :public Command{
+class AssignCommand : public Command {
 
 public:
-    virtual int doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index);
-    AssignCommand(DataReaderServer* server5,Client* client1,Dijkstra* dij,pthread_mutex_t *mut)
-            :Command(server5,client1,dij,mut){}
+    virtual int doCommand(vector<vector<string>> vector1, map<string, double> *symbol_table, int index);
 
-
+    AssignCommand(DataReaderServer *data_server, Client *client_data, Dijkstra *dij, pthread_mutex_t *mut)
+            : Command(data_server, client_data, dij, mut) {}
 };
 
 
