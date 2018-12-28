@@ -8,31 +8,23 @@ Controller::Controller() {
     mut = new pthread_mutex_t();
     pthread_mutex_init(mut, nullptr);
     maps = new Maps(mut);
-    server = new DataReaderServer(maps->getSymbolMap(),mut);
+    server = new DataReaderServer(maps->getSymbolMap(), mut);
     client = new Client();
     dijkstra = new Dijkstra(maps->getSymbolMap());
-    interpreter = new Interpreter(maps->getSymbolMap(),maps->getComMap());
+    interpreter = new Interpreter(maps->getSymbolMap(), maps->getComMap());
 }
 
-void Controller::runningProgram(int argc,char *argv[]) {
-    maps->setDij(dijkstra);
-    maps->setServer(server,client);
+void Controller::runningProgram(int argc, char *argv[]) {
+    maps->setServer(server, client);
     maps->setInterpreter(interpreter);
+    maps->setDij(dijkstra);
     maps->initMapCom();
     vector<vector<string>> afterLex;
-
-    //read from the file
-    //string fileName="tempppppp";
-    string fileName=argv[1];
-
-
-    //pthread_mutex_destroy(&mut);
-
+    string fileName = argv[1];
     afterLex = interpreter->readFromFile(fileName);
     int ans = interpreter->interpLine(afterLex);
-
-    if(ans == 0){
-        server->stopLoop();
+    if (ans == 0) {
+        server->endRead();
         pthread_mutex_destroy(mut);
         delete mut;
         delete dijkstra;
@@ -40,14 +32,6 @@ void Controller::runningProgram(int argc,char *argv[]) {
         delete client;
         delete server;
     }
-    /*
-    //delete
-    pthread_mutex_destroy(mut);
-    delete mut;
-    delete dijkstra;
-    delete interpreter;
-    delete client1;
-    delete drs;*/
     delete interpreter;
     delete maps;
 }

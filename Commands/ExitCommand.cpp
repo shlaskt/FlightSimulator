@@ -5,7 +5,7 @@
 #include "ExitCommand.h"
 
 int ExitCommand::doCommand(vector<vector<string>> vector1, map<string, double> *symbol_table, int index) {
-    this->server->stopLoop();
+    this->server->endRead();
 
     delete this->dij;
     delete this->client1;

@@ -27,7 +27,7 @@ private:
     map<string,double > path_to_var;
     map<string,double >* symbol_table;
     pthread_mutex_t *mut;
-    bool stop;
+    bool finish_reading;
 
 
 public:
@@ -36,7 +36,7 @@ public:
         this->path_map = new map<string,string>;
         buildMap();
         this->mut = mut;
-        this->stop = false;
+        this->finish_reading = false;
     }
     int openSocket(double num1, double num2);
     string readFromSock();
@@ -47,7 +47,7 @@ public:
     vector<double > split(string buffer);
     void setPathMap(vector<double> splited);
     void updateSymbolTable();
-    void stopLoop();
+    void endRead();
     ~DataReaderServer(){
         delete this->path_map;
     }

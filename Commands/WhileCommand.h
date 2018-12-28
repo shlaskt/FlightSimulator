@@ -21,7 +21,7 @@ public:
 
     virtual int doCommand(vector<vector<string>> vector1, map<string, double> *symbol_table, int index);
 
-    bool returnBoolSign(string first, string second, string sign, map<string, double> *symbol_table);
+    bool checkCondition(string first, string second, string sign, map<string, double> *symbol_table);
 };
 
 #endif //FLIGHT_WHILECOMMAND_H

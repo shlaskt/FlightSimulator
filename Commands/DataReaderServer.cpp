@@ -45,7 +45,7 @@ int DataReaderServer::openSocket(double port, double time) {
 
     listen(sock_fd, 1);
     this->time = time;
-    this->stop = false;
+    this->finish_reading = false;
 
     accept();
     return 0;
@@ -70,7 +70,7 @@ void DataReaderServer::accept() {
  * @return data to update.
  */
 string DataReaderServer::readFromSock() {
-    while (!stop) {
+    while (!finish_reading) {
         char buffer[1000];
         ssize_t bytes_read;
         bytes_read = read(this->client_sock_fd, buffer, 999);
@@ -238,14 +238,10 @@ void DataReaderServer::updateSymbolTable() {
             this->symbol_table->at(varName) = val;
         }
     }
-    // unlock
     pthread_mutex_unlock(this->mut);
 }
 
-/**
- * stop the reading from the simulator
- */
-void DataReaderServer::stopLoop() {
-    this->stop = true;
+void DataReaderServer::endRead() {
+    this->finish_reading = true;
 }
 

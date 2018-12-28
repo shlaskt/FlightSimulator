@@ -40,9 +40,7 @@ int WhileCommand::doCommand(vector<vector<string>> vector1, map<string, double> 
     if (newVactor[newVactor.size() - 1].size() == 0) {
         newVactor.erase(newVactor.begin() + newVactor.size());
     }
-    //newVactor.erase(newVactor.begin()+newVactor.size());
-
-    while (returnBoolSign(first, second, sign, symbol_table)) {
+    while (checkCondition(first, second, sign, symbol_table)) {
 
         this->interpreter->interpLine(newVactor);
     }
@@ -50,7 +48,7 @@ int WhileCommand::doCommand(vector<vector<string>> vector1, map<string, double> 
     return 0;
 }
 
-bool WhileCommand::returnBoolSign(string first, string second, string sign, map<string, double> *symbol_table) {
+bool WhileCommand::checkCondition(string first, string second, string sign, map<string, double> *symbol_table) {
     double firstParm = this->shunting_yard->dijkstratoi(first);
     double secondParm = this->shunting_yard->dijkstratoi(second);
 

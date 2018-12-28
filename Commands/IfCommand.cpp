@@ -40,7 +40,7 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *sy
     if (newVactor[newVactor.size() - 1].size() == 0) {
         newVactor.erase(newVactor.begin() + newVactor.size());
     }
-    if (returnBoolSign(first, second, sign, symbol_table)) {
+    if (checkCondition(first, second, sign, symbol_table)) {
 
         this->interpreter->interpLine(newVactor);
     }
@@ -48,7 +48,7 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *sy
     return 0;
 }
 
-bool IfCommand::returnBoolSign(string first, string second, string sign, map<string, double> *symbol_table) {
+bool IfCommand::checkCondition(string first, string second, string sign, map<string, double> *symbol_table) {
     double firstParm = this->shunting_yard->dijkstratoi(first);
     double secondParm = this->shunting_yard->dijkstratoi(second);
 
