@@ -65,6 +65,10 @@ int DefineVarCommand::doCommand(vector<vector<string>> vector1,map<string, doubl
     }
 }
 
+/**
+ * check the valid of var name
+ * @param var_name
+ */
 void DefineVarCommand::checkValidVarName(string var_name) {
     if (isdigit(var_name[0]) || var_name == "var") { // var cant start with digit or called var
         __throw_runtime_error("invalid name of var");
