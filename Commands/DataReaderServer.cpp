@@ -66,11 +66,10 @@ void DataReaderServer::accept() {
 }
 
 /**
- * read from the socket and update the map
- * @return
+ * update data from socket.
+ * @return data to update.
  */
 string DataReaderServer::readFromSock() {
-    //read and update data.
     while (!stop) {
         char buffer[1000];
         ssize_t bytes_read;
@@ -98,7 +97,6 @@ string DataReaderServer::readFromSock() {
  */
 void DataReaderServer::addNewPath(string var, string path) {
     (this->path_map)->insert(pair<string, string>(var, path));
-    //this->path_map[var]=path;
 }
 
 /**
@@ -110,7 +108,8 @@ string DataReaderServer::getPath(string var) {
     if (this->path_map->count(var) == 1) {
         return this->path_map->at(var);
     }
-    return ""; // like null
+    //if not find will return "".
+    return "";
 }
 
 /**
@@ -225,12 +224,11 @@ void DataReaderServer::setPathMap(vector<double> splited) {
 }
 
 /**
- * update the map
+ * update the map, we dont want that the the thered will skip to do other things
+ * so we mutex it.
  */
 void DataReaderServer::updateSymbolTable() {
-    // lock with mutex
     pthread_mutex_lock(this->mut);
-    // update map
     map<string, string>::iterator it = (this->path_map)->begin();
     for (it; it != this->path_map->end(); ++it) {
         string path = (*it).second;

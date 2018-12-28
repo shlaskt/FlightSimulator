@@ -21,7 +21,7 @@ class ConnectCommand: public Command {
 public:
     ConnectCommand(DataReaderServer* server5,Client* client1,Dijkstra* dij,pthread_mutex_t *mut)
     :Command(server5,client1,dij,mut){}
-    virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index);
+    virtual int doCommand(vector<vector<string>> vector1,map<string, double>* symbol_table,int index);
 };
 
 

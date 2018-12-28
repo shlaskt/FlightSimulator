@@ -12,7 +12,7 @@ private:
 
 public:
    //int doCommand(list<string>);
-   virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index);
+   virtual int doCommand(vector<vector<string>> vector1,map<string, double>* symbol_table,int index);
 
     //void* OpenThreadFunc(void* args);
     void* OpenThread(void* pVoid);

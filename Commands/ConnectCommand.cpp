@@ -8,11 +8,11 @@
 /**
  * connect command, get ip and port and connect
  * @param vector1
- * @param map1
+ * @param symbol_table
  * @param index
  * @return
  */
-int ConnectCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
+int ConnectCommand::doCommand(vector<vector<string>> vector1, map<string, double> *symbol_table, int index) {
     string port_s;
     int size = vector1[index].size();
     // get ip

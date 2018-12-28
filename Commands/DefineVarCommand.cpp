@@ -3,7 +3,7 @@
 #include "DefineVarCommand.h"
 #include <string>
 using namespace std;
-int DefineVarCommand::doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index){
+int DefineVarCommand::doCommand(vector<vector<string>> vector1,map<string, double>* symbol_table,int index){
 
     // string temp = list1[index+3];
     string temp = vector1[index][3];
@@ -12,10 +12,10 @@ int DefineVarCommand::doCommand(vector<vector<string>> vector1,map<string, doubl
     if(temp.compare("bind")==0){
         //add to map
         pthread_mutex_lock(this->mut);
-        map1->insert(pair<string,double >(vector1[index][1],0));
+        symbol_table->insert(pair<string,double >(vector1[index][1],0));
         pthread_mutex_unlock(this->mut);
         //if the 4th elemt is in the map
-        if(map1->count(vector1[index][4])==1){
+        if(symbol_table->count(vector1[index][4])==1){
             string path25 = this->server->getPath(vector1[index][4]);
             this->server->addNewPath(vector1[index][1], path25);
         } else{
@@ -39,7 +39,7 @@ int DefineVarCommand::doCommand(vector<vector<string>> vector1,map<string, doubl
 
         double val=this->shunting_yard->dijkstratoi(valueExp);
         pthread_mutex_lock(this->mut);
-        map1->insert(pair<string, double>(var,val));
+        symbol_table->insert(pair<string, double>(var,val));
         pthread_mutex_unlock(this->mut);
 
         return 4;

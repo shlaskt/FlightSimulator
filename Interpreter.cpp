@@ -156,6 +156,8 @@ string addSpaces(string line) {
  */
 vector<string> splitLine(const string &line, char sign) {
     stringstream stream(line);
+    bool qoute = false;
+    string print = "";
     string split;
     vector<string> spaces_split;
     while (getline(stream, split, sign)) {
@@ -165,7 +167,7 @@ vector<string> splitLine(const string &line, char sign) {
 }
 
 vector<string> Interpreter::lexer(string line) {
-    size_t found = line.find("\"");
+    size_t found = line.find("print");
     if (found != string::npos) {
         return lexerWithqute(line);
     }

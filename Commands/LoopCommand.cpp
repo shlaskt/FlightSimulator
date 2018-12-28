@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int LoopCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
+int LoopCommand::doCommand(vector<vector<string>> vector1, map<string, double> *symbol_table, int index) {
     int size=vector1[index].size();
 
     int i=1;
@@ -43,7 +43,7 @@ int LoopCommand::doCommand(vector<vector<string>> vector1, map<string, double> *
     }
     //newVactor.erase(newVactor.begin()+newVactor.size());
 
-    while (returnBoolSign(first,second,sign,map1)){
+    while (returnBoolSign(first,second,sign,symbol_table)){
 
         this->interpreter->interpLine(newVactor);
     }
@@ -51,24 +51,12 @@ int LoopCommand::doCommand(vector<vector<string>> vector1, map<string, double> *
     return 0;
 }
 
-bool LoopCommand::returnBoolSign(string first, string second, string sign, map<string, double> *map1) {
+bool LoopCommand::returnBoolSign(string first, string second, string sign, map<string, double> *symbol_table) {
     double firstParm= this->shunting_yard->dijkstratoi(first);
     double secondParm= this->shunting_yard->dijkstratoi(second);
 
     double firstVal = firstParm;
     double secondVal = secondParm;
-    //check if the first is var in map
-    /*if(map1->count(first)==1){
-        firstVal = map1->at(first);
-    } else{
-        firstVal=stod(first);
-    }
-    //check if the second is var in map
-    if(map1->count(second)==1){
-        secondVal= map1->at(second);
-    }else{
-        secondVal=stod(second);
-    }*/
 
     if(sign==">"){
         if(firstVal>secondVal){

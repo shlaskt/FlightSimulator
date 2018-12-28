@@ -7,7 +7,7 @@ struct dataToSoc{
 
 };
 
-int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index) {
+int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, double>* symbol_table,int index) {
 
                         //this->port = stoi(list1[1+index]);
                         //this->time = stoi(list1[2+index]);

@@ -5,7 +5,7 @@
 #include "PrintCommand.h"
 #include "iostream"
 
-int PrintCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
+int PrintCommand::doCommand(vector<vector<string>> vector1, map<string, double> *symbol_table, int index) {
 
     int size=vector1[index].size();
     int find =0;

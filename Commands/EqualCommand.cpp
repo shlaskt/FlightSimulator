@@ -1,6 +1,6 @@
 #include "EqualCommand.h"
 
-int EqualCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
+int EqualCommand::doCommand(vector<vector<string>> vector1, map<string, double> *symbol_table, int index) {
 
     //update the var in our map to according to the user change
 
@@ -13,8 +13,8 @@ int EqualCommand::doCommand(vector<vector<string>> vector1, map<string, double> 
 
 
     pthread_mutex_lock(this->mut);
-    if (map1->count(vector1[index][0])) {
-        (*map1)[vector1[index][0]] = val;
+    if (symbol_table->count(vector1[index][0])) {
+        (*symbol_table)[vector1[index][0]] = val;
     } else {
         // TODO error
 
