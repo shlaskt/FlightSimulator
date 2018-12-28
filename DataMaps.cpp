@@ -1,6 +1,6 @@
 
 
-#include "Maps.h"
+#include "DataMaps.h"
 #include "Commands/openServerCommand.h"
 #include "Commands/DefineVarCommand.h"
 #include "Commands/EqualCommand.h"
@@ -11,11 +11,11 @@
 #include "Commands/SleepCommand.h"
 #include "Commands/ExitCommand.h"
 
-map<string,double >* Maps::getSymbolMap() { return &(this->symbolTable);}
+map<string,double >* DataMaps::getSymbolMap() { return &(this->symbolTable);}
 
 
 
-void Maps:: initMapCom(){
+void DataMaps:: initMapCom(){
     Command* openData = new openServerCommand(this->dataServer,this->client,this->shunting_yard,this->mut);
     this->commandMap.insert(pair<string, Command*>("openDataServer",openData));
 
@@ -45,22 +45,22 @@ void Maps:: initMapCom(){
 
 }
 
-void Maps::setServer(DataReaderServer* dataReaderServer,Client* client1) {
+void DataMaps::setServer(DataReaderServer* dataReaderServer,Client* client1) {
     this->dataServer = dataReaderServer;
     this->client = client1;
 
 }
 
-void Maps::setDij(Dijkstra* dijkstra) {
+void DataMaps::setDij(Dijkstra* dijkstra) {
 
     this->shunting_yard = dijkstra;
 }
 
-map<string, Command *> *Maps::getComMap() {
+map<string, Command *> *DataMaps::getComMap() {
     return &(this->commandMap);
 }
 
-void Maps::setInterpreter(Interpreter* p) {
+void DataMaps::setInterpreter(Interpreter* p) {
 
     this->pars=p;
 }

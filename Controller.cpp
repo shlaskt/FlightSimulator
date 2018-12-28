@@ -7,7 +7,7 @@
 Controller::Controller() {
     mut = new pthread_mutex_t();
     pthread_mutex_init(mut, nullptr);
-    maps = new Maps(mut);
+    maps = new DataMaps(mut);
     server = new DataReaderServer(maps->getSymbolMap(), mut);
     client = new Client();
     dijkstra = new Dijkstra(maps->getSymbolMap());

@@ -14,7 +14,7 @@
 using namespace std;
 
 
-class Maps {
+class DataMaps {
 private:
     map<string, double> symbolTable;
     map<string, Command *> commandMap;
@@ -24,7 +24,7 @@ private:
     Interpreter *pars;
     pthread_mutex_t *mut;
 public:
-    Maps(pthread_mutex_t *mut) {
+    DataMaps(pthread_mutex_t *mut) {
         this->mut = mut;
     }
 
@@ -40,7 +40,7 @@ public:
 
     void setInterpreter(Interpreter *interpreter);
 
-    ~Maps() {
+    ~DataMaps() {
         map<string, Command *>::iterator it = this->commandMap.begin();
         for (it; it != this->commandMap.end(); ++it) {
 
