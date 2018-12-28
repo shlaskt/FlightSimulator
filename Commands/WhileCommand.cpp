@@ -26,8 +26,6 @@ int WhileCommand::doCommand(vector<vector<string>> vector1, map<string, double> 
         second = second + vector1[index][i] + " ";
         i++;
     }
-    //double firstParm= this->shunting_yard->operator()(first);
-    //double secondParm= this->shunting_yard->operator()(second);
 
     vector<vector<string>> newVactor = vector1;
     newVactor.erase(newVactor.begin() + 0);
