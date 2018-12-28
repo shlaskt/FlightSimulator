@@ -1,11 +1,10 @@
-//
-// Created by Tomer & Eyal on 20/12/18.
-//
 
-#include "IfCommand.h"
+#include "WhileCommand.h"
+#include <string>
 
-int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *symbol_table, int index) {
+using namespace std;
 
+int WhileCommand::doCommand(vector<vector<string>> vector1, map<string, double> *symbol_table, int index) {
     int size = vector1[index].size();
 
     int i = 1;
@@ -29,18 +28,23 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *sy
     }
     //double firstParm= this->shunting_yard->operator()(first);
     //double secondParm= this->shunting_yard->operator()(second);
+
     vector<vector<string>> newVactor = vector1;
     newVactor.erase(newVactor.begin() + 0);
+    //check the }
     for (int o = 0; o < newVactor[newVactor.size() - 1].size(); o++) {
         if (newVactor[newVactor.size() - 1][o] == "}") {
             newVactor[newVactor.size() - 1].erase(newVactor[newVactor.size() - 1].begin() + o);
             break;
         }
     }
+    //if the last vector is empty erase the vector
     if (newVactor[newVactor.size() - 1].size() == 0) {
         newVactor.erase(newVactor.begin() + newVactor.size());
     }
-    if (returnBoolSign(first, second, sign, symbol_table)) {
+    //newVactor.erase(newVactor.begin()+newVactor.size());
+
+    while (returnBoolSign(first, second, sign, symbol_table)) {
 
         this->interpreter->interpLine(newVactor);
     }
@@ -48,7 +52,7 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *sy
     return 0;
 }
 
-bool IfCommand::returnBoolSign(string first, string second, string sign, map<string, double> *symbol_table) {
+bool WhileCommand::returnBoolSign(string first, string second, string sign, map<string, double> *symbol_table) {
     double firstParm = this->shunting_yard->dijkstratoi(first);
     double secondParm = this->shunting_yard->dijkstratoi(second);
 
@@ -101,7 +105,6 @@ bool IfCommand::returnBoolSign(string first, string second, string sign, map<str
         }
 
     } else {
-        throw runtime_error("missing correct operator in condition");
+        throw runtime_error("missing operator on while command");
     }
 }
-

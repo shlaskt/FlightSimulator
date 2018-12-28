@@ -5,6 +5,7 @@
 #include <strings.h>
 #include "Client.h"
 #include <string>
+
 /**
  * create new Socket
  * @param ip the ip
@@ -28,17 +29,17 @@ int Client::openSocket(string ip, double port) {
     server = gethostbyname(ip.c_str());
 
     if (server == NULL) {
-        fprintf(stderr,"ERROR, no such host\n");
+        fprintf(stderr, "ERROR, no such host\n");
         exit(0);
     }
 
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);
+    bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr, server->h_length);
     serv_addr.sin_port = htons(port);
 
     /* Now connect to the server */
-    if (connect(this->new_sock_fd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
+    if (connect(this->new_sock_fd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
         perror("ERROR connecting");
         exit(1);
     }
@@ -57,15 +58,15 @@ void Client::setData(string str_to_set) {
    */
     int n;
     char buffer[1024];
-    bzero(buffer,1024);
+    bzero(buffer, 1024);
 
     /* Send message to the server */
     size_t lenPath = str_to_set.size();
-    const char * neaString=str_to_set.c_str();
-    n = write(this->new_sock_fd,neaString,lenPath);
+    const char *neaString = str_to_set.c_str();
+    n = write(this->new_sock_fd, neaString, lenPath);
 
     if (n < 0) {
-        __throw_bad_exception();
+        throw runtime_error("unable to write to socket");
     }
 
 }

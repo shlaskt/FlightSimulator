@@ -18,7 +18,7 @@ int Interpreter::interpLine(vector<vector<string>> vector1) {
         int jump;
         if (symbolTable->count(vector1[i][0]) == 1) {
             if (vector1[i][1] != "=") {
-                __throw_bad_exception();
+                throw runtime_error("missing \"=\" ");
             }
             this->commandMap->at("equal")->doCommand(vector1, this->symbolTable, i);
 

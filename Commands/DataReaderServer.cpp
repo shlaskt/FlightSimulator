@@ -75,7 +75,7 @@ string DataReaderServer::readFromSock() {
         ssize_t bytes_read;
         bytes_read = read(this->client_sock_fd, buffer, 999);
         if (bytes_read < 0) {
-            __throw_bad_exception();
+            throw runtime_error("unable to read from socket");
         } else {
             buffer[bytes_read] = 0;
             cout << buffer;

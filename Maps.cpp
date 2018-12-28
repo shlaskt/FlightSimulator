@@ -5,7 +5,7 @@
 #include "Commands/DefineVarCommand.h"
 #include "Commands/EqualCommand.h"
 #include "Commands/ConnectCommand.h"
-#include "Commands/LoopCommand.h"
+#include "Commands/WhileCommand.h"
 #include "Commands/IfCommand.h"
 #include "Commands/PrintCommand.h"
 #include "Commands/SleepCommand.h"
@@ -38,8 +38,8 @@ void Maps:: initMapCom(){
     Command* connectCommand = new ConnectCommand(this->server1,this->client,this->dijkstra2,this->mut);
     this->commandMap.insert(pair<string, Command*>("connect",connectCommand));
 
-    Command* loopCommand = new LoopCommand(this->server1,this->client,this->pars,this->dijkstra2,this->mut);
-    this->commandMap.insert(pair<string, Command*>("while",loopCommand));
+    Command* whileCommand = new WhileCommand(this->server1,this->client,this->pars,this->dijkstra2,this->mut);
+    this->commandMap.insert(pair<string, Command*>("while",whileCommand));
 
     Command* ifCommand = new IfCommand(this->server1,this->client,this->pars,this->dijkstra2,this->mut);
     this->commandMap.insert(pair<string, Command*>("if",ifCommand));
