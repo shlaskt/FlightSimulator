@@ -30,7 +30,7 @@ int VarCommand::doCommand(vector<vector<string>> lines, map<string, double> *sym
         // check valid name
         checkValidVarName(var);
         pthread_mutex_lock(this->mut); // lock mutex
-        //add to map
+        // addd data to map and unlock mutex.
         symbol_table->insert(pair<string, double>(var, 0));
         pthread_mutex_unlock(this->mut); // unlock mutex
 
