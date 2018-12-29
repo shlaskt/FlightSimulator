@@ -16,7 +16,6 @@ int Client::openSocket(string ip, double port) {
     struct hostent *server;
     /* Create a socket point */
     this->new_sock_fd = socket(AF_INET, SOCK_STREAM, 0);
-    //args->defineSocketClient(this->sock_fd);
     if (this->new_sock_fd < 0) {
         perror("ERROR opening socket");
         exit(1);
@@ -47,14 +46,11 @@ int Client::openSocket(string ip, double port) {
 }
 
 /**
- * set data drom the files/user to the simulator
- * @param str_to_set
+ * write the data to the airplane.
+ * @param str_to_set path to se.
  */
 void Client::setData(string str_to_set) {
 
-    /* Now ask for a message from the user, this message
-      * will be read by server
-   */
     int n;
     char buffer[1024];
     bzero(buffer,1024);
@@ -65,7 +61,8 @@ void Client::setData(string str_to_set) {
     n = write(this->new_sock_fd,neaString,lenPath);
 
     if (n < 0) {
-        __throw_bad_exception();
+        perror("unable to set data to airplane.\n");
+        exit(1);
     }
 
 }

@@ -2,6 +2,7 @@
 
 #include "VarCommand.h"
 #include <string>
+
 #define VAR_NAME 1
 #define BIND_PLACE 3
 #define BIND_PATH 4
@@ -25,7 +26,7 @@ int VarCommand::doCommand(vector<vector<string>> lines, map<string, double> *sym
     /**
      * check if there is a need to bind the var.
      */
-    if (temp.compare("bind") == 0) {
+    if (temp == "bind") {
         // check valid name
         checkValidVarName(var);
         pthread_mutex_lock(this->mut); // lock mutex
@@ -33,7 +34,7 @@ int VarCommand::doCommand(vector<vector<string>> lines, map<string, double> *sym
         symbol_table->insert(pair<string, double>(var, 0));
         pthread_mutex_unlock(this->mut); // unlock mutex
 
-        // if the 4th element is in the map
+        // check if its var bind var.
         if (symbol_table->count(lines[index][4]) == 1) {
             string path_to_bind = this->server->getPath(lines[index][4]);
             this->server->addNewPath(lines[index][1], path_to_bind);
@@ -45,11 +46,10 @@ int VarCommand::doCommand(vector<vector<string>> lines, map<string, double> *sym
         }
         this->server->updateSymbolTable();
 
-        return 5; // curr index
-
+        return 5;
     } else { //if var isn't bind
         string val_str = "";
-        for (int i = 3; i < lines[index].size(); i++) {
+        for (int i = 3; i < lines[index].size(); ++i) {
             val_str = val_str + lines[index][i] + " ";
         }
         // evaluate val
@@ -69,6 +69,7 @@ int VarCommand::doCommand(vector<vector<string>> lines, map<string, double> *sym
         return 4; // curr index
     }
 }
+
 /**
  * check if the var name is valid, means first char is not a digit and its not name var.
  * @param var_name var name.

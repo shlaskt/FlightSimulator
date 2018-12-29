@@ -4,6 +4,8 @@
 
 #include "Controller.h"
 
+#define ONE 1
+#define TWO 2
 void Controller::InitDataMaps() {
     maps->setDij(dijkstra);
     maps->setServer(server, client);
@@ -20,11 +22,16 @@ Controller::Controller() {
     dijkstra = new Dijkstra(maps->getSymbolMap());
     interpreter = new Interpreter(maps->getSymbolMap(), maps->getComMap());
 }
-
+/**
+ * running the program with lexer and interpreter.
+ * @param argc number of element to main.
+ * @param argv elements from main.
+ */
 void Controller::runningProgram(int argc, char *argv[]) {
     InitDataMaps();
     vector<vector<string>> afterLex;
-    string fileName = argv[1];
+    if (argc != TWO) throw runtime_error("error on number of arguments to main");
+    string fileName = argv[ONE];
 
     afterLex = interpreter->readFromFile(fileName);
     bool did_exit = interpreter->interpLine(afterLex);

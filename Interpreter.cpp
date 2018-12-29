@@ -13,9 +13,8 @@ Interpreter::Interpreter(map<string, double> *symbolTable, map<string, Command *
 
 bool Interpreter::interpLine(vector<vector<string>> lines) {
     bool did_exit = false;
-    for (int i = 0; i < lines.size(); i++) {
+    for (int i = 0; i < lines.size(); ++i) {
         //for the vars equal.
-        int jump;
         if (symbolTable->count(lines[i][0]) == 1) {
             if (lines[i][1] != "=") {
                 __throw_bad_exception();
@@ -48,7 +47,6 @@ bool Interpreter::interpLine(vector<vector<string>> lines) {
         } else {
             string dd = lines[i][0];
             //int count = commandMap->count(lines[i][0]);
-            Command *co = this->commandMap->at(lines[i][0]);
             this->commandMap->at(lines[i][0])->doCommand(lines, this->symbolTable, i);
 
         }
@@ -60,7 +58,7 @@ int Interpreter::countLoopIf(vector<vector<string>> lines) {
     int breaks = -1;
     int index = 0;
     int flag = 0;
-    for (int i = 1; i < lines.size(); i++) {
+    for (int i = 1; i < lines.size(); ++i) {
         for (int j = 0; j < lines[i].size(); j++) {
             if ((lines[i][j] == "while") || (lines[i][j] == "if")) {
                 flag++;
@@ -227,8 +225,6 @@ vector<vector<string>> Interpreter::readFromFile(string fileName) {
     string command;
     string line;
     string buffer;
-    size_t found;
-    size_t begining = 0;
     vector<vector<string>> lines;
     ifstream myfile(fileName);
     if (myfile.good()) {

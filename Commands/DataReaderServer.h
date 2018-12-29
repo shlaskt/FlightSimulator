@@ -45,7 +45,7 @@ public:
     string getPath(string var);
     void buildMap();
     vector<double > split(string buffer);
-    void setPathMap(vector<double> splited);
+    void updatePathValues(vector<double> splited);
     void updateSymbolTable();
     void stopLoop();
     ~DataReaderServer(){

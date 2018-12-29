@@ -12,12 +12,14 @@ class IfCommand : public Command{
 private:
     Interpreter* interpreter;
 public:
-    IfCommand(DataReaderServer* data_server,Client* client_data,Interpreter* interpreter1,Dijkstra* dij,pthread_mutex_t *mut)
+    IfCommand(DataReaderServer* data_server,Client* client_data,Interpreter* interpreter1,
+            Dijkstra* dij,pthread_mutex_t *mut)
     :Command(data_server,client_data,dij,mut){
         this->interpreter = interpreter1;
     }
     virtual int doCommand(vector<vector<string>> lines,map<string, double>* symbol_table,int index);
-    bool checkCondition(string expression_1, string expression_2, string condition, map<string, double> *symbol_table);
+    bool checkCondition(string expression_1, string expression_2, string condition,
+            map<string, double> *symbol_table);
 };
 
 

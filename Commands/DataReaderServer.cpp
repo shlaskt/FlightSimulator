@@ -83,7 +83,7 @@ string DataReaderServer::readFromSock() {
         }
 
         vector<double> buffSplit = this->split(buffer);
-        this->setPathMap(buffSplit);
+        this->updatePathValues(buffSplit);
         updateSymbolTable();
     }
     return "exit";
@@ -102,9 +102,9 @@ void DataReaderServer::addNewPath(string var, string path) {
 }
 
 /**
- * get path
- * @param var
- * @return
+ * get path by var name.
+ * @param var to find.
+ * @return path if exists.
  */
 string DataReaderServer::getPath(string var) {
     if (this->path_map->count(var) == 1) {
@@ -153,22 +153,22 @@ vector<double> DataReaderServer::split(string buffer) {
     string vv = buffer;
     string temp = buffer;
     int co = 0;
-    int count1 = 0;
+    int counter = 0;
     co = temp.find_first_of("\n");
     if (co != string::npos) {
 
         temp = temp.substr(co + 1, temp.size() - 1);
-        count1 = 1;
+        counter = 1;
     }
     co = temp.find_first_of("\n");
     if (co != string::npos) {
 
-        count1 = 2;
+        counter = 2;
     }
     size_t pos = 0;
     size_t found;
     string delimiter = ",";
-    if (count1 > 1) {
+    if (counter > 1) {
 
         found = buffer.find_first_of("\n");
         buffer = buffer.substr(found + 1, buffer.size() - 1);
@@ -176,7 +176,7 @@ vector<double> DataReaderServer::split(string buffer) {
         buffer = buffer.substr(0, found);
 
     }
-    if (count1 == 1) {
+    if (counter == 1) {
         found = buffer.find_first_of("\n");
         buffer = buffer.substr(0, found);
     }
@@ -196,7 +196,7 @@ vector<double> DataReaderServer::split(string buffer) {
  * set the path map
  * @param splited
  */
-void DataReaderServer::setPathMap(vector<double> splited) {
+void DataReaderServer::updatePathValues(vector<double> splited) {
 
     this->path_to_var.at("/instrumentation/airspeed-indicator/indicated-speed-kt") = splited[0];
     this->path_to_var.at("/instrumentation/altimeter/indicated-altitude-ft") = splited[1];
@@ -225,7 +225,7 @@ void DataReaderServer::setPathMap(vector<double> splited) {
 }
 
 /**
- * update the map
+ * update the symbol table values by paths.
  */
 void DataReaderServer::updateSymbolTable() {
     // lock with mutex

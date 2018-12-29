@@ -20,18 +20,18 @@ int IfCommand::doCommand(vector<vector<string>> lines, map<string, double> *symb
     while ((lines[index][i] != "<") && (lines[index][i] != ">") &&
            (lines[index][i] != "=") && (lines[index][i] != "!")) {
         expression_1 += lines[index][i] + " ";
-        i++;
+        ++i;
     }
     string condition = lines[index][i];
-    i++;
+    ++i;
     if (lines[index][i] == "=") { // for !=,==,<=,>=
         condition += lines[index][i];
-        i++;
+        ++i;
 
     }
     while (lines[index][i] != "{") {
         expression_2 += lines[index][i] + " ";
-        i++;
+        ++i;
     }
     vector<vector<string>> vector2 = lines;
     vector2.erase(vector2.begin() + 0);
@@ -60,7 +60,8 @@ int IfCommand::doCommand(vector<vector<string>> lines, map<string, double> *symb
  * @param symbol_table
  * @return
  */
-bool IfCommand::checkCondition(string expression_1, string expression_2, string condition, map<string, double> *symbol_table) {
+bool IfCommand::checkCondition(string expression_1, string expression_2,
+        string condition, map<string, double> *symbol_table) {
     double ex1, ex2;     // calculate and check valid expressions
     // can change inside the loop
     try {

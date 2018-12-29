@@ -82,7 +82,7 @@ double Dijkstra::evaluate(string tokens) {
     // stack to store operators.
     stack<char> ops;
     double is_neg = 1; // to double it in 1 /-1 if needed
-    for (i = 0; i < tokens.length(); i++) {
+    for (i = 0; i < tokens.length(); ++i) {
 
         // Current token is a whitespace,
         // skip it.
@@ -119,7 +119,7 @@ double Dijkstra::evaluate(string tokens) {
                         float_num *= 10;
                     }
                 }
-                i++;
+                ++i;
             }
             is_op = true;
             val *= is_neg; // -1 if shuold be neg, 1 o.w

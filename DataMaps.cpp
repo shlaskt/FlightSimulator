@@ -57,4 +57,10 @@ void DataMaps::setInterpreter(Interpreter *p) {
     this->pars = p;
 }
 
+DataMaps::~DataMaps() {
+    map<string, Command *>::iterator it = this->commandMap.begin();
+    for (it; it != this->commandMap.end(); ++it) {
 
+        delete (*it).second;
+    }
+}

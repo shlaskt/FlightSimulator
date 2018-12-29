@@ -19,17 +19,17 @@ int WhileCommand::doCommand(vector<vector<string>> lines, map<string, double> *s
     while ((lines[index][i] != "<") && (lines[index][i] != ">") &&
            (lines[index][i] != "=") && (lines[index][i] != "!")) {
         expression_1 = expression_1 + lines[index][i] + " ";
-        i++;
+        ++i;
     }
     string sign = lines[index][i];
-    i++;
+    ++i;
     if (lines[index][i] == "=") { // for !=,==,<=,>=
         sign = sign + lines[index][i];
-        i++;
+        ++i;
     }
     while (lines[index][i] != "{") {
         expression_2 = expression_2 + lines[index][i] + " ";
-        i++;
+        ++i;
     }
     vector<vector<string>> vector2 = lines;
     vector2.erase(vector2.begin() + 0);
@@ -63,7 +63,8 @@ int WhileCommand::doCommand(vector<vector<string>> lines, map<string, double> *s
  * @return
  */
 bool
-WhileCommand::checkCondition(string expression_1, string expression_2, string condition, map<string, double> *symbol_table) {
+WhileCommand::checkCondition(string expression_1, string expression_2,
+        string condition, map<string, double> *symbol_table) {
     double ex1, ex2;     // calculate and check valid expressions
     // can change inside the loop
     try {

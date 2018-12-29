@@ -49,13 +49,7 @@ public:
 
     void setInterpreter(Interpreter *interpreter);
 
-    ~DataMaps() {
-        map<string, Command *>::iterator it = this->commandMap.begin();
-        for (it; it != this->commandMap.end(); ++it) {
-
-            delete (*it).second;
-        }
-    }
+    ~DataMaps();
 
 };
 

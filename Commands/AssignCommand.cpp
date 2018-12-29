@@ -1,17 +1,17 @@
 #include "AssignCommand.h"
 
 /**
- *
- * @param lines
- * @param symbol_table
- * @param index
- * @return
+ * equal command assign to var.
+ * @param lines vector lines of commands to do.
+ * @param symbol_table symbole table of vars.
+ * @param index index of line
+ * @return 3 if did the command.
  */
 int AssignCommand::doCommand(vector<vector<string>> lines, map<string, double> *symbol_table, int index) {
 
     string var = "";
     //save the value we need to update
-    for (int i = 2; i < lines[index].size(); i++) {
+    for (int i = 2; i < lines[index].size(); ++i) {
         var = var + lines[index][i] + " ";
     }
     double val;

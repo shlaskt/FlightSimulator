@@ -18,7 +18,7 @@ int ConnectCommand::doCommand(vector<vector<string>> lines, map<string, double> 
     // get ip
     string ip = lines[index][1];
     // get port as string
-    for (int i = 2; i < size; i++) {
+    for (int i = 2; i < size; ++i) {
         port_s = port_s + lines[index][i] + " ";
     }
     // check valid of port and ip

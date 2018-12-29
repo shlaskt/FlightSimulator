@@ -20,7 +20,8 @@ private:
 
 public:
     virtual int doCommand(vector<vector<string>> lines, map<string, double> *symbol_table, int index);
-    ExitCommand(DataReaderServer* data_server,Client* client_data,Interpreter* pars,Dijkstra* dijkstra,pthread_mutex_t *mut)
+    ExitCommand(DataReaderServer* data_server,Client* client_data,
+            Interpreter* pars,Dijkstra* dijkstra,pthread_mutex_t *mut)
     :Command(data_server,client_data,dijkstra,mut){
         this->server = data_server;
         this->data_client=client_data;
