@@ -8,11 +8,13 @@
 
 #include "Command.h"
 #include <unistd.h>
+#define MILI_SEC 1000
+
 class SleepCommand : public Command{
 public:
     SleepCommand(DataReaderServer* server5,Client* client1,Dijkstra* dij,pthread_mutex_t *mut)
             :Command(server5,client1,dij,mut){}
-    virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index);
+    virtual int doCommand(vector<vector<string>> lines,map<string, double>* symbolTable,int line);
 };
 
 

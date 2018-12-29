@@ -1,97 +1,156 @@
 #include "openServerCommand.h"
 #include <pthread.h>
 
-struct dataToSoc{
-    double port;
-    double timeRead;
-    DataReaderServer* server2;
+/*
+ * struct for the parameters to the thread func (can get just 1 arg)
+ */
+struct data_to_socket {
+    double d_port;
+    double d_time;
+    DataReaderServer *d_server;
 };
 
-int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index) {
-    int indexSeparate = 0;
+/**
+ * doCommand (x,y)
+ * open server on port x, listen y time per sec
+ * use thread for read without stuck the program
+ * @param lines
+ * @param symbolTable
+ * @param line
+ * @return index
+ */
+int openServerCommand::doCommand(vector<vector<string>> lines, map<string, double> *symbolTable, int line) {
+    // get the port and the time from the command
+    getPortAndTime(lines, line);
+    // create struct of parameters and init it
+    struct data_to_socket *params = initParams();
+    //open the thread
+    this->createThread(params);
+    // delete and return curr index
+    delete (params);
+    return 3;
+}
+
+/**
+ * get the port and timr and set them in the members
+ * check if valid
+ * @param lines
+ * @param line
+ */
+void openServerCommand::getPortAndTime(vector<vector<string>> lines, int line) {
+    int separate = 0;
     int flag = 0;
-    //if there are just 2 parameters
-    if (vector1[index].size() == 3) {
-        this->port=this->shunting_yard->dijkstratoi(vector1[index][1]);
-        this->time=this->shunting_yard->dijkstratoi(vector1[index][2]);
-        //its complicate expression
-    } else {
+    // if it is simple expression (like openDataServer n1, n2)
+    if (lines[line].size() == 3) {
+        try {
+            // initialize port
+            this->port = this->shunting_yard->dijkstratoi(lines[line][1]);
+            // initialize time
+            this->time = this->shunting_yard->dijkstratoi(lines[line][2]);
+        } catch (const out_of_range &no_such_var) {
+            // if there is no var in this name- dijkstra throw error
+            __throw_runtime_error("invalid params to openServerCommand Command");
+        } // if port or time are negative
+        if (port < 0 || time < 0) __throw_runtime_error("invalid (neg) params to openServerCommand");
 
-
-        //if seperate by ","
-        for(int t = 0; t<vector1[index].size();t++){
-            if(vector1[index][t]==","){
-                indexSeparate = t;
+    } else { //its complicate expression
+        //if seperate by "," (like openDataServer n1, -n2)
+        for (int j = 0; j < lines[line].size(); j++) {
+            if (lines[line][j] == ",") {
+                separate = j;
                 flag = 1;
                 break;
             }
         }
         //if seperate by " "
-        if(flag==0){
-            for(int t = 1; t<vector1[index].size()-1;t++){
-                if((vector1[index][t]!="/")&&(vector1[index][t]!="*")
-                &&(vector1[index][t]!="+")&&(vector1[index][t]!="-")
-                &&(vector1[index][t+1]!="/")&&(vector1[index][t+1]!="*")
-                &&(vector1[index][t+1]!="+")&&(vector1[index][t+1]!="-")){
-                   indexSeparate = t+1;
+        if (flag == 0) {
+            for (int j = 1; j < lines[line].size() - 1; j++) {
+                if ((lines[line][j] != "/") && (lines[line][j] != "*")
+                    && (lines[line][j] != "+") && (lines[line][j] != "-")
+                    && (lines[line][j + 1] != "/") && (lines[line][j + 1] != "*")
+                    && (lines[line][j + 1] != "+") && (lines[line][j + 1] != "-")) {
+                    separate = j + 1;
                     flag = 2;
                     break;
                 }
-
             }
         }
 
-        //if the it separate by comma / two num separate by " " -sent to expression
-        string portString = "";
-        string timeString = "";
-        for(int i = 1;i<indexSeparate;i++){
-            portString = portString+vector1[index][i]+" ";
+        // if comma / two num separate by " " -sent to expression
+        string s_port = "";
+        string s_time = "";
+        for (int i = 1; i < separate; i++) {
+            s_port += lines[line][i] + " ";
         }
         int i;
         //if its ","
-        if(flag== 1){
-            i = indexSeparate+1;
-        } else if(flag==2){
-            i = indexSeparate;
+        if (flag == 1) {
+            i = separate + 1;
+        } else if (flag == 2) {
+            i = separate;
         }
-        for(i;i<vector1[index].size();i++){
-            timeString = timeString+vector1[index][i]+" ";
+        for (i; i < lines[line].size(); i++) {
+            s_time += lines[line][i] + " ";
         }
-        double portVal=this->shunting_yard->dijkstratoi(portString);
-        double time=this->shunting_yard->dijkstratoi(timeString);
-        this->port = portVal;
-        this->time = time;
+        try {
+            // initialize port
+            this->port = this->shunting_yard->dijkstratoi(s_port);
+            // initialize time
+            this->time = this->shunting_yard->dijkstratoi(s_time);
+        } catch (const out_of_range &no_such_var) {
+            // if there is no var in this name- dijkstra throw error
+            __throw_runtime_error("invalid params to openServerCommand Command");
+        } // if port or time are negative
+        if (port < 0 || time < 0) __throw_runtime_error("invalid (neg) params to openServerCommand");
     }
-    //open the thread
-    struct dataToSoc *params = new dataToSoc;
-    params->port = this->port;
-    params->timeRead = this->time;
-    params->server2 = this->server;
-    this->OpenThread(params);
-    delete (params);
-    return 3;
-
-
-
 }
 
-void* OpenThreadFunc(void* args){
-    ///read
-    struct dataToSoc* params=(struct dataToSoc*) args;
-    while (true)    {
 
-        auto x = params->server2->readFromSock();
+/**
+ * initialize struct of params
+ * @return
+ */
+struct data_to_socket *openServerCommand::initParams() {
+    // create struct
+    struct data_to_socket *params = new data_to_socket;
+    // init it
+    params->d_port = this->port;
+    params->d_time = this->time;
+    params->d_server = this->server;
+    return params;
+}
+
+/**
+ * read from socket
+ * void * func for the thread
+ * @param args
+ * @return
+ */
+void *readFromSocket(void *args) {
+    // down casting from void*
+    struct data_to_socket *params = (struct data_to_socket *) args;
+    // read from sockest untill you got exit (we control it in the exit command)
+    while (true) {
+        auto x = params->d_server->readFromSock();
         if (x == "exit") break;
     }
-
     return nullptr;
 }
-void* openServerCommand:: OpenThread(void* pVoid) {
-    struct dataToSoc* params=(struct dataToSoc*) pVoid;
+
+/**
+ * create thread to read from the simulator
+ * @param pVoid
+ * @return
+ */
+void *openServerCommand::createThread(void *pVoid) {
+    // down casting from void*
+    struct data_to_socket *params = (struct data_to_socket *) pVoid;
     pthread_t trid;
-    params->server2->openSocket(params->port, params->timeRead);
-    pthread_create(&trid, nullptr,OpenThreadFunc,params);
+    params->d_server->openSocket(params->d_port, params->d_time);
+    pthread_create(&trid, nullptr, readFromSocket, params);
     return 0;
 }
+
+
 
 

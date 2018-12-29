@@ -9,13 +9,11 @@ class openServerCommand: public Command{
 private:
     double port;
     double time;
-
+    struct data_to_socket *initParams();
+    void getPortAndTime(vector<vector<string>> lines, int line);
 public:
-   //int doCommand(list<string>);
-   virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index);
-
-    //void* OpenThreadFunc(void* args);
-    void* OpenThread(void* pVoid);
+   virtual int doCommand(vector<vector<string>> lines,map<string, double>* symbolTable,int line);
+    void* createThread(void *pVoid);
     openServerCommand(DataReaderServer* server5,Client* client1,Dijkstra* dij,pthread_mutex_t *mut)
             :Command(server5,client1,dij,mut){}
 

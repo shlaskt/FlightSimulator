@@ -4,14 +4,28 @@
 
 #include "SleepCommand.h"
 
-int SleepCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
-    int size=vector1[index].size();
-    string paramToSleep="";
-    for (int i=1;i<size;i++){
-        paramToSleep=paramToSleep+vector1[index][i]+" ";
-
+/**
+ * sleep for x milisec
+ * @param lines
+ * @param symbolTable
+ * @param line
+ * @return
+ */
+int SleepCommand::doCommand(vector<vector<string>> lines, map<string, double> *symbolTable, int line) {
+    // get the time to sleep
+    int size = lines[line].size();
+    string sleep_for;
+    for (int i = 1; i < size; i++) {
+        sleep_for += lines[line][i] + " ";
     }
-    double sleepVal = this->shunting_yard->dijkstratoi(paramToSleep);
-    usleep(static_cast<unsigned int> (sleepVal * 1000));
-
+    // try to evaluate sleep time
+    double sleep;
+    try {
+        sleep = this->shunting_yard->dijkstratoi(sleep_for);
+    } catch (const out_of_range &no_such_var) {
+        // if there is no var in this name- dijkstra throw error
+        __throw_runtime_error("Error in Sleep Command - invalid params");
+    }
+    // sleep for the given time (*1000 for milisec)
+    usleep(static_cast<unsigned int> (sleep * MILI_SEC));
 }

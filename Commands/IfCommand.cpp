@@ -1,5 +1,5 @@
 //
-// Created by Tomer & Eyal on 20/12/18.
+// Created by Tomer & Eyal on 22/12/18.
 //
 
 #include "IfCommand.h"
@@ -8,32 +8,32 @@
  * if statement
  * check the left and right expressions and the conditions between
  * action as excepted
- * @param vector1
- * @param map1
- * @param index
+ * @param lines
+ * @param symbolTable
+ * @param line
  * @return
  */
-int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
+int IfCommand::doCommand(vector<vector<string>> lines, map<string, double> *symbolTable, int line) {
     int i = 1;
     string expression_1;
     string expression_2;
-    while ((vector1[index][i] != "<") && (vector1[index][i] != ">") &&
-           (vector1[index][i] != "=") && (vector1[index][i] != "!")) {
-        expression_1 += vector1[index][i] + " ";
+    while ((lines[line][i] != "<") && (lines[line][i] != ">") &&
+           (lines[line][i] != "=") && (lines[line][i] != "!")) {
+        expression_1 += lines[line][i] + " ";
         i++;
     }
-    string condition = vector1[index][i];
+    string condition = lines[line][i];
     i++;
-    if (vector1[index][i] == "=") { // for !=,==,<=,>=
-        condition += vector1[index][i];
+    if (lines[line][i] == "=") { // for !=,==,<=,>=
+        condition += lines[line][i];
         i++;
 
     }
-    while (vector1[index][i] != "{") {
-        expression_2 += vector1[index][i] + " ";
+    while (lines[line][i] != "{") {
+        expression_2 += lines[line][i] + " ";
         i++;
     }
-    vector<vector<string>> vector2 = vector1;
+    vector<vector<string>> vector2 = lines;
     vector2.erase(vector2.begin() + 0);
     for (int i1 = 0; i1 < vector2[vector2.size() - 1].size(); i1++) {
         if (vector2[vector2.size() - 1][i1] == "}") {
@@ -46,7 +46,7 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *ma
     }
 
     // if true - do the commands
-    if (checkCondition(expression_1, expression_2, condition, map1)) {
+    if (checkCondition(expression_1, expression_2, condition, symbolTable)) {
         this->interpreter->interpLine(vector2);
     }
     return 0;
@@ -57,10 +57,11 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *ma
  * @param expression_1
  * @param expression_2
  * @param condition
- * @param map1
+ * @param symbolTable
  * @return
  */
-bool IfCommand::checkCondition(string expression_1, string expression_2, string condition, map<string, double> *map1) {
+bool IfCommand::checkCondition(string expression_1, string expression_2, string condition,
+        map<string, double> *symbolTable) {
     double ex1, ex2;     // calculate and check valid expressions
     // can change inside the loop
     try {

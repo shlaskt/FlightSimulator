@@ -19,7 +19,7 @@ private:
     pthread_mutex_t *mut;
 
 public:
-    virtual int doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index);
+    virtual int doCommand(vector<vector<string>> lines, map<string, double> *symbolTable, int line);
     ExitCommand(DataReaderServer* server5,Client* client1,Interpreter* pars,Dijkstra* dijkstra,pthread_mutex_t *mut)
     :Command(server5,client1,dijkstra,mut){
         this->server = server5;

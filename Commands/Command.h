@@ -31,7 +31,7 @@ public:
         this->shunting_yard = shunting_yard;
         this->mut = mut;
     }
-    virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index)=0;
+    virtual int doCommand(vector<vector<string>> lines,map<string, double>* symbolTable,int line)=0;
 };
 
 

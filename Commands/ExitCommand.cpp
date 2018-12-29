@@ -6,12 +6,12 @@
 
 /**
  * exit from the program
- * @param vector1
- * @param map1
- * @param index
- * @return index- no need here
+ * @param lines
+ * @param symbolTable
+ * @param line
+ * @return line- no need here
  */
-int ExitCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
+int ExitCommand::doCommand(vector<vector<string>> lines, map<string, double> *symbolTable, int line) {
     this->server->stopLoop(); // stop reading
     // delete all dynamic allocations
     delete this->dijkstra;
@@ -19,7 +19,7 @@ int ExitCommand::doCommand(vector<vector<string>> vector1, map<string, double> *
     delete this->server;
     pthread_mutex_destroy(mut);
     delete this->mut;
-    // print massage
-    cout <<"program finished successfully";
+    // print massage (test)
+    // cout <<"program finished successfully";
     return 0;
 }

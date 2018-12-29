@@ -1,5 +1,5 @@
 //
-// Created by Tomer & Eyal on 13/12/18.
+// Created by Tomer & Eyal on 15/12/18.
 //
 #include "Interpreter.h"
 
@@ -11,19 +11,19 @@ Interpreter::Interpreter(map<string, double> *symbolTable, map<string, Command *
     this->commandMap = commandMap;
 }
 
-int Interpreter::interpLine(vector<vector<string>> vector1) {
+int Interpreter::interpLine(vector<vector<string>> lines) {
     bool flagExit = false;
-    for (int i = 0; i < vector1.size(); i++) {
+    for (int i = 0; i < lines.size(); i++) {
         //for the vars equal.
         int jump;
-        if (symbolTable->count(vector1[i][0]) == 1) {
-            if (vector1[i][1] != "=") {
+        if (symbolTable->count(lines[i][0]) == 1) {
+            if (lines[i][1] != "=") {
                 __throw_bad_exception();
             }
-            this->commandMap->at("equal")->doCommand(vector1, this->symbolTable, i);
+            this->commandMap->at("equal")->doCommand(lines, this->symbolTable, i);
 
-        } else if (vector1[i][0] == "while") {
-            vector<vector<string>> newVec = vector1;
+        } else if (lines[i][0] == "while") {
+            vector<vector<string>> newVec = lines;
 
 
             newVec.erase(newVec.begin(), newVec.begin() + i);
@@ -31,28 +31,24 @@ int Interpreter::interpLine(vector<vector<string>> vector1) {
             newVec.erase(newVec.begin() + ind + 1, newVec.begin() + newVec.size());
             this->commandMap->at("while")->doCommand(newVec, this->symbolTable, 0);
             i = i + ind;
-        } else if (vector1[i][0] == "if") {
-            vector<vector<string>> newVec = vector1;
-
-
-            //TODO :
-            //לבדוק אם חותך נכון
+        } else if (lines[i][0] == "if") {
+            vector<vector<string>> newVec = lines;
             newVec.erase(newVec.begin(), newVec.begin() + i);
             int ind = this->countLoopIf(newVec);
             newVec.erase(newVec.begin() + ind + 1, newVec.begin() + newVec.size());
             this->commandMap->at("if")->doCommand(newVec, this->symbolTable, 0);
             i = i + ind;
-        } else if (vector1[i][0] == "exit") {
+        } else if (lines[i][0] == "exit") {
 
-            this->commandMap->at("exit")->doCommand(vector1, this->symbolTable, i);
+            this->commandMap->at("exit")->doCommand(lines, this->symbolTable, i);
             flagExit = true;
 
 
         } else {
-            string dd = vector1[i][0];
-            //int count = commandMap->count(vector1[i][0]);
-            Command *co = this->commandMap->at(vector1[i][0]);
-            this->commandMap->at(vector1[i][0])->doCommand(vector1, this->symbolTable, i);
+            string dd = lines[i][0];
+            //int count = commandMap->count(lines[i][0]);
+            Command *co = this->commandMap->at(lines[i][0]);
+            this->commandMap->at(lines[i][0])->doCommand(lines, this->symbolTable, i);
 
         }
     }
@@ -63,16 +59,16 @@ int Interpreter::interpLine(vector<vector<string>> vector1) {
     return 1;
 }
 
-int Interpreter::countLoopIf(vector<vector<string>> vector1) {
+int Interpreter::countLoopIf(vector<vector<string>> lines) {
     int breaks = -1;
-    int index = 0;
+    int line = 0;
     int flag = 0;
-    for (int i = 1; i < vector1.size(); i++) {
-        for (int j = 0; j < vector1[i].size(); j++) {
-            if ((vector1[i][j] == "while") || (vector1[i][j] == "if")) {
+    for (int i = 1; i < lines.size(); i++) {
+        for (int j = 0; j < lines[i].size(); j++) {
+            if ((lines[i][j] == "while") || (lines[i][j] == "if")) {
                 flag++;
             }
-            if ((vector1[i][j] == "}")) {
+            if ((lines[i][j] == "}")) {
 
                 if (flag == 0) {
                     breaks = i;
@@ -87,8 +83,8 @@ int Interpreter::countLoopIf(vector<vector<string>> vector1) {
             break;
         }
     }
-    index = breaks;
-    return index;
+    line = breaks;
+    return line;
 }
 
 /**
@@ -236,18 +232,18 @@ vector<vector<string>> Interpreter::readFromFile(string fileName) {
     string buffer;
     size_t found;
     size_t begining = 0;
-    vector<vector<string>> vector1;
+    vector<vector<string>> lines;
     ifstream myfile(fileName);
     if (myfile.good()) {
         while (getline(myfile, line)) {
             vector<string> afterSplit = lexer(line);
             if (afterSplit.size() > 0) {
-                vector1.push_back(lexer(line));
+                lines.push_back(lexer(line));
             }
 
         }
     }
-    return vector1;
+    return lines;
 }
 
 

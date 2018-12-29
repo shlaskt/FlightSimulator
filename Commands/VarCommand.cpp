@@ -8,16 +8,15 @@ using namespace std;
  * if it should be bind -> bind it to the path
  * else - itsnt bind -> send it just to symbol map
  * after getting it's value
- * @param vector1
- * @param map1
- * @param index
+ * @param lines
+ * @param symbolTable
+ * @param line
  * @return
  */
-int VarCommand::doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index){
-
-    // string temp = list1[index+3];
-    string temp = vector1[index][3];
-    string var = vector1[index][1];
+int VarCommand::doCommand(vector<vector<string>> lines,map<string, double>* symbolTable,int line){
+    string temp = lines[line][3];
+    // get var
+    string var = lines[line][1];
 
     //if var is bind
     if(temp.compare("bind")==0){
@@ -25,27 +24,26 @@ int VarCommand::doCommand(vector<vector<string>> vector1,map<string, double>* ma
         checkValidVarName(var);
         pthread_mutex_lock(this->mut); // lock mutex
         //add to map
-        map1->insert(pair<string,double >(var,0));
+        symbolTable->insert(pair<string,double >(var,0));
         pthread_mutex_unlock(this->mut); // unlock mutex
 
         // if the 4th element is in the map
-        if(map1->count(vector1[index][4])==1){
-            string path_to_bind = this->server->getPath(vector1[index][4]);
-            this->server->addNewPath(vector1[index][1], path_to_bind);
+        if(symbolTable->count(lines[line][4])==1){
+            string path_to_bind = this->server->getPath(lines[line][4]);
+            this->server->addNewPath(lines[line][1], path_to_bind);
         } else{
-            string var = vector1[index][1];
-            string path = vector1[index][4];
+            string var = lines[line][1];
+            string path = lines[line][4];
             path = path.substr(1,path.size()-2);
             this->server->addNewPath(var, path);
         }
         this->server->updateSymbolTable();
-
         return 5; // curr index
 
     }else{ //if var isn't bind
         string val_str="";
-        for (int i=3;i<vector1[index].size();i++){
-            val_str=val_str+vector1[index][i]+" ";
+        for (int i=3;i<lines[line].size();i++){
+            val_str=val_str+lines[line][i]+" ";
         }
         // evaluate val
         double val;
@@ -58,9 +56,8 @@ int VarCommand::doCommand(vector<vector<string>> vector1,map<string, double>* ma
         }
         // lock mutex and update map
         pthread_mutex_lock(this->mut);
-        map1->insert(pair<string, double>(var,val));
+        symbolTable->insert(pair<string, double>(var,val));
         pthread_mutex_unlock(this->mut);
-
         return 4; // curr index
     }
 }
