@@ -11,9 +11,9 @@ Interpreter::Interpreter(map<string, double> *symbolTable, map<string, Command *
     this->commandMap = commandMap;
 }
 
-int Interpreter::interpLine(vector<vector<string>> lines) {
-    bool flagExit = false;
-    for (int i = 0; i < lines.size(); i++) {
+bool Interpreter::interpLine(vector<vector<string>> lines) {
+    bool did_exit = false;
+    for (int i = 0; i < lines.size(); ++i) {
         //for the vars equal.
         int jump;
         if (symbolTable->count(lines[i][0]) == 1) {
@@ -41,29 +41,23 @@ int Interpreter::interpLine(vector<vector<string>> lines) {
         } else if (lines[i][0] == "exit") {
 
             this->commandMap->at("exit")->doCommand(lines, this->symbolTable, i);
-            flagExit = true;
+            did_exit = true;
 
 
         } else {
             string dd = lines[i][0];
-            //int count = commandMap->count(lines[i][0]);
-            Command *co = this->commandMap->at(lines[i][0]);
             this->commandMap->at(lines[i][0])->doCommand(lines, this->symbolTable, i);
 
         }
     }
-    //if he didnt call to exit
-    if (!flagExit) {
-        return 0;
-    }
-    return 1;
+    return did_exit;
 }
 
 int Interpreter::countLoopIf(vector<vector<string>> lines) {
     int breaks = -1;
     int line = 0;
     int flag = 0;
-    for (int i = 1; i < lines.size(); i++) {
+    for (int i = 1; i < lines.size(); ++i) {
         for (int j = 0; j < lines[i].size(); j++) {
             if ((lines[i][j] == "while") || (lines[i][j] == "if")) {
                 flag++;
@@ -170,7 +164,7 @@ vector<string> Interpreter::lexer(string line) {
 
 vector<string> Interpreter::lexerWithqute(string line) {
 
-    vector<string> vecAfterLex;
+    vector<string> parsered_lines;
     string enterTolist = "";
     regex number("[0-9,.]*");
     regex var_name("[a-zA-Z_][a-zA-Z_0-9]*");
@@ -186,7 +180,7 @@ vector<string> Interpreter::lexerWithqute(string line) {
             for (unsigned i = 0; i < m.size(); ++i) {
                 enterTolist += enterTolist + m.str(i);
             }
-            vecAfterLex.push_back(enterTolist);
+            parsered_lines.push_back(enterTolist);
             line = line.substr(enterTolist.size(), line.size());
             enterTolist = "";
         } else if (line[0] == '\t' || line[0] == '\n' || line[0] == ' ') {
@@ -201,7 +195,7 @@ vector<string> Interpreter::lexerWithqute(string line) {
             for (unsigned i = 0; i < m.size(); ++i) {
                 enterTolist += enterTolist + m.str(i);
             }
-            vecAfterLex.push_back(enterTolist);
+            parsered_lines.push_back(enterTolist);
             line = line.substr(enterTolist.size(), line.size());
             enterTolist = "";
         } else if ((line[0] >= 65 && line[0] <= 90) || (line[0] >= 97 && line[0] <= 122)) {
@@ -209,7 +203,7 @@ vector<string> Interpreter::lexerWithqute(string line) {
             for (unsigned i = 0; i < m.size(); ++i) {
                 enterTolist += enterTolist + m.str(i);
             }
-            vecAfterLex.push_back(enterTolist);
+            parsered_lines.push_back(enterTolist);
             line = line.substr(enterTolist.size(), line.size());
             enterTolist = "";
         } else {
@@ -217,21 +211,19 @@ vector<string> Interpreter::lexerWithqute(string line) {
             for (unsigned i = 0; i < m.size(); ++i) {
                 enterTolist += enterTolist + m.str(i);
             }
-            vecAfterLex.push_back(enterTolist);
+            parsered_lines.push_back(enterTolist);
             line = line.substr(enterTolist.size(), line.size());
             enterTolist = "";
         }
 
     }
-    return vecAfterLex;
+    return parsered_lines;
 }
 
 vector<vector<string>> Interpreter::readFromFile(string fileName) {
     string command;
     string line;
     string buffer;
-    size_t found;
-    size_t begining = 0;
     vector<vector<string>> lines;
     ifstream myfile(fileName);
     if (myfile.good()) {

@@ -4,16 +4,17 @@ project(flight)
 ##set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread")
 add_executable(flight main.cpp
-        Commands/Command.h Commands/openServerCommand.cpp Commands/openServerCommand.h
-        ExpressionInterfaces/Expression.h
-        ExpressionInterfaces/BinaryExpression.cpp
-        ExpressionInterfaces/BinaryExpression.h
-        BinaryExpressions/Mul.cpp BinaryExpressions/Mul.h BinaryExpressions/Div.cpp BinaryExpressions/Div.h BinaryExpressions/Plus.cpp BinaryExpressions/Plus.h BinaryExpressions/Minus.cpp BinaryExpressions/Minus.h
-        Num.cpp Num.h Commands/DataReaderServer.cpp Commands/DataReaderServer.h Maps.cpp
-        Maps.h Interpreter.cpp Interpreter.h Commands/VarCommand.cpp Commands/VarCommand.h
-        Commands/AssignCommand.cpp Commands/AssignCommand.h Commands/WhileCommand.cpp Commands/WhileCommand.h
-        Commands/ConnectCommand.cpp Commands/ConnectCommand.h ExpressionInterfaces/ExpressionCommand.cpp
-        ExpressionInterfaces/ExpressionCommand.h Commands/Client.cpp Commands/Client.h Commands/PrintCommand.cpp
-        Commands/PrintCommand.h Dijkstra.cpp Dijkstra.h Commands/IfCommand.cpp Commands/IfCommand.h Commands/SleepCommand.cpp
-        Commands/SleepCommand.h Commands/ExitCommand.cpp Commands/ExitCommand.h
-        InputReader/FileReader.cpp InputReader/FileReader.h InputReader/InputReadInterface.h InputReader/StdinReader.cpp InputReader/StdinReader.h Controller.cpp Controller.h InputReader/InputManage.cpp InputReader/InputManage.h)
+        Command.h openServerCommand.cpp openServerCommand.h
+        Expression.h
+        BinaryExpression.cpp
+        BinaryExpression.h
+        Mul.cpp Mul.h Div.cpp Div.h Plus.cpp Plus.h Minus.cpp Minus.h
+        Num.cpp Num.h DataReaderServer.cpp DataReaderServer.h DataMaps.cpp
+        DataMaps.h Interpreter.cpp Interpreter.h VarCommand.cpp VarCommand.h
+        AssignCommand.cpp AssignCommand.h WhileCommand.cpp WhileCommand.h
+        ConnectCommand.cpp ConnectCommand.h ExpressionCommand.cpp
+        ExpressionCommand.h Client.cpp Client.h PrintCommand.cpp
+        PrintCommand.h Dijkstra.cpp Dijkstra.h IfCommand.cpp IfCommand.h SleepCommand.cpp
+        SleepCommand.h ExitCommand.cpp ExitCommand.h
+        FileReader.cpp FileReader.h InputReadInterface.h StdinReader.cpp StdinReader.h
+        Controller.cpp Controller.h InputManage.cpp InputManage.h)

@@ -82,7 +82,7 @@ double Dijkstra::evaluate(string tokens) {
     // stack to store operators.
     stack<char> ops;
     double is_neg = 1; // to double it in 1 /-1 if needed
-    for (i = 0; i < tokens.length(); i++) {
+    for (i = 0; i < tokens.length(); ++i) {
 
         // Current token is a whitespace,
         // skip it.
@@ -119,7 +119,7 @@ double Dijkstra::evaluate(string tokens) {
                         float_num *= 10;
                     }
                 }
-                i++;
+                ++i;
             }
             is_op = true;
             val *= is_neg; // -1 if shuold be neg, 1 o.w
@@ -218,7 +218,7 @@ double Dijkstra::dijkstratoi(string string_before_evaluate) {
     // split the string to vector by whitespace
     vector<string> splited = splitLine(string_before_evaluate, ' ');
     char space = ' ';
-    for (vector<string>::iterator it = splited.begin(); it != splited.end(); it++) {
+    for (vector<string>::iterator it = splited.begin(); it != splited.end(); ++it) {
         string argument = (*it); // operator or number or var
         // if start with digit- it is number, place it back to the string
         // if it operator -place it back to the string

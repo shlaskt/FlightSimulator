@@ -4,50 +4,49 @@
 
 #include "Controller.h"
 
+#define PATH 1
+#define VALID_ARGUMENTS 2
 Controller::Controller() {
     mut = new pthread_mutex_t();
     pthread_mutex_init(mut, nullptr);
-    maps = new Maps(mut);
-    server = new DataReaderServer(maps->getSymbolMap(),mut);
+    data_maps = new DataMaps(mut);
+    server = new DataReaderServer(data_maps->getSymbolMap(), mut);
     client = new Client();
-    dijkstra = new Dijkstra(maps->getSymbolMap());
-    interpreter = new Interpreter(maps->getSymbolMap(),maps->getComMap());
+    dijkstra = new Dijkstra(data_maps->getSymbolMap());
+    interpreter = new Interpreter(data_maps->getSymbolMap(), data_maps->getComanndMap());
 }
 
-void Controller::runningProgram(int argc,char *argv[]) {
-    maps->setDij(dijkstra);
-    maps->setServer(server,client);
-    maps->setInterpreter(interpreter);
-    maps->initMapCom();
-    vector<vector<string>> afterLex;
-
-    //read from the file
-    //string fileName="tempppppp";
-    string fileName=argv[1];
-
-
-    //pthread_mutex_destroy(&mut);
-
-    afterLex = interpreter->readFromFile(fileName);
-    int ans = interpreter->interpLine(afterLex);
-
-    if(ans == 0){
-        server->stopLoop();
-        pthread_mutex_destroy(mut);
-        delete mut;
-        delete dijkstra;
-        delete interpreter;
-        delete client;
-        delete server;
+void checkMainArguments(int argc) {
+    if (argc != VALID_ARGUMENTS) {
+        throw runtime_error("error on number of elements to main");
     }
-    /*
-    //delete
+}
+
+void Controller::runningProgram(int argc, char *argv[]) {
+    data_maps->setDij(dijkstra);
+    data_maps->setDataServer(server, client);
+    data_maps->setInterpreter(interpreter);
+    data_maps->createComanndMap();
+    vector<vector<string>> parsered_lines;
+    checkMainArguments(argc);
+    string fileName = argv[PATH];
+
+    parsered_lines = interpreter->readFromFile(fileName);
+    bool did_exit = interpreter->interpLine(parsered_lines);
+
+    if (!did_exit) {
+        freeMemory();
+    }
+    delete interpreter;
+    delete data_maps;
+}
+
+void Controller::freeMemory() {
+    server->end_program();
     pthread_mutex_destroy(mut);
     delete mut;
     delete dijkstra;
     delete interpreter;
-    delete data_client;
-    delete drs;*/
-    delete interpreter;
-    delete maps;
+    delete client;
+    delete server;
 }

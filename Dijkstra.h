@@ -6,14 +6,14 @@
 #define FLIGHT_DIJKSTRA_H
 
 
-#include "ExpressionInterfaces/BinaryExpression.h"
-#include "BinaryExpressions/Plus.h"
+#include "BinaryExpression.h"
+#include "Plus.h"
 #include "Num.h"
 
-#include "BinaryExpressions/Minus.h"
-#include "BinaryExpressions/Mul.h"
-#include "BinaryExpressions/Div.h"
-#include "ExpressionInterfaces/Expression.h"
+#include "Minus.h"
+#include "Mul.h"
+#include "Div.h"
+#include "Expression.h"
 #include <iostream>
 #include <bits/stdc++.h>
 #include <string>

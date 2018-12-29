@@ -7,7 +7,7 @@
 
 
 #include <map>
-#include "Commands/Command.h"
+#include "Command.h"
 #include <fstream>
 #include <string.h>
 #include <map>
@@ -21,7 +21,7 @@ private:
 public:
 
     Interpreter(map<string,double >* symbolTable,map<string, Command*>* commandMap);
-    int interpLine(vector<vector<string>>);
+    bool interpLine(vector<vector<string>>);
     int countLoopIf(vector<vector<string>>);
     vector<string> lexer(string line);
     vector<string> lexerWithqute(string line);
